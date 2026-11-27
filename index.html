@@ -502,6 +502,85 @@
   }
   .link-btn:hover{color:var(--red);border-color:rgba(192,64,44,.5)}
 
+  /* ---------- 景点照片 ---------- */
+  .spot-photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .spot:hover .spot-photo img{transform:scale(1.04)}
+  .photo-open{
+    position:absolute;
+    inset:0;
+    width:100%;height:100%;
+    border:0;
+    background:transparent;
+    cursor:zoom-in;
+    z-index:3;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .spot-photo::after{
+    content:"查看大图";
+    position:absolute;
+    right:10px;top:10px;
+    z-index:4;
+    padding:3px 10px;
+    border-radius:999px;
+    background:rgba(28,20,10,.46);
+    color:#fff;
+    font-size:.7rem;
+    letter-spacing:.1em;
+    opacity:0;
+    transition:opacity .25s;
+    pointer-events:none;
+  }
+  .spot-photo:hover::after{opacity:1}
+
+  /* ---------- 大图弹层 ---------- */
+  .lightbox{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(10px,3vw,36px)}
+  .lightbox[hidden]{display:none}
+  .lb-backdrop{position:absolute;inset:0;background:rgba(32,24,14,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .lb-figure{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+    width:min(1060px,100%);
+    max-height:min(88vh,880px);
+    margin:0;
+    background:#fffdf7;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 40px 90px -40px rgba(0,0,0,.65);
+  }
+  .lb-img{background:#efe7d8;overflow:hidden;display:grid;place-items:center}
+  .lb-img img{display:block;max-width:100%;max-height:min(88vh,880px);width:auto;height:auto;object-fit:contain}
+  .lb-img svg{display:block;width:100%;height:100%}
+  .lb-body{padding:26px 28px 28px;overflow:auto}
+  .lb-kicker{margin:0 0 8px;font-size:.74rem;letter-spacing:.22em;color:var(--red)}
+  .lb-body h3{margin:0 0 10px;font-family:var(--serif);font-size:1.55rem;letter-spacing:.04em}
+  .lb-lead{margin:0 0 6px;color:var(--ink-2);font-size:.96rem}
+  .lb-body h4{margin:16px 0 4px;font-size:.74rem;letter-spacing:.18em;color:var(--red);font-weight:600}
+  .lb-body p{margin:0;color:var(--ink-2);font-size:.9rem;line-height:1.85}
+  .lb-close{
+    position:absolute;
+    right:12px;top:12px;
+    z-index:5;
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,.1);
+    background:rgba(255,253,247,.94);
+    color:var(--ink);
+    font-size:14px;
+    line-height:1;
+    cursor:pointer;
+    transition:background .2s,color .2s;
+  }
+  .lb-close:hover{background:#fff;color:var(--red)}
+  body.lb-open{overflow:hidden}
+
+  @media (max-width:820px){
+    .lb-figure{grid-template-columns:1fr;max-height:92vh}
+    .lb-img{max-height:44vh}
+    .lb-img img{width:100%;height:44vh;object-fit:cover}
+    .lb-body{padding:18px 20px 22px}
+  }
+
   /* ---------- 时间轴 ---------- */
   .timeline{position:relative;max-width:820px;margin:8px 0 0;padding-left:30px}
   .timeline::before{
@@ -755,7 +834,7 @@
         <div class="stat"><b><span data-count="3771.2" data-dec="1">0</span></b><span>太白山海拔 · 米</span></div>
         <div class="stat"><b><span data-count="2700" data-dec="0">0</span>+</b><span>建城史 · 年</span></div>
         <div class="stat"><b><span data-count="2499" data-dec="0">0</span></b><span>法门寺地宫文物 · 件</span></div>
-        <div class="stat"><b><span data-count="20" data-dec="0">0</span></b><span>本页收录景点 · 处</span></div>
+        <div class="stat"><b><span data-count="18" data-dec="0">0</span></b><span>本页收录景点 · 处</span></div>
       </div>
     </div>
   </section>
@@ -763,12 +842,12 @@
   <!-- 景点 -->
   <section class="section" id="spots">
     <div class="wrap">
-      <p class="eyebrow reveal">景点 · 二十处</p>
+      <p class="eyebrow reveal">景点 · 十八处</p>
       <h2 class="reveal">从一座山，到一座城</h2>
-      <p class="section-lead reveal">每一处都能展开：点开「展开介绍」，读它的来处、看点和走法。图片是照着当地样子画的插画，不是照片。</p>
+      <p class="section-lead reveal">每一处都能点开：点图片看大图和完整介绍，点「展开介绍」在卡片里读它的来处、看点和走法。</p>
 
       <div class="filters reveal" role="group" aria-label="按类型筛选景点">
-        <button class="chip is-on" type="button" data-filter="all">全部 20</button>
+        <button class="chip is-on" type="button" data-filter="all">全部 18</button>
         <button class="chip" type="button" data-filter="mountain">山岳</button>
         <button class="chip" type="button" data-filter="heritage">古迹</button>
         <button class="chip" type="button" data-filter="relic">遗址</button>
@@ -862,11 +941,27 @@
   </section>
 </main>
 
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lb-backdrop" data-close></div>
+  <figure class="lb-figure" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <button class="lb-close" type="button" data-close aria-label="关闭">✕</button>
+    <div class="lb-img" id="lbImg"></div>
+    <figcaption class="lb-body">
+      <p class="lb-kicker" id="lbKicker"></p>
+      <h3 id="lbTitle"></h3>
+      <p class="lb-lead" id="lbLead"></p>
+      <h4>历史沿革</h4><p id="lbHist"></p>
+      <h4>看点</h4><p id="lbSee"></p>
+      <h4>走法</h4><p id="lbTip"></p>
+    </figcaption>
+  </figure>
+</div>
+
 <footer>
   <div class="wrap">
     <div class="seal-line"><i>陈</i>陈仓，我家</div>
     <p>陕西 · 宝鸡｜一座把三千年写进日常的城</p>
-    <p class="small">文中年代与数据参考公开资料整理，如有出入以官方公布为准。景点插画为手绘 SVG，背景音乐由浏览器实时合成，页面不含任何外部素材。</p>
+    <p class="small">文中年代与数据参考公开资料整理，如有出入以官方公布为准。景点照片均为实拍，背景音乐由浏览器实时合成。</p>
   </div>
 </footer>
 
@@ -1505,70 +1600,70 @@
    *  3. 景点数据
    * ========================================================= */
   var SPOTS = [
-    { name:'太白山', cat:'mountain', tag:'秦岭主峰', place:'眉县', art:'snowPeaks',
+    { name:'太白山', cat:'mountain', tag:'秦岭主峰', place:'眉县', art:'snowPeaks', photo:'img/taibai.jpg',
       meta:['5A 景区','海拔 3771.2 米'],
       lead:'秦岭主峰，中国大陆东半壁的最高点，也是道教名山。',
       hist:'太白山古称“惇物山”，《尚书·禹贡》里已有“终南惇物”的记载。因山顶终年积雪、四时皓白，唐代起称“太白”。李白登临写下“太白与我语，为我开天关”，杜甫、苏轼、于右任等也在此留下诗篇。',
       see:'拔仙台看日出，大爷海、二爷海的高山湖泊，以及第四纪冰川留下的石海与角峰。从山脚到山顶有明显的垂直景观带，所谓“一日历四季”。',
       tip:'山门到下板寺有景区车，登顶建议安排在 6—9 月。海拔高、天气变得快，厚外套、防晒和足够的水都要带。' },
 
-    { name:'鸡峰山', cat:'mountain', tag:'陈仓山', place:'渭滨区', art:'roosterPeak',
+    { name:'鸡峰山', cat:'mountain', tag:'陈仓山', place:'渭滨区', art:'roosterPeak', photo:'img/jifengshan.jpg',
       meta:['宝鸡得名处','石鸡啼鸣'],
       lead:'宝鸡得名的那座山，相传石鸡一鸣，陈仓改名宝鸡。',
       hist:'鸡峰山古称陈仓山，在市区南郊。唐至德二年（757 年），相传山上有石鸡啼鸣，被视为祥瑞，朝廷遂改陈仓县为宝鸡县。山中现存庙宇与栈道遗迹。',
       see:'三峰并立的岩壁、山顶的石鸡与庙宇、云雾里的松林；登顶可以俯瞰渭河与整座城。',
       tip:'距市区约 20 分钟车程。山路陡，穿防滑的鞋；雨后石阶湿滑，慢一点。' },
 
-    { name:'法门寺', cat:'heritage', tag:'佛指舍利', place:'扶风县', art:'pagoda',
+    { name:'法门寺', cat:'heritage', tag:'佛指舍利', place:'扶风县', art:'pagoda', photo:'img/famen.jpg',
       meta:['5A 景区','始建于东汉末年'],
       lead:'供奉释迦牟尼真身指骨舍利的千年古刹。',
       hist:'法门寺始建于东汉末年桓、灵年间（约公元 2 世纪），因塔而寺、因舍利而兴。唐代先后有八位皇帝六次迎奉佛骨，法门寺成为皇家寺院。1987 年重修宝塔时，尘封一千一百多年的唐代地宫被发现。',
       see:'合十舍利塔、唐代地宫遗址，以及地宫出土的秘色瓷、鎏金银器、琉璃器。农历四月初八佛诞日的庙会香火最盛。',
       tip:'在扶风县法门镇，距市区约 1 小时车程。景区很大，从山门到合十舍利塔要走一段，建议留半天。' },
 
-    { name:'宝鸡青铜器博物院', cat:'relic', tag:'青铜器之乡', place:'渭滨区', art:'museum',
+    { name:'宝鸡青铜器博物院', cat:'relic', tag:'青铜器之乡', place:'渭滨区', art:'museum', photo:'img/qingtongqi.jpg',
       meta:['免费开放','中华石鼓园内'],
       lead:'全国最大的青铜器专题博物馆，何尊就住在这里。',
       hist:'宝鸡是周秦故地，汉代以来屡有青铜重器出土。博物院坐落于中华石鼓园内，馆藏青铜器数以万计，从礼器、乐器到兵器，几乎能拼出一部西周青铜谱系。',
       see:'镇馆之宝何尊，内底铸有 122 字铭文，“宅兹中国”是“中国”一词最早的文字记载；此外还有逨盘等重器。',
       tip:'免费参观，周一闭馆（法定节假日除外）。建议预留 2—3 小时，看完可以顺路上石鼓阁，俯瞰渭河与市区。' },
 
-    { name:'周原遗址', cat:'relic', tag:'西周都邑', place:'扶风 · 岐山', art:'ding',
+    { name:'周原遗址', cat:'relic', tag:'西周都邑', place:'扶风 · 岐山', art:'ding', photo:'img/zhouyuan.jpg',
       meta:['全国重点文保','甲骨窖藏'],
       lead:'周人灭商之前的都邑，三千年前的“国家档案库”。',
       hist:'商代晚期，古公亶父率周人自豳迁岐，在岐山南麓的周原营建都邑，历经王季、文王两代，“凤鸣岐山”的传说即出于此。此后周原长期是西周王朝的重要都邑与宗庙所在。',
       see:'凤雏、召陈一带的大型建筑基址，出土的甲骨与青铜窖藏；周原博物馆里的卜甲和青铜器，能看出西周人的日常。',
       tip:'在扶风、岐山两县交界，适合与法门寺、周公庙串成一条东线。' },
 
-    { name:'九成宫遗址', cat:'heritage', tag:'醴泉铭', place:'麟游县', art:'palace',
+    { name:'九成宫遗址', cat:'heritage', tag:'醴泉铭', place:'麟游县', art:'palace', photo:'img/jiuchenggong.jpg',
       meta:['隋唐离宫','避暑胜地'],
       lead:'隋唐皇帝的避暑离宫，一方《醴泉铭》让这里名满书坛。',
       hist:'始建于隋开皇十三年（593 年），初名仁寿宫；唐贞观五年（631 年）扩建后更名九成宫。唐太宗多次来此避暑，魏征撰文、欧阳询书丹的《九成宫醴泉铭》被誉为“天下第一楷书”。',
       see:'遗址内的《万年宫铭》碑与《九成宫醴泉铭》碑刻，天台山与杜水风光。夏天山谷里比市区低好几度。',
       tip:'在麟游县城，距市区约 2 小时车程。夏季避暑最合适，山路弯多，自驾注意车速。' },
 
-    { name:'关山草原', cat:'nature', tag:'高山草甸', place:'陇县', art:'meadow',
+    { name:'关山草原', cat:'nature', tag:'高山草甸', place:'陇县', art:'meadow', photo:'img/guanshan.jpg',
       meta:['海拔约 2000 米','4A 景区'],
       lead:'西北内陆少有的高山草甸，夏天像一块铺开的绿毯。',
       hist:'关山古称陇山、陇坂，是关中通往陇西的咽喉。秦汉时在此设关，唐代设关山牧场，为朝廷养马之地。古丝绸之路的陇关道，就从这片草原上穿过。',
       see:'六月到八月的草甸花海，骑马、滑草，夜里抬头是成片的星。当地有句老话：“关山六月寒凝霜”。',
       tip:'在陇县，海拔约 2000 米，昼夜温差大，夏天也要带外套。自驾最方便，景区内可以住一晚看日出。' },
 
-    { name:'五丈原', cat:'heritage', tag:'诸葛亮', place:'岐山县', art:'plateau',
+    { name:'五丈原', cat:'heritage', tag:'诸葛亮', place:'岐山县', art:'plateau', photo:'img/wuzhangyuan.jpg',
       meta:['诸葛亮庙','渭水南岸'],
       lead:'诸葛亮最后一次北伐的屯兵之地，也是他病逝的地方。',
       hist:'蜀汉建兴十二年（234 年），诸葛亮率军出斜谷、屯兵五丈原，与司马懿隔渭水对峙百余日，同年八月病逝于军中。后人在此建庙祭祀，现存诸葛亮庙始建于元初。',
       see:'诸葛亮庙、衣冠冢与落星亭。原上地势开阔，可以俯瞰渭水与对面的秦岭。',
       tip:'在岐山县蔡家坡镇，与周公庙、周原遗址可以安排在同一天。' },
 
-    { name:'姜子牙钓鱼台', cat:'heritage', tag:'愿者上钩', place:'陈仓区', art:'riverRod',
+    { name:'姜子牙钓鱼台', cat:'heritage', tag:'愿者上钩', place:'陈仓区', art:'riverRod', photo:'img/diaoyutai.jpg',
       meta:['磻溪','文王访贤'],
       lead:'“姜太公钓鱼，愿者上钩”——故事就发生在这条磻溪边。',
       hist:'相传商末姜子牙隐居磻溪垂钓，周文王访贤于此，拜为太师。北魏郦道元《水经注》已有磻溪的记载，唐代起在此建庙立祠，历代都有修葺。',
       see:'钓鱼台巨石、文王庙与三清殿。溪水清冽，两岸树荫很密，夏天走起来凉快。',
       tip:'在陈仓区磻溪镇，距市区约 40 分钟车程，适合半日游。' },
 
-    { name:'嘉陵江源头', cat:'nature', tag:'江河源头', place:'凤县', art:'fall', v:'spring',
+    { name:'嘉陵江源头', cat:'nature', tag:'江河源头', place:'凤县', art:'fall', v:'spring', photo:'img/jialingjiang.jpg',
       pal:{ sky:['#e4f5ff','#f0faff','#f9feff'], rock:'#6f9fb5', water:'#a5d8ec', tree:'#3a6a5c' },
       meta:['秦岭腹地','森林公园'],
       lead:'一条大江从这里出发，穿过秦岭，一路流向重庆。',
@@ -1576,7 +1671,7 @@
       see:'原始森林、溪流与瀑布，秋天满山红叶。站在分水岭上，一脚踩着北方，一脚踩着南方。',
       tip:'凤县距市区约 1.5 小时车程，景区步道较多，穿一双舒服的鞋。' },
 
-    { name:'炎帝陵', cat:'heritage', tag:'炎帝故里', place:'渭滨区', art:'shrine', v:'tomb',
+    { name:'炎帝陵', cat:'heritage', tag:'炎帝故里', place:'渭滨区', art:'shrine', v:'tomb', photo:'img/yandiling.jpg',
       pal:{ ground:'#e9dcc0', warm:'#b8472c', tree:'#4c6a4e' },
       meta:['常羊山','寻根祭祖'],
       lead:'常羊山上的炎帝陵，是海内外华人寻根祭祖的地方。',
@@ -1584,23 +1679,14 @@
       see:'炎帝陵、神农祠，以及每年清明前后的公祭大典。',
       tip:'在市区南郊常羊山，距市区约 20 分钟车程，可与青铜器博物院安排在同一天。' },
 
-    { name:'金台观', cat:'heritage', tag:'张三丰', place:'金台区', art:'shrine', v:'terrace',
+    { name:'金台观', cat:'heritage', tag:'张三丰', place:'金台区', art:'shrine', v:'terrace', photo:'img/jintaiguan.jpg',
       pal:{ sky:['#eef2f0','#f7faf8','#fdfefd'], rock:'#8b8d80', ground:'#e6e7dc', tree:'#5a5c4f', warm:'#7d6a52' },
       meta:['元末明初','依山而建'],
       lead:'张三丰修道的地方，也是俯瞰宝鸡老城的好位置。',
       hist:'金台观创建于元末明初，是明代道士张三丰修炼之所。观内建筑依山就势，明清两代多次重修，现存建筑保留了明代风格，曾长期作为宝鸡市博物馆使用。',
       see:'玉皇阁、三清殿与张三丰遗迹。登到高处，渭河与老城的屋顶都在脚下。',
       tip:'在金台区，与西府老街、陈仓老街相距不远，可以串成半日游。' },
-
-    { name:'凤翔', cat:'folk', tag:'秦都雍城', place:'凤翔区', art:'lake', v:'pavilion',
-      pal:{ water:'#bcd9e2', tree:'#5d6a80', rock:'#957cb2' },
-      meta:['建都 294 年','非遗之乡'],
-      lead:'秦人建都近三百年的雍城，也是泥塑、年画与西凤酒的故乡。',
-      hist:'秦德公迁都雍城（今凤翔），自公元前 677 年至公元前 383 年，秦国在此建都 294 年，历十九位国君。唐代设凤翔府，苏轼曾任凤翔府判官，疏浚了东湖。',
-      see:'雍城遗址、东湖、周家大院；凤翔泥塑、木版年画与西凤酒的老作坊。',
-      tip:'凤翔区距市区约 40 分钟车程，东湖与周家大院可以一并游览。' },
-
-    { name:'周公庙', cat:'heritage', tag:'周文化祖庭', place:'岐山县', art:'shrine', v:'cypress',
+    { name:'周公庙', cat:'heritage', tag:'周文化祖庭', place:'岐山县', art:'shrine', v:'cypress', photo:'img/zhougongmiao.jpg',
       pal:{ sky:['#f2f6e6','#f8fbef','#fcfdf5'], rock:'#8f8159', ground:'#e8e4cd', tree:'#3f5b45', warm:'#8f4a2e' },
       meta:['始建于唐','凤凰山南麓'],
       lead:'纪念周公旦的祠庙，也是周文化的祖庭。',
@@ -1608,7 +1694,7 @@
       see:'三公殿、润德泉与古柏群；庙后的凤凰山遗址。',
       tip:'与周原遗址、五丈原同在岐山一线，可以安排一天。' },
 
-    { name:'红河谷', cat:'nature', tag:'峡谷瀑布', place:'眉县', art:'fall', v:'canyon',
+    { name:'红河谷', cat:'nature', tag:'峡谷瀑布', place:'眉县', art:'fall', v:'canyon', photo:'img/honghegu.jpg',
       pal:{ sky:['#fdf1e8','#fff7f1','#fffbf7'], rock:'#c08a70', water:'#bcd6d8', tree:'#6d5a45', warm:'#b0503a' },
       meta:['太白山北麓','夏季清凉'],
       lead:'太白山北麓的峡谷，瀑布、深潭与红褐色岩壁。',
@@ -1616,35 +1702,28 @@
       see:'斗姆瀑布、四嘴山与沿溪栈道；夏天水声不断，很凉快。',
       tip:'距太白山景区不远，可与太白山安排两天。' },
 
-    { name:'通天河', cat:'nature', tag:'原始森林', place:'凤县', art:'forestRiver',
-      meta:['国家森林公园','秦岭西段'],
-      lead:'秦岭深处的森林公园，一条河在原始林里穿行。',
-      hist:'通天河国家森林公园位于凤县西北，属秦岭西段，森林覆盖率高，是嘉陵江支流的源头区之一。',
-      see:'原始森林、石桥与溪流，秋季层林尽染；“通天河”之名取自河谷深切、直上云端的地势。',
-      tip:'距凤县县城约 1 小时，山路弯多，建议白天行车。' },
-
-    { name:'千湖湿地', cat:'nature', tag:'渭北水乡', place:'千阳县', art:'lake',
+    { name:'千湖湿地', cat:'nature', tag:'渭北水乡', place:'千阳县', art:'lake', photo:'img/qianhu.jpg',
       meta:['国家湿地公园','候鸟迁徙'],
       lead:'渭北旱塬上的一片水面，芦苇、水鸟与落日。',
       hist:'千湖国家湿地公园位于千阳县城附近的千河沿岸，由河道、库塘与滩涂组成，是渭北地区少见的大面积湿地。',
       see:'芦苇荡、观鸟栈道与傍晚的湖面；候鸟迁徙季最热闹。',
       tip:'千阳县距市区约 1 小时，傍晚光线最好。' },
 
-    { name:'中华石鼓园', cat:'relic', tag:'石鼓出土', place:'渭滨区', art:'stones',
+    { name:'中华石鼓园', cat:'relic', tag:'石鼓出土', place:'渭滨区', art:'stones', photo:'img/shiguyuan.jpg',
       meta:['石鼓阁','与博物院相邻'],
       lead:'石鼓出土的地方，如今是宝鸡的城市文化客厅。',
       hist:'唐代在宝鸡石鼓山出土十面石鼓，上刻籀文四言诗，是我国现存最早的石刻诗文，现藏故宫博物院。中华石鼓园依石鼓山而建，与青铜器博物院相邻。',
       see:'石鼓阁、石鼓文化广场与青铜器博物院；登阁可望渭河。',
       tip:'与青铜器博物院同在一处，免费，适合安排半日。' },
 
-    { name:'西府老街', cat:'folk', tag:'西府味道', place:'金台区', art:'street',
+    { name:'西府老街', cat:'folk', tag:'西府味道', place:'金台区', art:'street', photo:'img/xifu.jpg',
       meta:['民俗街区','非遗小吃'],
       lead:'一条把西府吃食和手艺聚在一起的老街。',
       hist:'西府老街在宝鸡市区北塬，以关中西部传统民居为原型复建，青砖灰瓦、木格窗，集中展示西府的饮食与非遗手艺。',
       see:'臊子面、擀面皮、油糕；泥塑、剪纸与皮影的小铺子。',
       tip:'与金台观相距不远，晚上灯亮起来更好看。' },
 
-    { name:'大唐秦王陵', cat:'heritage', tag:'五代王陵', place:'金台区', art:'tomb',
+    { name:'大唐秦王陵', cat:'heritage', tag:'五代王陵', place:'金台区', art:'tomb', photo:'img/qinwangling.jpg',
       meta:['李茂贞墓','地宫开放'],
       lead:'五代秦王李茂贞与夫人的合葬陵，地宫可以下去看。',
       hist:'大唐秦王陵是唐末五代岐王李茂贞及其夫人的合葬墓，位于宝鸡市区北的原上。陵园地面存封土与石刻，地宫对外开放，可见砖雕与壁画。',
@@ -1675,8 +1754,12 @@
   }
 
   function card(s, i) {
+    var cover = s.photo
+      ? '<img src="' + s.photo + '" alt="' + s.name + ' 实景" loading="lazy" decoding="async">'
+      : artFor(s, i);
     return '<article class="spot" data-cat="' + s.cat + '">' +
-      '<figure class="spot-photo">' + artFor(s, i) +
+      '<figure class="spot-photo">' + cover +
+        '<button class="photo-open" type="button" data-i="' + i + '" aria-label="查看 ' + s.name + ' 大图与介绍"></button>' +
         '<figcaption><span>' + s.place + '</span><span>' + CAT_NAME[s.cat] + '</span></figcaption>' +
       '</figure>' +
       '<div class="spot-main">' +
@@ -1736,6 +1819,50 @@
     });
   });
 
+  /* ---------- 大图 + 介绍弹层 ---------- */
+  var lb = $('#lightbox');
+  var lbImg = $('#lbImg');
+  var lbLast = null;
+
+  function openLightbox(i) {
+    var s = SPOTS[i];
+    if (!s || !lb) return;
+    lbLast = document.activeElement;
+    lbImg.innerHTML = s.photo ? '<img src="' + s.photo + '" alt="' + s.name + '">' : artFor(s, i);
+    $('#lbKicker').textContent = s.place + ' · ' + CAT_NAME[s.cat];
+    $('#lbTitle').textContent = s.name;
+    $('#lbLead').textContent = s.lead;
+    $('#lbHist').textContent = s.hist;
+    $('#lbSee').textContent = s.see;
+    $('#lbTip').textContent = s.tip;
+    lb.hidden = false;
+    document.body.classList.add('lb-open');
+    var c = lb.querySelector('.lb-close');
+    if (c) { try { c.focus({ preventScroll: true }); } catch (err) { c.focus(); } }
+  }
+
+  function closeLightbox() {
+    if (!lb || lb.hidden) return;
+    lb.hidden = true;
+    lbImg.innerHTML = '';
+    document.body.classList.remove('lb-open');
+    if (lbLast && lbLast.focus) { try { lbLast.focus({ preventScroll: true }); } catch (err) { lbLast.focus(); } }
+  }
+
+  grid.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.photo-open') : null;
+    if (b) openLightbox(Number(b.getAttribute('data-i')));
+  });
+
+  if (lb) {
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-close]')) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
+
   /* =========================================================
    *  5. 数字滚动 + 进场
    * ========================================================= */
@@ -1766,7 +1893,8 @@
         en.target.classList.add('in');
         io.unobserve(en.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    },
+ { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
     reveals.forEach(function (el) { io.observe(el); });
 
     var cio = new IntersectionObserver(function (entries) {

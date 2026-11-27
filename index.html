@@ -1,11 +1,1172 @@
-+ <!DOCTYPE html>
-+ <html>
-+ <head>
-+     <title>我的中心</title>
-+     <meta charset="utf-8>
-+ </head>
-+ <body>
-+     <h1>你好，我是陈昊铭</h1>
-+
-+ </body>
-+ </html>        
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06080f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306080f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%235eead4'/%3E%3C/svg%3E">
+<meta name="description" content="陈昊铭的个人主页 —— 单文件静态站，附带一个可以直接玩的小游戏。">
+<title>陈昊铭 · 我的中心</title>
+<style>
+  :root{
+    --bg:#06080f;
+    --ink:#e9edf9;
+    --muted:#94a1bf;
+    --teal:#5eead4;
+    --violet:#a78bfa;
+    --pink:#f472b6;
+    --line:rgba(255,255,255,.09);
+    --card:rgba(255,255,255,.042);
+    --radius:22px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+
+  html{scroll-behavior:smooth}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit}
+
+  /* ---------- 背景光晕 ---------- */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:.5;
+    will-change:transform;
+  }
+  .orb-1{width:46vmax;height:46vmax;left:-14vmax;top:-16vmax;background:radial-gradient(circle,#1f6f6a,transparent 68%);animation:drift1 26s ease-in-out infinite}
+  .orb-2{width:40vmax;height:40vmax;right:-12vmax;top:8vmax;background:radial-gradient(circle,#4c2b86,transparent 68%);animation:drift2 32s ease-in-out infinite}
+  .orb-3{width:34vmax;height:34vmax;left:28%;bottom:-18vmax;background:radial-gradient(circle,#7a2f57,transparent 70%);animation:drift3 38s ease-in-out infinite}
+  .bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(transparent 0 1px,rgba(255,255,255,.028) 1px) 0 0/100% 64px,
+      linear-gradient(90deg,transparent 0 1px,rgba(255,255,255,.028) 1px) 0 0/64px 100%,
+      radial-gradient(120% 90% at 50% 0%,transparent 30%,var(--bg) 88%);
+    -webkit-mask-image:radial-gradient(140% 110% at 50% 0%,#000 30%,transparent 78%);
+    mask-image:radial-gradient(140% 110% at 50% 0%,#000 30%,transparent 78%);
+  }
+  @keyframes drift1{50%{transform:translate3d(6vmax,4vmax,0) scale(1.12)}}
+  @keyframes drift2{50%{transform:translate3d(-5vmax,6vmax,0) scale(1.08)}}
+  @keyframes drift3{50%{transform:translate3d(4vmax,-5vmax,0) scale(1.15)}}
+
+  /* ---------- 顶部导航 ---------- */
+  .nav{
+    position:fixed;
+    inset:0 0 auto 0;
+    z-index:30;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px clamp(16px,4vw,44px);
+    border-bottom:1px solid rgba(255,255,255,.05);
+    background:linear-gradient(180deg,rgba(6,8,15,.9),rgba(6,8,15,.35));
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    letter-spacing:.02em;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .brand .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 14px var(--teal);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{50%{transform:scale(.65);opacity:.6}}
+  .nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:.92rem;
+    padding:8px 13px;
+    border-radius:999px;
+    transition:color .2s,background .2s;
+  }
+  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.07)}
+
+  .progress{
+    position:fixed;
+    top:0;left:0;
+    height:2px;
+    width:0;
+    z-index:40;
+    background:linear-gradient(90deg,var(--teal),var(--violet),var(--pink));
+    box-shadow:0 0 12px rgba(167,139,250,.8);
+  }
+
+  /* ---------- 通用版式 ---------- */
+  .wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
+  section{position:relative}
+  section[id]{scroll-margin-top:86px}
+  .section{padding:clamp(64px,9vw,110px) 0}
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 18px;
+    padding:6px 14px 6px 10px;
+    font-size:.78rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--teal);
+    border:1px solid rgba(94,234,212,.28);
+    border-radius:999px;
+    background:rgba(94,234,212,.07);
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  h2.section-title{
+    margin:0 0 10px;
+    font-size:clamp(1.6rem,3.4vw,2.3rem);
+    letter-spacing:-.01em;
+    line-height:1.25;
+  }
+  .section-sub{margin:0 0 34px;color:var(--muted);max-width:60ch}
+
+  /* ---------- 首屏 ---------- */
+  .hero{
+    min-height:100svh;
+    display:grid;
+    place-items:center;
+    padding:120px 0 90px;
+    text-align:center;
+  }
+  .hero-inner{max-width:860px}
+  .hero h1{
+    margin:.1em 0 .28em;
+    font-size:clamp(2.5rem,8.4vw,5.1rem);
+    line-height:1.06;
+    letter-spacing:-.025em;
+  }
+  .grad{
+    background:linear-gradient(100deg,var(--teal),var(--violet) 45%,var(--pink) 82%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:shimmer 9s linear infinite;
+  }
+  @keyframes shimmer{to{background-position:220% 0}}
+  .hero p.lead{
+    margin:0 auto;
+    max-width:36em;
+    color:var(--muted);
+    font-size:clamp(1rem,2.2vw,1.12rem);
+  }
+  .typed-line{
+    min-height:2.2em;
+    margin-top:22px;
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:.95rem;
+    color:#c5cfe6;
+  }
+  .typed-line .k{color:var(--violet)}
+  .caret{
+    display:inline-block;
+    width:8px;height:1.05em;
+    margin-left:3px;
+    vertical-align:-2px;
+    background:var(--teal);
+    animation:blink 1s steps(2,start) infinite;
+  }
+  @keyframes blink{to{visibility:hidden}}
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    padding:13px 24px;
+    border-radius:999px;
+    border:1px solid transparent;
+    font:inherit;
+    font-weight:600;
+    letter-spacing:.01em;
+    text-decoration:none;
+    cursor:pointer;
+    transition:transform .2s,box-shadow .25s,background .2s,border-color .2s;
+  }
+  .btn:active{transform:translateY(1px) scale(.99)}
+  .btn-primary{
+    background:linear-gradient(100deg,var(--teal),var(--violet));
+    color:#05121a;
+    box-shadow:0 14px 34px -14px rgba(94,234,212,.85);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -14px rgba(167,139,250,.9)}
+  .btn-ghost{
+    background:rgba(255,255,255,.045);
+    border-color:var(--line);
+    color:var(--ink);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
+  .btn svg{width:17px;height:17px}
+
+  .scroll-hint{
+    margin-top:56px;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    font-size:.74rem;
+    letter-spacing:.2em;
+    color:#6f7d9c;
+    text-transform:uppercase;
+    text-decoration:none;
+  }
+  .scroll-hint span.line{
+    width:1px;height:44px;
+    background:linear-gradient(var(--teal),transparent);
+    animation:drop 2s ease-in-out infinite;
+  }
+  @keyframes drop{0%,100%{opacity:.25;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+  /* ---------- 卡片 ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+  }
+  .card{
+    position:relative;
+    padding:26px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--card);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    overflow:hidden;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background .35s;
+  }
+  .card::after{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius:inherit;
+    background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),rgba(167,139,250,.16),transparent 60%);
+    opacity:0;
+    transition:opacity .35s;
+    pointer-events:none;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(167,139,250,.32);background:rgba(255,255,255,.06)}
+  .card:hover::after{opacity:1}
+  .card h3{margin:16px 0 8px;font-size:1.06rem}
+  .card p{margin:0;color:var(--muted);font-size:.94rem}
+  .card .ico{
+    display:grid;
+    place-items:center;
+    width:42px;height:42px;
+    border-radius:13px;
+    background:linear-gradient(140deg,rgba(94,234,212,.18),rgba(167,139,250,.18));
+    border:1px solid rgba(255,255,255,.12);
+    color:var(--teal);
+  }
+  .card .ico svg{width:20px;height:20px}
+  .card a.inline{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(94,234,212,.4)}
+  .card a.inline:hover{color:#9af5e6}
+
+  /* ---------- 游戏区 ---------- */
+  .game-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,.88fr);
+    gap:clamp(18px,3vw,34px);
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .game-grid{grid-template-columns:1fr}
+    .board,.panel{margin-inline:auto}
+    .panel{max-width:min(100%,560px)}
+  }
+
+  .board{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    /* 让棋盘尽量在点「玩一局」后完整落在屏幕里 */
+    max-width:min(100%, clamp(280px, calc(100svh - 400px), 560px));
+    margin-inline:auto;
+    border-radius:26px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:radial-gradient(120% 120% at 18% 0%,#111d31,#080b14 72%);
+    box-shadow:0 40px 90px -50px #000,inset 0 1px 0 rgba(255,255,255,.07);
+    touch-action:none;
+    outline:none;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .board:focus-visible{box-shadow:0 0 0 3px rgba(94,234,212,.35),0 40px 90px -50px #000}
+  .board canvas{display:block;width:100%;height:100%}
+
+  .overlay{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-content:center;
+    justify-items:center;
+    gap:12px;
+    padding:26px;
+    text-align:center;
+    background:rgba(5,8,16,.74);
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+    transition:opacity .28s ease,visibility .28s ease;
+  }
+  .overlay.hide{opacity:0;visibility:hidden;pointer-events:none}
+  .overlay h3{margin:0;font-size:1.35rem;letter-spacing:.01em}
+  .overlay p{margin:0;color:var(--muted);font-size:.92rem;max-width:24em}
+  .overlay .big{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+  .overlay .btn{margin-top:6px}
+
+  .stats{display:flex;gap:10px;margin-bottom:10px}
+  .stat{
+    flex:1;
+    padding:9px 14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--card);
+  }
+  .stat .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#7f8cab}
+  .stat .v{font-size:1.45rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+  .stat .v.hot{color:var(--teal);transition:color .3s}
+  .stat .v.bump{animation:bump .35s ease}
+  @keyframes bump{40%{transform:scale(1.18)}}
+
+  .panel{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--card);
+    padding:16px;
+  }
+  .panel h3{margin:0 0 6px;font-size:1rem}
+  .panel p{margin:0 0 12px;color:var(--muted);font-size:.88rem}
+  .keys{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 10px;padding:0;list-style:none}
+  .keys li{
+    font-size:.75rem;
+    color:#c3cce2;
+    padding:4px 9px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.05);
+    font-family:ui-monospace,Consolas,monospace;
+  }
+
+  /* 方向键 */
+  .dpad{
+    display:grid;
+    grid-template-columns:repeat(3,46px);
+    grid-template-rows:repeat(3,46px);
+    gap:6px;
+    justify-content:center;
+    margin:2px auto 14px;
+  }
+  .dpad button{
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.055);
+    color:var(--ink);
+    font-size:1rem;
+    cursor:pointer;
+    transition:background .16s,transform .12s,border-color .16s;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .dpad button:hover{background:rgba(255,255,255,.11);border-color:rgba(94,234,212,.35)}
+  .dpad button:active{transform:scale(.93);background:rgba(94,234,212,.22)}
+  .dpad .up{grid-area:1/2}
+  .dpad .left{grid-area:2/1}
+  .dpad .mid{grid-area:2/2;border:0;background:none;cursor:default;font-size:.62rem;color:#5f6c88;letter-spacing:.1em}
+  .dpad .mid:hover{background:none}
+  .dpad .right{grid-area:2/3}
+  .dpad .down{grid-area:3/2}
+
+  .panel-actions{display:flex;gap:10px}
+  .panel-actions .btn{flex:1;padding:9px 14px;font-size:.88rem}
+
+  /* ---------- 页脚 ---------- */
+  footer{
+    padding:38px 0 46px;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#6d7a97;
+    font-size:.86rem;
+    text-align:center;
+  }
+  footer .sep{margin:0 8px;opacity:.5}
+  footer .foot-link{color:#9fb0d0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.18);transition:color .2s,border-color .2s}
+  footer .foot-link:hover{color:var(--teal);border-color:rgba(94,234,212,.5)}
+
+  /* ---------- 进场动画 ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none}
+  }
+
+  @media (max-width:430px){
+    .nav{padding-inline:14px}
+    .nav-links a{padding:7px 9px;font-size:.86rem}
+    .nav-links a[href^="https"]{display:none}
+    .section-sub{font-size:.92rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="orb orb-3"></span>
+</div>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="#home"><span class="dot"></span>陈昊铭</a>
+  <nav class="nav-links" aria-label="主导航">
+    <a href="#about">关于</a>
+    <a href="#play">小游戏</a>
+    <a href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </nav>
+</header>
+
+<main>
+  <!-- 首屏 -->
+  <section class="hero" id="home">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Hello, world</p>
+      <h1>你好，我是<span class="grad">陈昊铭</span></h1>
+      <p class="lead">用 HTML、CSS 和 JavaScript 写点东西，顺便做几个能直接玩的小游戏。</p>
+      <p class="typed-line"><span class="k">const</span> focus = <span id="typed"></span><span class="caret" aria-hidden="true"></span></p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#play">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+          玩一局
+        </a>
+        <a class="btn btn-ghost" href="#about">关于我</a>
+      </div>
+      <a class="scroll-hint" href="#about">向下滚动<span class="line"></span></a>
+    </div>
+  </section>
+
+  <!-- 关于 -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <p class="eyebrow reveal">About</p>
+      <h2 class="section-title reveal">关于我</h2>
+      <p class="section-sub reveal">这个站点只用了一个 index.html：没有框架、没有构建、没有第三方脚本，下载下来双击就能打开。</p>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          </div>
+          <h3>在做什么</h3>
+          <p>把学过的东西做成能点开、能上手玩的东西。写网页的时候，最开心的时刻是它第一次真的动起来。</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.6 4.4L18.5 21 12 16.7 5.5 21l2.1-7.6L2 9h7z"/></svg>
+          </div>
+          <h3>这个页面</h3>
+          <p>纯静态托管，适合放到 GitHub Pages。所有内容都在一个文件里，改文案、改配色都不用翻目录。</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg>
+          </div>
+          <h3>找到我</h3>
+          <p>在 <a class="inline" href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub</a> 上可以看到这个仓库，欢迎提 Issue 或者 Star。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 游戏 -->
+  <section class="section" id="play">
+    <div class="wrap">
+      <p class="eyebrow reveal">Playground</p>
+      <h2 class="section-title reveal">小游戏 · 贪吃蛇</h2>
+      <p class="section-sub reveal">18 × 18 的格子，吃一颗长一截，速度会越来越快。别撞墙，也别咬到自己。</p>
+
+      <div class="game-grid">
+        <div class="board reveal" id="board" tabindex="0" aria-label="贪吃蛇游戏区域，点击后可用方向键控制">
+          <canvas id="game" aria-hidden="true"></canvas>
+          <div class="overlay" id="overlay">
+            <h3 id="ovTitle">准备开始？</h3>
+            <p id="ovText">方向键或 WASD 控制方向，空格暂停。手机上可以直接滑动，也可以用右边的方向键。</p>
+            <button class="btn btn-primary" id="ovBtn" type="button">开始游戏</button>
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <div class="stats">
+            <div class="stat">
+              <div class="k">分数</div>
+              <div class="v" id="score">0</div>
+            </div>
+            <div class="stat">
+              <div class="k">最高分</div>
+              <div class="v" id="best">0</div>
+            </div>
+          </div>
+
+          <h3>操作说明</h3>
+          <ul class="keys">
+            <li>← ↑ → ↓</li>
+            <li>W A S D</li>
+            <li>空格 暂停</li>
+            <li>滑动 转向</li>
+          </ul>
+
+          <div class="dpad" role="group" aria-label="方向键">
+            <button class="up" type="button" data-dir="up" aria-label="向上">↑</button>
+            <button class="left" type="button" data-dir="left" aria-label="向左">←</button>
+            <button class="mid" type="button" tabindex="-1" aria-hidden="true">MOVE</button>
+            <button class="right" type="button" data-dir="right" aria-label="向右">→</button>
+            <button class="down" type="button" data-dir="down" aria-label="向下">↓</button>
+          </div>
+
+          <div class="panel-actions">
+            <button class="btn btn-ghost" id="pauseBtn" type="button">暂停</button>
+            <button class="btn btn-ghost" id="restartBtn" type="button">重新开始</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year">2026</span> 陈昊铭<span class="sep">·</span>单文件静态站<span class="sep">·</span>手写 HTML / CSS / JavaScript<span class="sep">·</span><a class="foot-link" href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</footer>
+
+<noscript>
+  <p style="text-align:center;padding:16px;color:#f8b4b4">页面里的动画和小游戏需要启用 JavaScript。</p>
+</noscript>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+   *  1. 页面通用：年份、滚动进度、进场动画、输入光标、卡片光效
+   * ========================================================= */
+
+  document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  var progressBar = document.getElementById('progress');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? h.scrollTop / max : 0;
+    progressBar.style.width = (p * 100).toFixed(2) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 滚动进入视口时淡入
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // 打字机效果
+  (function typewriter() {
+    var out = document.getElementById('typed');
+    var phrases = ['写网页', '做小游戏', '把想法变成能点开的东西'];
+    var pi = 0, ci = 0, deleting = false;
+
+    function step() {
+      var word = phrases[pi];
+      if (!deleting) {
+        ci++;
+        out.textContent = word.slice(0, ci);
+        if (ci === word.length) {
+          deleting = true;
+          return setTimeout(step, 1500);
+        }
+        setTimeout(step, 95);
+      } else {
+        ci--;
+        out.textContent = word.slice(0, ci);
+        if (ci === 0) {
+          deleting = false;
+          pi = (pi + 1) % phrases.length;
+          return setTimeout(step, 320);
+        }
+        setTimeout(step, 45);
+      }
+    }
+    setTimeout(step, 400);
+  })();
+
+  // 卡片跟随鼠标的柔光
+  document.querySelectorAll('.card').forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  /* =========================================================
+   *  2. 贪吃蛇
+   * ========================================================= */
+
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var board = document.getElementById('board');
+  var scoreEl = document.getElementById('score');
+  var bestEl = document.getElementById('best');
+  var overlay = document.getElementById('overlay');
+  var ovTitle = document.getElementById('ovTitle');
+  var ovText = document.getElementById('ovText');
+  var ovBtn = document.getElementById('ovBtn');
+  var pauseBtn = document.getElementById('pauseBtn');
+  var restartBtn = document.getElementById('restartBtn');
+  var gameSection = document.getElementById('play');
+
+  var N = 18;                 // 每行 / 每列的格子数
+  var BASE_INTERVAL = 145;    // 初始步进间隔（毫秒）
+  var MIN_INTERVAL = 72;
+  var BEST_KEY = 'chenhaoming-snake-best';
+
+  var cell = 20;              // 单个格子的 CSS 像素尺寸
+  var size = 360;             // 画布 CSS 边长
+  var dpr = 1;
+
+  var snake = [];
+  var dir = { x: 1, y: 0 };
+  var queue = [];
+  var food = { x: 12, y: 9 };
+  var score = 0;
+  var best = 0;
+  var running = false;
+  var alive = true;
+  var acc = 0;
+  var last = 0;
+  var interval = BASE_INTERVAL;
+  var particles = [];
+  var mode = 'idle';          // idle | running | paused | over
+
+  /* ---------- 最高分读写 ---------- */
+  function loadBest() {
+    try {
+      var v = parseInt(window.localStorage.getItem(BEST_KEY) || '0', 10);
+      return isFinite(v) && v > 0 ? v : 0;
+    } catch (err) {
+      return 0;
+    }
+  }
+  function saveBest(v) {
+    try { window.localStorage.setItem(BEST_KEY, String(v)); } catch (err) { /* 隐私模式下忽略 */ }
+  }
+  best = loadBest();
+  bestEl.textContent = String(best);
+
+  /* ---------- 画布尺寸 ---------- */
+  function fit() {
+    var rect = canvas.getBoundingClientRect();
+    var w = Math.round(rect.width || 360);
+    if (w < 120) { w = 360; }
+    size = w;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(size * dpr);
+    canvas.height = Math.round(size * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cell = size / N;
+    draw(performance.now());
+  }
+
+  /* ---------- 状态工具 ---------- */
+  function inSnake(x, y) {
+    for (var i = 0; i < snake.length; i++) {
+      if (snake[i].x === x && snake[i].y === y) return true;
+    }
+    return false;
+  }
+
+  function placeFood() {
+    var free = [];
+    for (var y = 0; y < N; y++) {
+      for (var x = 0; x < N; x++) {
+        if (!inSnake(x, y)) free.push({ x: x, y: y });
+      }
+    }
+    if (!free.length) { food = null; return; }        // 满屏即通关
+    food = free[(Math.random() * free.length) | 0];
+  }
+
+  function reset() {
+    snake = [{ x: 6, y: 9 }, { x: 5, y: 9 }, { x: 4, y: 9 }];
+    dir = { x: 1, y: 0 };
+    queue = [];
+    score = 0;
+    interval = BASE_INTERVAL;
+    acc = 0;
+    alive = true;
+    running = false;
+    particles = [];
+    scoreEl.textContent = '0';
+    placeFood();
+  }
+
+  function setOverlay(next) {
+    mode = next;
+    if (next === 'running') {
+      overlay.classList.add('hide');
+      pauseBtn.textContent = '暂停';
+      return;
+    }
+    overlay.classList.remove('hide');
+    if (next === 'idle') {
+      ovTitle.textContent = '准备开始？';
+      ovText.textContent = '方向键或 WASD 控制方向，空格暂停。手机上可以直接滑动，也可以用右边的方向键。';
+      ovBtn.textContent = '开始游戏';
+      pauseBtn.textContent = '暂停';
+    } else if (next === 'paused') {
+      ovTitle.textContent = '已暂停';
+      ovText.textContent = '按空格或点下面的按钮继续。';
+      ovBtn.textContent = '继续';
+      pauseBtn.textContent = '继续';
+    } else if (next === 'over') {
+      ovTitle.innerHTML = '游戏结束';
+      ovText.innerHTML = '本局得分 <span class="big">' + score + '</span>';
+      ovBtn.textContent = '再来一局';
+      pauseBtn.textContent = '暂停';
+    }
+  }
+
+  function start() {
+    if (!alive) reset();
+    if (!snake.length) reset();
+    alive = true;
+    running = true;
+    acc = 0;
+    setOverlay('running');
+    board.focus({ preventScroll: true });
+  }
+
+  function pause() {
+    if (!running) return;
+    running = false;
+    setOverlay('paused');
+  }
+
+  function resume() {
+    if (mode !== 'paused') return;
+    running = true;
+    setOverlay('running');
+    board.focus({ preventScroll: true });
+  }
+
+  function togglePause() {
+    if (mode === 'running') pause();
+    else if (mode === 'paused') resume();
+    else if (mode === 'idle' || mode === 'over') start();
+  }
+
+  function gameOver() {
+    alive = false;
+    running = false;
+    if (score > best) {
+      best = score;
+      bestEl.textContent = String(best);
+      if (bestEl.animate) {
+        bestEl.animate(
+          [{ transform: 'scale(1)' }, { transform: 'scale(1.22)' }, { transform: 'scale(1)' }],
+          { duration: 420, easing: 'ease-out' }
+        );
+      }
+      saveBest(best);
+    }
+    setOverlay('over');
+  }
+
+  /* ---------- 一帧逻辑 ---------- */
+  function step() {
+    while (queue.length) {
+      var d = queue.shift();
+      if (d.x === -dir.x && d.y === -dir.y) continue;   // 不能直接掉头
+      if (d.x === dir.x && d.y === dir.y) continue;     // 重复方向忽略
+      dir = d;
+      break;
+    }
+
+    var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0 || head.y < 0 || head.x >= N || head.y >= N) { gameOver(); return; }
+
+    var eating = food && head.x === food.x && head.y === food.y;
+    var limit = eating ? snake.length : snake.length - 1;   // 尾巴会让位
+    for (var i = 0; i < limit; i++) {
+      if (snake[i].x === head.x && snake[i].y === head.y) { gameOver(); return; }
+    }
+
+    snake.unshift(head);
+
+    if (eating) {
+      score += 10;
+      scoreEl.textContent = String(score);
+      if (scoreEl.animate) {
+        scoreEl.animate(
+          [{ transform: 'scale(1)' }, { transform: 'scale(1.16)' }, { transform: 'scale(1)' }],
+          { duration: 260, easing: 'ease-out' }
+        );
+      }
+      burst(head.x, head.y);
+      placeFood();
+      interval = Math.max(MIN_INTERVAL, BASE_INTERVAL - Math.floor(score / 30) * 4);
+    } else {
+      snake.pop();
+    }
+  }
+
+  /* ---------- 吃食粒子 ---------- */
+  function burst(gx, gy) {
+    var cx = (gx + 0.5) * cell;
+    var cy = (gy + 0.5) * cell;
+    for (var i = 0; i < 12; i++) {
+      var a = (Math.PI * 2 * i) / 12 + Math.random() * 0.4;
+      var s = 0.9 + Math.random() * 1.9;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s,
+        life: 1,
+        r: 1.4 + Math.random() * 2.2,
+        hue: 320 + Math.random() * 40
+      });
+    }
+  }
+
+  function stepParticles(dt) {
+    var k = dt / 16.67;
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx * k;
+      p.y += p.vy * k;
+      p.vx *= 0.94;
+      p.vy *= 0.94;
+      p.life -= 0.035 * k;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+  }
+
+  /* ---------- 绘制 ---------- */
+  function roundRect(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+      ctx.roundRect(x, y, w, h, r);
+      return;
+    }
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function draw(ts) {
+    var w = size;
+    ctx.clearRect(0, 0, w, w);
+
+    // 网格
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,.045)';
+    for (var i = 1; i < N; i++) {
+      var p = Math.round(i * cell) + 0.5;
+      ctx.beginPath(); ctx.moveTo(p, 0); ctx.lineTo(p, w); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, p); ctx.lineTo(w, p); ctx.stroke();
+    }
+
+    // 食物
+    if (food) {
+      var t = (ts || 0) / 1000;
+      var pulse = 1 + 0.09 * Math.sin(t * 4);
+      var fx = (food.x + 0.5) * cell;
+      var fy = (food.y + 0.5) * cell;
+      var fr = cell * 0.3 * pulse;
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(244,114,182,.9)';
+      ctx.shadowBlur = cell * 1.1;
+      ctx.fillStyle = '#f472b6';
+      ctx.beginPath();
+      ctx.arc(fx, fy, fr, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = 'rgba(255,255,255,.72)';
+      ctx.beginPath();
+      ctx.arc(fx - fr * 0.3, fy - fr * 0.34, fr * 0.28, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 蛇身（从尾到头画，头在最上层）
+    var len = Math.max(1, snake.length - 1);
+    for (var s = snake.length - 1; s >= 0; s--) {
+      var seg = snake[s];
+      var tt = s / len;
+      var hue = 168 + tt * 94;
+      var light = 66 - tt * 17;
+      var pad = cell * (s === 0 ? 0.05 : 0.1);
+
+      ctx.save();
+      if (s === 0) {
+        ctx.shadowColor = 'rgba(94,234,212,.75)';
+        ctx.shadowBlur = cell * 0.9;
+      }
+      var grad = ctx.createLinearGradient(
+        seg.x * cell, seg.y * cell,
+        seg.x * cell + cell, seg.y * cell + cell
+      );
+      grad.addColorStop(0, 'hsl(' + hue + ',88%,' + (light + 6) + '%)');
+      grad.addColorStop(1, 'hsl(' + (hue + 12) + ',82%,' + (light - 4) + '%)');
+      ctx.fillStyle = grad;
+      roundRect(
+        seg.x * cell + pad,
+        seg.y * cell + pad,
+        cell - pad * 2,
+        cell - pad * 2,
+        cell * 0.34
+      );
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 蛇的眼睛
+    if (snake.length) {
+      var h0 = snake[0];
+      var hx = (h0.x + 0.5) * cell;
+      var hy = (h0.y + 0.5) * cell;
+      var perp = { x: -dir.y, y: dir.x };
+      var off = cell * 0.19;
+      var fwd = cell * 0.13;
+      ctx.fillStyle = '#04120f';
+      for (var e = -1; e <= 1; e += 2) {
+        ctx.beginPath();
+        ctx.arc(hx + perp.x * off * e + dir.x * fwd, hy + perp.y * off * e + dir.y * fwd, Math.max(1.1, cell * 0.085), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // 粒子
+    for (var k = 0; k < particles.length; k++) {
+      var pa = particles[k];
+      ctx.globalAlpha = Math.max(0, pa.life);
+      ctx.fillStyle = 'hsl(' + pa.hue + ',90%,68%)';
+      ctx.beginPath();
+      ctx.arc(pa.x, pa.y, pa.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ---------- 主循环 ---------- */
+  function frame(ts) {
+    window.requestAnimationFrame(frame);
+    if (!last) last = ts;
+    var dt = ts - last;
+    last = ts;
+    if (dt > 250) dt = 250;
+
+    if (running && alive) {
+      acc += dt;
+      var guard = 0;
+      while (acc >= interval && running && alive && guard++ < 4) {
+        acc -= interval;
+        step();
+      }
+      if (acc > interval * 4) acc = 0;
+    }
+
+    stepParticles(dt);
+    draw(ts);
+  }
+
+  /* ---------- 输入 ---------- */
+  var DIRS = {
+    ArrowUp: { x: 0, y: -1 },
+    ArrowDown: { x: 0, y: 1 },
+    ArrowLeft: { x: -1, y: 0 },
+    ArrowRight: { x: 1, y: 0 },
+    w: { x: 0, y: -1 },
+    s: { x: 0, y: 1 },
+    a: { x: -1, y: 0 },
+    d: { x: 1, y: 0 }
+  };
+
+  function pushDir(name) {
+    var d = DIRS[name];
+    if (!d) return;
+    // 还没开始或刚结束时，第一次按方向键直接开局
+    if (mode === 'idle' || mode === 'over') start();
+    if (mode !== 'running' && mode !== 'paused') return;
+    if (queue.length > 2) return;
+    queue.push(d);
+  }
+
+  function keyboardActive() {
+    return running || board === document.activeElement || board.contains(document.activeElement);
+  }
+
+  window.addEventListener('keydown', function (e) {
+    var key = e.key;
+    if (key.length === 1) key = key.toLowerCase();
+    var isSpace = key === ' ' || e.code === 'Space';
+    var isEnter = key === 'Enter';
+
+    if (!keyboardActive()) return;
+
+    if (isSpace || isEnter) {
+      if (e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'A')) {
+        // 让按钮自己处理空格/回车，避免重复触发
+        return;
+      }
+      e.preventDefault();
+      togglePause();
+      return;
+    }
+
+    var d = DIRS[key];
+    if (!d) return;
+    // 只有游戏区域获得焦点、或者正在游戏时才接管方向键，避免影响页面滚动
+    if (document.activeElement !== board && !running) return;
+    e.preventDefault();
+    pushDir(key);
+  }, { passive: false });
+
+  // 触屏滑动
+  var touchStart = null;
+  board.addEventListener('touchstart', function (e) {
+    if (!e.touches || e.touches.length !== 1) return;
+    var t0 = e.touches[0];
+    touchStart = { x: t0.clientX, y: t0.clientY };
+  }, { passive: true });
+
+  board.addEventListener('touchend', function (e) {
+    if (!touchStart || !e.changedTouches || !e.changedTouches.length) { touchStart = null; return; }
+    var t1 = e.changedTouches[0];
+    var dx = t1.clientX - touchStart.x;
+    var dy = t1.clientY - touchStart.y;
+    touchStart = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 22) return;
+    if (Math.abs(dx) > Math.abs(dy)) pushDir(dx > 0 ? 'ArrowRight' : 'ArrowLeft');
+    else pushDir(dy > 0 ? 'ArrowDown' : 'ArrowUp');
+  }, { passive: true });
+
+  // 方向键盘按钮
+  document.querySelectorAll('.dpad button[data-dir]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var map = { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' };
+      pushDir(map[btn.getAttribute('data-dir')]);
+      if (mode === 'running') board.focus({ preventScroll: true });
+    });
+  });
+
+  // 覆盖层按钮
+  ovBtn.addEventListener('click', function () {
+    if (mode === 'paused') resume();
+    else start();
+  });
+
+  pauseBtn.addEventListener('click', function () {
+    if (mode === 'running') pause();
+    else if (mode === 'paused') resume();
+    else start();
+  });
+
+  restartBtn.addEventListener('click', function () {
+    reset();
+    start();
+  });
+
+  board.addEventListener('pointerdown', function () {
+    board.focus({ preventScroll: true });
+  });
+
+  // 切到后台自动暂停
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && running) pause();
+  });
+
+  // 滚出视口自动暂停，回来看得见状态
+  if ('IntersectionObserver' in window) {
+    var boardIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting && running) pause();
+      });
+    }, { threshold: 0.25 });
+    boardIO.observe(board);
+  }
+
+  /* ---------- 启动 ---------- */
+  reset();
+  setOverlay('idle');
+
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () { fit(); }).observe(canvas);
+  }
+  window.addEventListener('resize', fit);
+
+  fit();
+  window.requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

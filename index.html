@@ -3,845 +3,860 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#06080f">
-<meta name="description" content="陈昊铭的个人主页：一个单文件静态站，内含贪吃蛇、打砖块、记忆翻牌、2048 四款小游戏。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306080f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%235eead4'/%3E%3C/svg%3E">
-<title>陈昊铭 · 我的中心</title>
+<meta name="theme-color" content="#fbf7ec">
+<meta name="description" content="陈仓，我家 —— 陕西宝鸡的文化与风景。太白山、法门寺、青铜器博物院、周原、九成宫……二十处景点，一座把三千年写进日常的城。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c0402c'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23fff8ec' font-family='serif'%3E%E9%99%88%3C/text%3E%3C/svg%3E">
+<title>陈仓，我家 · 陕西宝鸡</title>
 <style>
   :root{
-    --bg:#06080f;
-    --ink:#e9edf9;
-    --muted:#94a1bf;
-    --teal:#5eead4;
-    --violet:#a78bfa;
-    --pink:#f472b6;
-    --bili:#fb7299;
-    --line:rgba(255,255,255,.09);
-    --card:rgba(255,255,255,.042);
-    --radius:22px;
+    --paper:#fbf7ec;
+    --paper-2:#fffdf7;
+    --paper-3:#f5efdf;
+    --ink:#2c2721;
+    --ink-2:#57503f;
+    --muted:#8b8272;
+    --line:#e7dcc4;
+    --line-2:#d8cbae;
+    --red:#c0402c;
+    --red-2:#e05a3f;
+    --gold:#b8893a;
+    --green:#4f7c68;
+    --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif SC","SimSun",serif;
+    --sans:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    --shadow:0 12px 30px -26px rgba(70,50,20,.55);
+    --shadow-lg:0 22px 44px -30px rgba(70,50,20,.6);
   }
 
   *,*::before,*::after{box-sizing:border-box}
   [hidden]{display:none!important}
-
   html{scroll-behavior:smooth}
 
   body{
     margin:0;
-    min-height:100vh;
-    background:var(--bg);
+    background:var(--paper);
     color:var(--ink);
-    font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
-    line-height:1.7;
+    font-family:var(--sans);
+    line-height:1.8;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
 
-  a{color:inherit}
-
-  /* ---------- 背景光晕 ---------- */
-  .bg{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    overflow:hidden;
-    pointer-events:none;
-  }
-  .orb{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(90px);
-    opacity:.5;
-    will-change:transform;
-  }
-  .orb-1{width:46vmax;height:46vmax;left:-14vmax;top:-16vmax;background:radial-gradient(circle,#1f6f6a,transparent 68%);animation:drift1 26s ease-in-out infinite}
-  .orb-2{width:40vmax;height:40vmax;right:-12vmax;top:8vmax;background:radial-gradient(circle,#4c2b86,transparent 68%);animation:drift2 32s ease-in-out infinite}
-  .orb-3{width:34vmax;height:34vmax;left:28%;bottom:-18vmax;background:radial-gradient(circle,#7a2f57,transparent 70%);animation:drift3 38s ease-in-out infinite}
-  .bg::after{
+  body::before{
     content:"";
-    position:absolute;
-    inset:0;
-    background:
-      linear-gradient(transparent 0 1px,rgba(255,255,255,.028) 1px) 0 0/100% 64px,
-      linear-gradient(90deg,transparent 0 1px,rgba(255,255,255,.028) 1px) 0 0/64px 100%,
-      radial-gradient(120% 90% at 50% 0%,transparent 30%,var(--bg) 88%);
-    -webkit-mask-image:radial-gradient(140% 110% at 50% 0%,#000 30%,transparent 78%);
-    mask-image:radial-gradient(140% 110% at 50% 0%,#000 30%,transparent 78%);
-  }
-  @keyframes drift1{50%{transform:translate3d(6vmax,4vmax,0) scale(1.12)}}
-  @keyframes drift2{50%{transform:translate3d(-5vmax,6vmax,0) scale(1.08)}}
-  @keyframes drift3{50%{transform:translate3d(4vmax,-5vmax,0) scale(1.15)}}
-
-  /* ---------- 顶部导航 ---------- */
-  .nav{
     position:fixed;
-    inset:0 0 auto 0;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(rgba(120,95,50,.055) 1px,transparent 1px),
+      radial-gradient(rgba(120,95,50,.035) 1px,transparent 1px);
+    background-size:26px 26px,26px 26px;
+    background-position:0 0,13px 13px;
+    opacity:.75;
+  }
+
+  a{color:inherit}
+  img,svg{max-width:100%}
+  .wrap{width:min(1160px,calc(100% - 40px));margin-inline:auto;position:relative}
+  section{position:relative;z-index:1}
+  section[id]{scroll-margin-top:78px}
+
+  /* ---------- 顶部 ---------- */
+  .nav{
+    position:sticky;
+    top:0;
     z-index:30;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:16px;
-    padding:14px clamp(16px,4vw,44px);
-    border-bottom:1px solid rgba(255,255,255,.05);
-    background:linear-gradient(180deg,rgba(6,8,15,.9),rgba(6,8,15,.35));
-    backdrop-filter:blur(14px) saturate(140%);
-    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    gap:14px;
+    padding:12px clamp(16px,4vw,40px);
+    background:rgba(251,247,236,.88);
+    backdrop-filter:blur(12px) saturate(150%);
+    -webkit-backdrop-filter:blur(12px) saturate(150%);
+    border-bottom:1px solid rgba(216,203,174,.55);
   }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-    letter-spacing:.02em;
-    text-decoration:none;
-    white-space:nowrap;
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap}
+  .brand .seal{
+    width:30px;height:30px;
+    display:grid;place-items:center;
+    background:var(--red);
+    color:#fff8ec;
+    font-family:var(--serif);
+    font-size:15px;
+    border-radius:5px;
+    transform:rotate(-4deg);
+    box-shadow:0 4px 10px -6px rgba(192,64,44,.9);
   }
-  .brand .dot{
-    width:9px;height:9px;border-radius:50%;
-    background:var(--teal);
-    box-shadow:0 0 14px var(--teal);
-    animation:pulse 2.4s ease-in-out infinite;
-  }
-  @keyframes pulse{50%{transform:scale(.65);opacity:.6}}
-  .nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .brand b{font-family:var(--serif);font-size:1.06rem;letter-spacing:.08em;font-weight:700}
+
+  .nav-right{display:flex;align-items:center;gap:8px;min-width:0}
+  .nav-links{display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
   .nav-links a{
-    color:var(--muted);
+    color:var(--ink-2);
     text-decoration:none;
-    font-size:.92rem;
-    padding:8px 13px;
+    font-size:.9rem;
+    padding:7px 12px;
     border-radius:999px;
-    transition:color .2s,background .2s;
+    transition:background .2s,color .2s;
   }
-  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.07)}
-  .nav-links a.bili:hover{color:#fff;background:rgba(251,114,153,.18)}
+  .nav-links a:hover{background:rgba(192,64,44,.08);color:var(--red)}
 
-  .progress{
-    position:fixed;
-    top:0;left:0;
-    height:2px;
-    width:0;
-    z-index:40;
-    background:linear-gradient(90deg,var(--teal),var(--violet),var(--pink));
-    box-shadow:0 0 12px rgba(167,139,250,.8);
-  }
-
-  /* ---------- 通用版式 ---------- */
-  .wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
-  section{position:relative}
-  section[id]{scroll-margin-top:86px}
-  .section{padding:clamp(58px,8.4vw,104px) 0}
-
-  .eyebrow{
+  /* 音乐按钮 */
+  .music{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    margin:0 0 18px;
-    padding:6px 14px 6px 10px;
-    font-size:.78rem;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:var(--teal);
-    border:1px solid rgba(94,234,212,.28);
+    padding:7px 13px 7px 11px;
     border-radius:999px;
-    background:rgba(94,234,212,.07);
+    border:1px solid var(--line-2);
+    background:rgba(255,255,255,.6);
+    color:var(--ink-2);
+    font:inherit;
+    font-size:.84rem;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .22s;
   }
-  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-
-  h2.section-title{
-    margin:0 0 10px;
-    font-size:clamp(1.6rem,3.4vw,2.3rem);
-    letter-spacing:-.01em;
-    line-height:1.25;
-  }
-  .section-sub{margin:0 0 18px;color:var(--muted);max-width:62ch}
-  .section-sub + .section-sub{margin-top:-6px}
+  .music:hover{border-color:var(--red);color:var(--red)}
+  .music.on{background:var(--red);border-color:var(--red);color:#fff8ec}
+  .bars{display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+  .bars i{display:block;width:2px;height:5px;border-radius:1px;background:currentColor;opacity:.75}
+  .bars i:nth-child(2){height:9px}
+  .bars i:nth-child(3){height:6px}
+  .music.on .bars i{animation:eq .95s ease-in-out infinite}
+  .music.on .bars i:nth-child(2){animation-delay:.16s}
+  .music.on .bars i:nth-child(3){animation-delay:.32s}
+  @keyframes eq{0%,100%{height:4px}50%{height:12px}}
 
   /* ---------- 首屏 ---------- */
   .hero{
-    min-height:100svh;
+    position:relative;
+    padding:clamp(46px,6.4vw,86px) 0 0;
+    background:
+      radial-gradient(820px 420px at 82% -6%,rgba(255,214,140,.45),transparent 62%),
+      linear-gradient(180deg,#fff8e6 0%,#f3f8f3 58%,#ecf5f2 100%);
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:relative;
+    z-index:2;
     display:grid;
-    place-items:center;
-    padding:120px 0 90px;
-    text-align:center;
+    grid-template-columns:1.06fr .94fr;
+    gap:clamp(26px,4.5vw,60px);
+    align-items:center;
+    padding-bottom:clamp(150px,19vw,215px);
   }
-  .hero-inner{max-width:860px}
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;text-align:center;gap:30px}
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 16px;
+    font-size:.8rem;
+    letter-spacing:.26em;
+    color:var(--green);
+  }
+  .kicker::before{content:"";width:22px;height:1px;background:currentColor;opacity:.6}
   .hero h1{
-    margin:.1em 0 .28em;
-    font-size:clamp(2.5rem,8.4vw,5.1rem);
-    line-height:1.06;
-    letter-spacing:-.025em;
-  }
-  .grad{
-    background:linear-gradient(100deg,var(--teal),var(--violet) 45%,var(--pink) 82%);
-    background-size:220% 100%;
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    animation:shimmer 9s linear infinite;
-  }
-  @keyframes shimmer{to{background-position:220% 0}}
-  .hero p.lead{
-    margin:0 auto;
-    max-width:38em;
-    color:var(--muted);
-    font-size:clamp(1rem,2.2vw,1.12rem);
-  }
-  .typed-line{
-    min-height:2.2em;
-    margin-top:22px;
-    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
-    font-size:.95rem;
-    color:#c5cfe6;
-  }
-  .typed-line .k{color:var(--violet)}
-  .caret{
+    position:relative;
     display:inline-block;
-    width:8px;height:1.05em;
-    margin-left:3px;
-    vertical-align:-2px;
-    background:var(--teal);
-    animation:blink 1s steps(2,start) infinite;
+    margin:0 0 6px;
+    font-family:var(--serif);
+    font-size:clamp(2.7rem,7.6vw,4.9rem);
+    line-height:1.1;
+    letter-spacing:.06em;
+    font-weight:700;
   }
-  @keyframes blink{to{visibility:hidden}}
-  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .hero h1 em{font-style:normal;color:var(--red);position:relative}
+  .hero h1 em::after{
+    content:"";
+    position:absolute;
+    left:1%;right:1%;bottom:.02em;
+    height:.12em;
+    background:rgba(192,64,44,.16);
+    border-radius:2px;
+  }
+  .hero h1 .stamp{
+    position:absolute;
+    right:-60px;
+    top:-26px;
+    width:44px;height:44px;
+    display:grid;place-items:center;
+    background:var(--red);
+    color:#fff8ec;
+    font-family:var(--serif);
+    font-size:14px;
+    line-height:1.1;
+    text-align:center;
+    border-radius:6px;
+    transform:rotate(8deg);
+    letter-spacing:0;
+    box-shadow:0 8px 18px -10px rgba(192,64,44,.9);
+    opacity:.94;
+  }
+  @media (max-width:900px){ .hero h1 .stamp{right:-26px;top:-8px;width:38px;height:38px;font-size:12px} }
+
+  .hero-sub{
+    margin:6px 0 18px;
+    font-family:var(--serif);
+    font-size:clamp(1.05rem,2.2vw,1.28rem);
+    color:var(--ink-2);
+    letter-spacing:.16em;
+  }
+  .hero .lead{margin:0;max-width:32em;color:var(--ink-2);font-size:clamp(.98rem,2vw,1.06rem)}
+
+  .life{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:26px 0 0;
+    padding:0;
+    list-style:none;
+  }
+  @media (max-width:900px){ .life{justify-content:center} }
+  .life li{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 14px 8px 9px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.68);
+    font-size:.84rem;
+    color:var(--ink-2);
+  }
+  .life li b{
+    font-family:var(--serif);
+    font-size:.8rem;
+    color:var(--red);
+    padding:1px 7px;
+    border-radius:999px;
+    background:rgba(192,64,44,.1);
+    font-weight:600;
+  }
+  .life svg{width:15px;height:15px;color:var(--green);flex:none}
+
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  @media (max-width:900px){ .hero-actions{justify-content:center} }
 
   .btn{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:9px;
-    padding:13px 24px;
+    gap:8px;
+    padding:12px 24px;
     border-radius:999px;
     border:1px solid transparent;
     font:inherit;
     font-weight:600;
-    letter-spacing:.01em;
     text-decoration:none;
     cursor:pointer;
-    transition:transform .2s,box-shadow .25s,background .2s,border-color .2s;
+    transition:transform .2s,box-shadow .25s,background .2s,color .2s,border-color .2s;
   }
-  .btn:active{transform:translateY(1px) scale(.99)}
-  .btn-primary{
-    background:linear-gradient(100deg,var(--teal),var(--violet));
-    color:#05121a;
-    box-shadow:0 14px 34px -14px rgba(94,234,212,.85);
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -14px rgba(167,139,250,.9)}
-  .btn-ghost{
-    background:rgba(255,255,255,.045);
-    border-color:var(--line);
-    color:var(--ink);
-  }
-  .btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
-  .btn-bili{
-    background:var(--bili);
-    color:#2b0a14;
-    box-shadow:0 14px 30px -14px rgba(251,114,153,.9);
-  }
-  .btn-bili:hover{transform:translateY(-2px);background:#ff86aa}
-  .btn svg{width:17px;height:17px}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-solid{background:var(--red);color:#fff8ec;box-shadow:0 14px 28px -16px rgba(192,64,44,.85)}
+  .btn-solid:hover{background:var(--red-2)}
+  .btn-line{background:rgba(255,255,255,.65);border-color:var(--line-2);color:var(--ink)}
+  .btn-line:hover{background:#fff;border-color:var(--green);color:var(--green)}
 
-  .scroll-hint{
-    margin-top:56px;
-    display:inline-flex;
-    flex-direction:column;
+  /* 明信片 */
+  .postcard{
+    position:relative;
+    margin:0;
+    padding:11px 11px 0;
+    background:#fffdf7;
+    border:1px solid #eee2cd;
+    border-radius:16px;
+    transform:rotate(-1.4deg);
+    box-shadow:0 34px 64px -36px rgba(80,60,30,.55),0 1px 0 rgba(255,255,255,.8) inset;
+  }
+  .postcard::before{
+    content:"";
+    position:absolute;
+    top:-12px;left:50%;
+    width:78px;height:22px;
+    transform:translateX(-50%) rotate(-2.5deg);
+    background:rgba(255,238,190,.72);
+    border-left:1px dashed rgba(180,150,90,.35);
+    border-right:1px dashed rgba(180,150,90,.35);
+    box-shadow:0 2px 6px -4px rgba(120,90,40,.6);
+  }
+  .postcard svg{display:block;width:100%;height:auto;border-radius:9px}
+  .postcard figcaption{
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-    gap:8px;
-    font-size:.74rem;
-    letter-spacing:.2em;
-    color:#6f7d9c;
-    text-transform:uppercase;
-    text-decoration:none;
+    padding:9px 4px 12px;
+    font-size:.78rem;
+    color:var(--muted);
+    letter-spacing:.06em;
   }
-  .scroll-hint span.line{
-    width:1px;height:44px;
-    background:linear-gradient(var(--teal),transparent);
-    animation:drop 2s ease-in-out infinite;
-  }
-  @keyframes drop{0%,100%{opacity:.25;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+  .postcard figcaption b{font-weight:600;color:var(--ink-2);font-family:var(--serif)}
 
-  /* ---------- 关键词标签 ---------- */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 30px;padding:0;list-style:none}
-  .chips li{
-    font-size:.82rem;
-    color:#c8d3ea;
-    padding:7px 14px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.045);
+  .hero-hills{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    width:100%;
+    height:clamp(120px,15vw,200px);
+    z-index:1;
   }
-  .chips li:nth-child(1){border-color:rgba(94,234,212,.35);color:#b8f4ea}
-  .chips li:nth-child(2){border-color:rgba(167,139,250,.35);color:#d7ccff}
+  .hero-sun{
+    position:absolute;
+    right:8%;
+    top:6%;
+    width:clamp(80px,12vw,150px);
+    aspect-ratio:1;
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 38%,#ffe7ae,#ffd27a 60%,rgba(255,210,122,0) 72%);
+    opacity:.7;
+    z-index:1;
+  }
+  .cloud{
+    position:absolute;
+    z-index:1;
+    height:auto;
+    color:#fff;
+    opacity:.75;
+    animation:drift 26s linear infinite;
+  }
+  .cloud.c1{width:110px;left:-140px;top:13%;opacity:.5}
+  .cloud.c2{width:80px;left:-100px;top:27%;animation-duration:34s;animation-delay:-8s;opacity:.35}
+  @keyframes drift{to{transform:translateX(calc(100vw + 220px))}}
 
-  /* ---------- 数据条 ---------- */
-  .facts{
+  /* ---------- 通用版式 ---------- */
+  .section{padding:clamp(58px,8vw,100px) 0}
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 16px;
+    font-size:.78rem;
+    letter-spacing:.26em;
+    color:var(--red);
+  }
+  .eyebrow::before{content:"";width:18px;height:2px;background:var(--red);border-radius:2px}
+  h2{
+    margin:0 0 12px;
+    font-family:var(--serif);
+    font-size:clamp(1.7rem,4vw,2.5rem);
+    line-height:1.3;
+    letter-spacing:.04em;
+    font-weight:700;
+  }
+  .section-lead{margin:0 0 28px;max-width:46em;color:var(--ink-2)}
+
+  /* ---------- 概览 ---------- */
+  .overview-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    grid-template-columns:1.15fr .85fr;
+    gap:clamp(24px,4vw,56px);
+    align-items:center;
+  }
+  @media (max-width:820px){ .overview-grid{grid-template-columns:1fr} }
+  .overview-text p{margin:0 0 14px;color:var(--ink-2)}
+  .overview-text p:first-of-type{font-size:1.05rem;color:var(--ink)}
+  .overview-text strong{color:var(--red);font-weight:600}
+  .overview-text .eyebrow{margin-bottom:14px}
+
+  .stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:1px;
-    margin:0 0 34px;
     border:1px solid var(--line);
     border-radius:18px;
     overflow:hidden;
     background:var(--line);
+    box-shadow:var(--shadow);
   }
-  .facts div{
-    background:rgba(10,14,24,.7);
-    padding:18px 20px;
-    text-align:center;
+  .stat{background:var(--paper-2);padding:20px 18px;text-align:center}
+  .stat b{
+    display:block;
+    font-family:var(--serif);
+    font-size:clamp(1.55rem,3.2vw,2.05rem);
+    line-height:1.2;
+    color:var(--red);
   }
-  .facts b{display:block;font-size:1.5rem;line-height:1.3;letter-spacing:-.02em}
-  .facts span{font-size:.78rem;color:var(--muted);letter-spacing:.06em}
+  .stat span{font-size:.76rem;color:var(--muted);letter-spacing:.1em}
 
-  /* ---------- 卡片 ---------- */
-  .cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:18px;
-  }
-  .card{
-    position:relative;
-    padding:26px;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    background:var(--card);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    overflow:hidden;
-    transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background .35s;
-  }
-  .card::after{
-    content:"";
-    position:absolute;
-    inset:-1px;
-    border-radius:inherit;
-    background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),rgba(167,139,250,.16),transparent 60%);
-    opacity:0;
-    transition:opacity .35s;
-    pointer-events:none;
-  }
-  .card:hover{transform:translateY(-4px);border-color:rgba(167,139,250,.32);background:rgba(255,255,255,.06)}
-  .card:hover::after{opacity:1}
-  .card h3{margin:16px 0 8px;font-size:1.06rem}
-  .card p{margin:0;color:var(--muted);font-size:.94rem}
-  .card .ico{
-    display:grid;
-    place-items:center;
-    width:42px;height:42px;
-    border-radius:13px;
-    background:linear-gradient(140deg,rgba(94,234,212,.18),rgba(167,139,250,.18));
-    border:1px solid rgba(255,255,255,.12);
-    color:var(--teal);
-  }
-  .card .ico svg{width:20px;height:20px}
-  .card a.inline{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(94,234,212,.4)}
-  .card a.inline:hover{color:#9af5e6}
-
-  .card--bili{
-    border-color:rgba(251,114,153,.28);
-    background:linear-gradient(160deg,rgba(251,114,153,.13),rgba(255,255,255,.03) 60%);
-  }
-  .card--bili::after{background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),rgba(251,114,153,.22),transparent 60%)}
-  .card--bili:hover{border-color:rgba(251,114,153,.5)}
-  .card--bili .ico{background:linear-gradient(140deg,rgba(251,114,153,.3),rgba(251,114,153,.1));color:#ffb3c8;border-color:rgba(251,114,153,.3)}
-  .card--bili h3{color:#ffd0dd}
-  .bili-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    margin-top:16px;
-    padding:9px 16px;
+  /* ---------- 筛选 ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+  .chip{
+    padding:8px 16px;
     border-radius:999px;
-    background:var(--bili);
-    color:#2b0a14;
-    font-size:.86rem;
-    font-weight:700;
-    text-decoration:none;
-    transition:transform .2s,background .2s;
-  }
-  .bili-btn:hover{transform:translateY(-2px);background:#ff86aa}
-  .bili-btn svg{width:15px;height:15px}
-
-  /* ---------- 游戏厅 ---------- */
-  .tabs{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    width:100%;
-    max-width:1010px;
-    margin:0 auto 20px;
-  }
-  .tab{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 16px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.04);
-    color:var(--muted);
+    border:1px solid var(--line-2);
+    background:rgba(255,255,255,.65);
+    color:var(--ink-2);
     font:inherit;
-    font-size:.9rem;
-    font-weight:600;
+    font-size:.87rem;
     cursor:pointer;
-    transition:color .2s,background .2s,border-color .2s,transform .2s;
+    transition:all .2s;
   }
-  .tab:hover{color:var(--ink);background:rgba(255,255,255,.08);transform:translateY(-1px)}
-  .tab .emoji{font-size:1.02rem;line-height:1}
-  .tab.is-active{
-    color:#05121a;
-    background:linear-gradient(100deg,var(--teal),var(--violet));
-    border-color:transparent;
-    box-shadow:0 10px 26px -14px rgba(94,234,212,.9);
-  }
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip.is-on{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
 
-  .game-grid{
+  /* ---------- 景点卡片 ---------- */
+  .spot-grid{
     display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,.88fr);
-    gap:clamp(18px,3vw,34px);
+    grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+    gap:22px;
     align-items:start;
-    width:100%;
-    max-width:1010px;
-    margin-inline:auto;
   }
-  @media (max-width:860px){
-    .game-grid{grid-template-columns:1fr}
-    .board,.panel{margin-inline:auto}
-    .panel{max-width:min(100%,560px)}
-  }
-
-  .board{
-    position:relative;
-    width:100%;
-    aspect-ratio:1/1;
-    /* 让棋盘尽量在点「玩一局」后完整落在屏幕里 */
-    max-width:min(100%, clamp(300px, calc(100svh - 470px), 560px));
-    margin-inline:auto;
-    border-radius:26px;
+  .spot{
+    display:flex;
+    flex-direction:column;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:20px;
     overflow:hidden;
-    border:1px solid var(--line);
-    background:radial-gradient(120% 120% at 18% 0%,#111d31,#080b14 72%);
-    box-shadow:0 40px 90px -50px #000,inset 0 1px 0 rgba(255,255,255,.07);
-    touch-action:none;
-    outline:none;
-    user-select:none;
-    -webkit-user-select:none;
+    box-shadow:var(--shadow);
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;
   }
-  .board:focus-visible{box-shadow:0 0 0 3px rgba(94,234,212,.35),0 40px 90px -50px #000}
-  .board canvas{display:block;width:100%;height:100%}
+  .spot:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
+  .spot.is-hidden{display:none}
 
-  .overlay{
-    position:absolute;
-    inset:0;
-    z-index:4;
-    display:grid;
-    place-content:center;
-    justify-items:center;
-    gap:12px;
-    padding:26px;
-    text-align:center;
-    background:rgba(5,8,16,.74);
-    backdrop-filter:blur(7px);
-    -webkit-backdrop-filter:blur(7px);
-    transition:opacity .28s ease,visibility .28s ease;
-  }
-  .overlay.hide{opacity:0;visibility:hidden;pointer-events:none}
-  .overlay h3{margin:0;font-size:1.35rem;letter-spacing:.01em}
-  .overlay p{margin:0;color:var(--muted);font-size:.92rem;max-width:24em}
-  .overlay .big{font-size:2rem;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
-  .overlay .btn{margin-top:6px}
-
-  .stats{display:flex;gap:10px;margin-bottom:10px}
-  .stat{
-    flex:1;
-    padding:9px 14px;
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:var(--card);
-  }
-  .stat .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#7f8cab}
-  .stat .v{font-size:1.45rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
-
-  .panel{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    background:var(--card);
-    padding:16px;
-  }
-  .panel h3{margin:0 0 6px;font-size:1rem}
-  .panel p{margin:0 0 12px;color:var(--muted);font-size:.88rem}
-  .keys{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 10px;padding:0;list-style:none}
-  .keys li{
-    font-size:.75rem;
-    color:#c3cce2;
-    padding:4px 9px;
-    border-radius:8px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.05);
-    font-family:ui-monospace,Consolas,monospace;
-  }
-
-  /* 方向键 */
-  .dpad{
-    display:grid;
-    grid-template-columns:repeat(3,46px);
-    grid-template-rows:repeat(3,46px);
-    gap:6px;
-    justify-content:center;
-    margin:2px auto 14px;
-  }
-  .dpad button{
-    display:grid;
-    place-items:center;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.055);
-    color:var(--ink);
-    font-size:1rem;
-    cursor:pointer;
-    transition:background .16s,transform .12s,border-color .16s;
-    touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .dpad button:hover{background:rgba(255,255,255,.11);border-color:rgba(94,234,212,.35)}
-  .dpad button:active{transform:scale(.93);background:rgba(94,234,212,.22)}
-  .dpad .up{grid-area:1/2}
-  .dpad .left{grid-area:2/1}
-  .dpad .mid{grid-area:2/2;border:0;background:none;cursor:default;font-size:.62rem;color:#5f6c88;letter-spacing:.1em}
-  .dpad .mid:hover{background:none}
-  .dpad .right{grid-area:2/3}
-  .dpad .down{grid-area:3/2}
-
-  .panel-actions{display:flex;gap:10px}
-  .panel-actions .btn{flex:1;padding:9px 14px;font-size:.88rem}
-
-  /* ---------- 记忆翻牌 ---------- */
-  .memo-grid{
-    position:absolute;
-    inset:12px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    grid-template-rows:repeat(4,1fr);
-    gap:9px;
-  }
-  .memo-card{
+  .spot-photo{
     position:relative;
-    padding:0;
-    border:0;
-    background:none;
-    cursor:pointer;
-    perspective:700px;
-    -webkit-tap-highlight-color:transparent;
+    margin:0;
+    aspect-ratio:16/10;
+    overflow:hidden;
+    background:#eee5d3;
   }
-  .memo-inner{
+  .spot-photo svg{display:block;width:100%;height:100%}
+  .spot-photo figcaption{
     position:absolute;
-    inset:0;
-    transform-style:preserve-3d;
-    transition:transform .42s cubic-bezier(.2,.7,.2,1);
+    left:0;right:0;bottom:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    padding:16px 12px 8px;
+    font-size:.7rem;
+    letter-spacing:.1em;
+    color:#fff;
+    text-shadow:0 1px 6px rgba(60,40,10,.45);
+    background:linear-gradient(180deg,transparent,rgba(60,45,20,.32));
   }
-  .memo-card.flipped .memo-inner{transform:rotateY(180deg)}
-  .memo-face{
-    position:absolute;
-    inset:0;
-    display:grid;
-    place-items:center;
-    border-radius:13px;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-    font-size:clamp(1.15rem,3.6vw,1.9rem);
-    line-height:1;
-  }
-  .memo-front{
-    background:linear-gradient(150deg,rgba(94,234,212,.17),rgba(167,139,250,.17));
-    border:1px solid rgba(255,255,255,.13);
-  }
-  .memo-front::after{
-    content:"";
-    width:13px;height:13px;
-    border-radius:4px;
-    background:rgba(255,255,255,.22);
-  }
-  .memo-back{
-    transform:rotateY(180deg);
-    background:linear-gradient(150deg,#132033,#0d1522);
-    border:1px solid rgba(167,139,250,.4);
-  }
-  .memo-card.matched .memo-back{
-    border-color:rgba(94,234,212,.6);
-    box-shadow:0 0 0 2px rgba(94,234,212,.22) inset;
-  }
-  .memo-card.matched .memo-inner{transition-duration:.25s}
 
-  /* ---------- 2048 ---------- */
-  .grid2048{
+  .spot-main{display:flex;flex-direction:column;flex:1;padding:16px 20px 18px}
+  .spot-head{display:flex;align-items:baseline;gap:10px;justify-content:space-between}
+  .spot-head h3{margin:0;font-family:var(--serif);font-size:1.22rem;letter-spacing:.04em;font-weight:700}
+  .spot-head .tag{
+    flex:none;
+    font-size:.72rem;
+    letter-spacing:.1em;
+    color:var(--green);
+    border:1px solid rgba(79,124,104,.35);
+    background:rgba(79,124,104,.07);
+    border-radius:999px;
+    padding:2px 9px;
+  }
+  .spot-lead{margin:8px 0 10px;color:var(--ink-2);font-size:.94rem}
+  .spot-meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;list-style:none}
+  .spot-meta li{
+    font-size:.75rem;
+    color:var(--muted);
+    border:1px solid var(--line);
+    background:var(--paper-3);
+    border-radius:6px;
+    padding:2px 8px;
+  }
+
+  .spot-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.2,.7,.2,1)}
+  .spot.is-open .spot-body{grid-template-rows:1fr}
+  .spot-inner{overflow:hidden;min-height:0;opacity:0;transition:opacity .3s ease .05s}
+  .spot.is-open .spot-inner{opacity:1}
+  .spot-inner h4{margin:14px 0 4px;font-size:.76rem;letter-spacing:.18em;color:var(--red);font-weight:600}
+  .spot-inner h4:first-child{margin-top:4px}
+  .spot-inner p{margin:0;color:var(--ink-2);font-size:.9rem;line-height:1.85}
+
+  .spot-toggle{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    align-self:flex-start;
+    margin-top:14px;
+    padding:7px 14px 7px 12px;
+    border:1px solid var(--line-2);
+    border-radius:999px;
+    background:transparent;
+    color:var(--ink-2);
+    font:inherit;
+    font-size:.83rem;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  .spot-toggle:hover{border-color:var(--red);color:var(--red);background:rgba(192,64,44,.05)}
+  .spot-toggle svg{width:13px;height:13px;transition:transform .35s}
+  .spot.is-open .spot-toggle svg{transform:rotate(180deg)}
+
+  .grid-foot{display:flex;gap:18px;margin-top:22px}
+  .link-btn{
+    border:0;background:none;padding:0;
+    font:inherit;font-size:.88rem;
+    color:var(--green);
+    cursor:pointer;
+    border-bottom:1px solid rgba(79,124,104,.4);
+    transition:color .2s,border-color .2s;
+  }
+  .link-btn:hover{color:var(--red);border-color:rgba(192,64,44,.5)}
+
+  /* ---------- 时间轴 ---------- */
+  .timeline{position:relative;max-width:820px;margin:8px 0 0;padding-left:30px}
+  .timeline::before{
+    content:"";
     position:absolute;
-    inset:12px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    grid-template-rows:repeat(4,1fr);
-    gap:8px;
-    padding:8px;
+    left:7px;top:10px;bottom:10px;
+    width:2px;
+    background:linear-gradient(180deg,rgba(192,64,44,.5),rgba(79,124,104,.45));
+    border-radius:2px;
+  }
+  .tl{position:relative;padding:0 0 26px 18px}
+  .tl::before{
+    content:"";
+    position:absolute;
+    left:-27px;top:10px;
+    width:10px;height:10px;
+    border-radius:50%;
+    background:var(--paper-2);
+    border:2px solid var(--red);
+    box-shadow:0 0 0 4px rgba(251,247,236,.9);
+  }
+  .tl time{display:block;font-family:var(--serif);font-size:.95rem;color:var(--red);letter-spacing:.08em}
+  .tl h3{margin:2px 0 4px;font-size:1.05rem;font-family:var(--serif);letter-spacing:.03em}
+  .tl p{margin:0;color:var(--ink-2);font-size:.92rem}
+
+  /* ---------- 味道 ---------- */
+  .taste-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .taste{
+    background:var(--paper-2);
+    border:1px solid var(--line);
     border-radius:16px;
-    background:rgba(255,255,255,.035);
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+    transition:transform .3s,border-color .3s;
   }
-  .g2048-cell{
-    display:grid;
-    place-items:center;
-    border-radius:10px;
-    background:rgba(255,255,255,.05);
-    font-weight:800;
-    font-size:clamp(.92rem,2.7vw,1.55rem);
-    color:#0b1220;
-    line-height:1;
-    transition:background .16s,color .16s;
+  .taste:hover{transform:translateY(-3px);border-color:var(--line-2)}
+  .taste .glyph{
+    display:grid;place-items:center;
+    width:44px;height:44px;
+    border-radius:12px;
+    background:linear-gradient(150deg,rgba(192,64,44,.14),rgba(184,137,58,.14));
+    color:var(--red);
+    font-family:var(--serif);
+    font-size:1.22rem;
+    margin-bottom:12px;
   }
-  .g2048-cell.empty{color:transparent;background:rgba(255,255,255,.05)}
-  .g2048-cell.pop{animation:pop .22s ease}
-  @keyframes pop{50%{transform:scale(1.12)}}
-  .v2{background:#d4dcec}
-  .v4{background:#c2cee8}
-  .v8{background:#8ee7d8}
-  .v16{background:#6fe0cf}
-  .v32{background:#5ad8e6}
-  .v64{background:#6cbcf2;color:#06121f}
-  .v128{background:#8f9bf5;color:#fff}
-  .v256{background:#a78bfa;color:#fff}
-  .v512{background:#c084fc;color:#fff}
-  .v1024{background:#e879f9;color:#fff}
-  .v2048{background:#f472b6;color:#fff;box-shadow:0 0 22px rgba(244,114,182,.55)}
+  .taste h3{margin:0 0 6px;font-size:1rem;font-family:var(--serif)}
+  .taste p{margin:0;color:var(--ink-2);font-size:.88rem}
+
+  /* ---------- 行前 ---------- */
+  .travel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .travel{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:24px 22px;box-shadow:var(--shadow)}
+  .travel h3{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:1.02rem;font-family:var(--serif)}
+  .travel h3 .dot{width:8px;height:8px;border-radius:2px;background:var(--red);transform:rotate(45deg)}
+  .travel ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:.9rem}
+  .travel li{margin-bottom:7px}
+  .travel li:last-child{margin-bottom:0}
+  .travel b{color:var(--ink)}
 
   /* ---------- 页脚 ---------- */
   footer{
-    padding:38px 0 46px;
-    border-top:1px solid rgba(255,255,255,.06);
-    color:#6d7a97;
-    font-size:.86rem;
+    position:relative;
+    z-index:1;
+    margin-top:40px;
+    padding:36px 0 44px;
+    border-top:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(245,239,223,.5),rgba(251,247,236,1));
+    color:var(--muted);
+    font-size:.85rem;
     text-align:center;
   }
-  footer .sep{margin:0 8px;opacity:.5}
-  footer .foot-link{color:#9fb0d0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.18);transition:color .2s,border-color .2s}
-  footer .foot-link:hover{color:var(--teal);border-color:rgba(94,234,212,.5)}
+  footer .seal-line{display:inline-flex;align-items:center;gap:10px;font-family:var(--serif);color:var(--ink);font-size:1.02rem;letter-spacing:.1em;margin-bottom:8px}
+  footer .seal-line i{display:grid;place-items:center;width:26px;height:26px;border-radius:4px;background:var(--red);color:#fff8ec;font-style:normal;font-size:13px}
+  footer p{margin:4px 0}
+  footer .small{font-size:.78rem;color:#a49a88}
 
-  /* ---------- 进场动画 ---------- */
-  .reveal{
-    opacity:0;
-    transform:translateY(20px);
-    transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1);
+  /* ---------- 回到顶部 ---------- */
+  .to-top{
+    position:fixed;
+    right:22px;bottom:22px;
+    z-index:40;
+    width:44px;height:44px;
+    display:grid;place-items:center;
+    border-radius:50%;
+    border:1px solid var(--line-2);
+    background:rgba(255,253,247,.94);
+    color:var(--ink-2);
+    box-shadow:0 10px 24px -14px rgba(70,50,20,.6);
+    cursor:pointer;
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .25s,transform .25s,visibility .25s,color .2s,border-color .2s;
   }
+  .to-top.show{opacity:1;visibility:visible;transform:none}
+  .to-top:hover{color:var(--red);border-color:var(--red)}
+  .to-top svg{width:16px;height:16px}
+
+  /* ---------- 进场 ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
     html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
     .reveal{opacity:1;transform:none}
   }
 
-  @media (max-width:430px){
-    .nav{padding-inline:14px}
-    .nav-links a{padding:7px 9px;font-size:.86rem}
-    .nav-links a[href^="https"]{display:none}
-    .section-sub{font-size:.92rem}
-    .dpad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px)}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .tab{padding:9px 13px;font-size:.85rem;justify-content:center}
-    .facts b{font-size:1.3rem}
+  @media (max-width:760px){
+    .nav{gap:8px;padding:10px 14px}
+    .brand b{font-size:.96rem;letter-spacing:.04em}
+    .brand .seal{width:26px;height:26px;font-size:13px}
+    .nav-links{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none;-ms-overflow-style:none}
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-links a{white-space:nowrap;padding:6px 9px;font-size:.84rem}
+    .brand b{display:none}
+    .music .label{display:none}
+    .music{padding:7px 10px;flex:none}
+    .hero h1 .stamp{display:none}
+    section[id]{scroll-margin-top:64px}
+  }
+
+  @media (max-width:560px){
+    .spot-grid{grid-template-columns:1fr}
+    .postcard{transform:rotate(-.8deg)}
   }
 </style>
 </head>
 <body>
 
-<div class="bg" aria-hidden="true">
-  <span class="orb orb-1"></span>
-  <span class="orb orb-2"></span>
-  <span class="orb orb-3"></span>
-</div>
-
-<div class="progress" id="progress" aria-hidden="true"></div>
-
 <header class="nav">
-  <a class="brand" href="#home"><span class="dot"></span>陈昊铭</a>
-  <nav class="nav-links" aria-label="主导航">
-    <a href="#about">关于</a>
-    <a href="#play">游戏厅</a>
-    <!-- 换成你自己的 B 站主页，例如 https://space.bilibili.com/123456 -->
-    <a class="bili" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">哔哩哔哩 ↗</a>
-    <a href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-  </nav>
+  <a class="brand" href="#top">
+    <span class="seal">陈</span>
+    <b>陈仓，我家</b>
+  </a>
+  <div class="nav-right">
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#overview">概览</a>
+      <a href="#spots">景点</a>
+      <a href="#timeline">年轮</a>
+      <a href="#taste">味道</a>
+      <a href="#travel">行前</a>
+    </nav>
+    <button class="music" id="musicBtn" type="button" aria-pressed="false" title="播放 / 暂停背景音乐">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="label">背景音乐</span>
+    </button>
+  </div>
 </header>
 
-<main>
+<main id="top">
   <!-- 首屏 -->
-  <section class="hero" id="home">
-    <div class="wrap hero-inner">
-      <p class="eyebrow">Hello, world</p>
-      <h1>你好，我是<span class="grad">陈昊铭</span></h1>
-      <p class="lead">喜欢了解新知识、开拓新技能。用 HTML、CSS 和 JavaScript 把想法做成能点开的东西，顺便写几个小游戏练手。</p>
-      <p class="typed-line"><span class="k">const</span> focus = <span id="typed"></span><span class="caret" aria-hidden="true"></span></p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#play">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
-          玩一局
-        </a>
-        <a class="btn btn-ghost" href="#about">关于我</a>
-        <a class="btn btn-bili" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 3l3 4M16 3l-3 4"/></svg>
-          哔哩哔哩
-        </a>
-      </div>
-      <a class="scroll-hint" href="#about">向下滚动<span class="line"></span></a>
-    </div>
-  </section>
+  <section class="hero">
+    <span class="hero-sun" aria-hidden="true"></span>
+    <svg class="cloud c1" viewBox="0 0 120 44" aria-hidden="true"><path d="M18 34 q-12 0 -12 -10 q0 -10 12 -9 q3 -11 16 -11 q11 0 14 9 q9 -6 18 1 q9 7 1 13 q-2 7 -12 7z" fill="currentColor"/></svg>
+    <svg class="cloud c2" viewBox="0 0 120 44" aria-hidden="true"><path d="M18 34 q-12 0 -12 -10 q0 -10 12 -9 q3 -11 16 -11 q11 0 14 9 q9 -6 18 1 q9 7 1 13 q-2 7 -12 7z" fill="currentColor"/></svg>
 
-  <!-- 关于 -->
-  <section class="section" id="about">
-    <div class="wrap">
-      <p class="eyebrow reveal">About</p>
-      <h2 class="section-title reveal">关于我</h2>
-      <p class="section-sub reveal">我是陈昊铭。喜欢了解新知识、开拓新技能——碰到没接触过的东西，习惯先动手做一个最小可用的版本，再回头补原理。</p>
-      <p class="section-sub reveal">这个站点只有一个 index.html：没有框架、没有构建、没有第三方脚本，下载下来双击就能打开，也方便直接托管在 GitHub Pages 上。</p>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">陕西 · 宝鸡 · 古称陈仓</p>
+        <h1>陈仓，<em>我家</em><span class="stamp">家在<br>渭河边</span></h1>
+        <p class="hero-sub">一座不紧不慢的城</p>
+        <p class="lead">清早一碗擀面皮，中午去看三千年前的青铜，傍晚沿着渭河慢慢走。<br>这里的好，都藏在日常里。</p>
 
-      <ul class="chips reveal" aria-label="兴趣与关键词">
-        <li>喜欢了解新知识</li>
-        <li>喜欢开拓新技能</li>
-        <li>前端 · 交互</li>
-        <li>小游戏</li>
-        <li>边做边学</li>
-        <li>克制的动效</li>
-      </ul>
+        <ul class="life">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+            <b>清早</b>一碗擀面皮
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+            <b>午后</b>青铜器博物院
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15q4-3 8 0t8 0 4 0"/><path d="M2 19q4-3 8 0t8 0 4 0"/></svg>
+            <b>傍晚</b>渭河边散步
+          </li>
+        </ul>
 
-      <div class="facts reveal">
-        <div><b>1</b><span>个 HTML 文件</span></div>
-        <div><b>0</b><span>第三方依赖</span></div>
-        <div><b>4</b><span>款可玩游戏</span></div>
-        <div><b>100%</b><span>手写 HTML / CSS / JS</span></div>
-      </div>
-
-      <div class="cards">
-        <article class="card reveal">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
-          </div>
-          <h3>在做什么</h3>
-          <p>把学过的东西做成能点开、能上手玩的东西。写网页时最开心的时刻，是它第一次真的动起来。</p>
-        </article>
-
-        <article class="card reveal">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.6 4.4L18.5 21 12 16.7 5.5 21l2.1-7.6L2 9h7z"/></svg>
-          </div>
-          <h3>这个页面</h3>
-          <p>四个小游戏共用同一套界面：Canvas 画贪吃蛇和打砖块，DOM 做记忆翻牌和 2048，全部原生实现。</p>
-        </article>
-
-        <article class="card card--bili reveal">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 3l3 4M16 3l-3 4"/><path d="M10 12l4 2-4 2z" fill="currentColor" stroke="none"/></svg>
-          </div>
-          <h3>哔哩哔哩</h3>
-          <p>学新东西时最常逛的地方：看教程、拆别人的作品，也会把自己的折腾过程记下来。</p>
-          <a class="bili-btn" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">
-            进入 B 站
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
-          </a>
-        </article>
-
-        <article class="card reveal">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg>
-          </div>
-          <h3>找到我</h3>
-          <p>在 <a class="inline" href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub</a> 上可以看到这个仓库，欢迎提 Issue 或者 Star。</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- 游戏厅 -->
-  <section class="section" id="play">
-    <div class="wrap">
-      <p class="eyebrow reveal">Playground</p>
-      <h2 class="section-title reveal">游戏厅</h2>
-      <p class="section-sub reveal">四款小游戏，全部手写。最高分存在浏览器本地，关掉页面也不会丢。</p>
-
-      <div class="tabs reveal" role="tablist" aria-label="选择游戏">
-        <button class="tab is-active" type="button" role="tab" aria-selected="true" data-game="snake"><span class="emoji">🐍</span>贪吃蛇</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-game="breakout"><span class="emoji">🧱</span>打砖块</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-game="memory"><span class="emoji">🃏</span>记忆翻牌</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-game="g2048"><span class="emoji">🔢</span>2048</button>
-      </div>
-
-      <div class="game-grid">
-        <div class="stage reveal">
-          <!-- 贪吃蛇 -->
-          <div class="board" data-game="snake" tabindex="0" aria-label="贪吃蛇游戏区域">
-            <canvas id="snakeCanvas" aria-hidden="true"></canvas>
-            <div class="overlay">
-              <h3>准备开始？</h3>
-              <p>方向键或 WASD 控制方向，空格暂停。</p>
-              <button class="btn btn-primary" type="button">开始游戏</button>
-            </div>
-          </div>
-
-          <!-- 打砖块 -->
-          <div class="board" data-game="breakout" tabindex="0" aria-label="打砖块游戏区域" hidden>
-            <canvas id="breakoutCanvas" aria-hidden="true"></canvas>
-            <div class="overlay">
-              <h3>准备开始？</h3>
-              <p>移动鼠标或按左右键控制挡板，别让球掉下去。</p>
-              <button class="btn btn-primary" type="button">开始游戏</button>
-            </div>
-          </div>
-
-          <!-- 记忆翻牌 -->
-          <div class="board" data-game="memory" tabindex="0" aria-label="记忆翻牌游戏区域" hidden>
-            <div class="memo-grid" id="memoGrid"></div>
-            <div class="overlay">
-              <h3>准备开始？</h3>
-              <p>每次翻开两张，图案相同就留下，全部配对即胜利。</p>
-              <button class="btn btn-primary" type="button">开始游戏</button>
-            </div>
-          </div>
-
-          <!-- 2048 -->
-          <div class="board" data-game="g2048" tabindex="0" aria-label="2048 游戏区域" hidden>
-            <div class="grid2048" id="grid2048"></div>
-            <div class="overlay">
-              <h3>准备开始？</h3>
-              <p>方向键或滑动屏幕，合并相同数字，目标 2048。</p>
-              <button class="btn btn-primary" type="button">开始游戏</button>
-            </div>
-          </div>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#spots">看看景点</a>
+          <a class="btn btn-line" href="#timeline">历史年轮</a>
         </div>
+      </div>
 
-        <aside class="panel reveal">
-          <div class="stats">
-            <div class="stat">
-              <div class="k" id="statScoreK">分数</div>
-              <div class="v" id="statScore">0</div>
-            </div>
-            <div class="stat">
-              <div class="k" id="statBestK">最高分</div>
-              <div class="v" id="statBest">0</div>
-            </div>
-          </div>
+      <figure class="postcard" aria-label="渭河边傍晚的插画">
+        <svg viewBox="0 0 400 260" role="img">
+          <defs>
+            <linearGradient id="pcSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffe9c4"/>
+              <stop offset="55%" stop-color="#fde3d2"/>
+              <stop offset="100%" stop-color="#e8f1ea"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="260" fill="url(#pcSky)"/>
+          <circle cx="300" cy="82" r="30" fill="#ffcf7a" opacity=".9"/>
+          <path d="M0 150 L70 104 L122 140 L186 88 L250 142 L312 106 L400 152 L400 260 L0 260Z" fill="#c6ddd2"/>
+          <path d="M0 176 L86 138 L150 170 L228 132 L300 172 L400 148 L400 260 L0 260Z" fill="#a9cbbd"/>
+          <path d="M0 196 L120 166 L240 196 L360 170 L400 182 L400 260 L0 260Z" fill="#8fb9a9"/>
+          <!-- 桥与城 -->
+          <path d="M0 206 q100 -14 200 0 t200 0" stroke="#7ea79a" stroke-width="2" fill="none" opacity=".7"/>
+          <g fill="#7a9c8f" opacity=".9">
+            <rect x="228" y="168" width="10" height="22"/>
+            <rect x="244" y="176" width="8" height="14"/>
+            <rect x="256" y="162" width="9" height="28"/>
+            <path d="M270 190v-16h8v16z"/>
+          </g>
+          <!-- 塔 -->
+          <g fill="#a4553f" opacity=".9">
+            <rect x="286" y="150" width="22" height="6"/>
+            <rect x="290" y="156" width="14" height="5"/>
+            <rect x="293" y="161" width="8" height="8"/>
+            <path d="M284 150l13-8 13 8z"/>
+          </g>
+          <!-- 河 -->
+          <path d="M0 214 q90 10 180 0 t220 -6 L400 260 L0 260Z" fill="#bfe0e6"/>
+          <path d="M0 232 q120 12 240 0 t160 -4 L400 260 L0 260Z" fill="#a5d0da" opacity=".75"/>
+          <g stroke="#fff" stroke-width="2" opacity=".65">
+            <path d="M56 226 h44"/><path d="M148 238 h60"/><path d="M262 228 h50"/><path d="M330 244 h48"/>
+          </g>
+          <!-- 芦苇 -->
+          <g stroke="#6f9a86" stroke-width="2" fill="none" opacity=".85">
+            <path d="M30 260 q2 -26 6 -36"/><path d="M40 260 q-2 -22 -6 -30"/>
+            <path d="M356 260 q2 -24 6 -34"/><path d="M366 260 q-2 -20 -6 -28"/>
+          </g>
+          <!-- 飞鸟 -->
+          <g stroke="#8a7a63" stroke-width="1.8" fill="none" opacity=".8">
+            <path d="M96 64 q7 -7 14 0"/><path d="M118 52 q6 -6 12 0"/><path d="M136 68 q5 -5 10 0"/>
+          </g>
+        </svg>
+        <figcaption><b>渭河边 · 傍晚六点</b><span>2026</span></figcaption>
+      </figure>
+    </div>
 
-          <h3>操作说明</h3>
-          <ul class="keys" id="panelKeys"></ul>
+    <svg class="hero-hills" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 150 L170 84 L320 142 L500 68 L680 148 L860 86 L1030 146 L1200 78 L1360 140 L1440 112 L1440 200 L0 200Z" fill="#cfe4d8"/>
+      <path d="M0 176 L190 122 L360 172 L540 114 L720 170 L900 120 L1080 174 L1260 124 L1440 168 L1440 200 L0 200Z" fill="#b7d5c6"/>
+      <path d="M0 192 L220 162 L440 192 L660 158 L880 192 L1100 160 L1320 190 L1440 172 L1440 200 L0 200Z" fill="#9dc7b4"/>
+    </svg>
+  </section>
 
-          <div id="dpadWrap">
-            <div class="dpad" role="group" aria-label="方向键">
-              <button class="up" type="button" data-dir="up" aria-label="向上">↑</button>
-              <button class="left" type="button" data-dir="left" aria-label="向左">←</button>
-              <button class="mid" type="button" tabindex="-1" aria-hidden="true">MOVE</button>
-              <button class="right" type="button" data-dir="right" aria-label="向右">→</button>
-              <button class="down" type="button" data-dir="down" aria-label="向下">↓</button>
-            </div>
-          </div>
+  <!-- 概览 -->
+  <section class="section" id="overview">
+    <div class="wrap overview-grid">
+      <div class="overview-text reveal">
+        <p class="eyebrow">关于这座城</p>
+        <h2>关中西部，渭水之北</h2>
+        <p>宝鸡古称陈仓、雍城，是周秦文化的发祥地。公元前 206 年，刘邦用韩信之计从陈仓道北上，一举定三秦，“暗度陈仓”由此而来；唐至德二年（757 年），陈仓改名宝鸡，相传因陈仓山石鸡啼鸣之瑞。</p>
+        <p>这里有 <strong>中国最大的青铜器专题博物馆</strong>，有何尊铭文里最早的“中国”二字；有供奉佛指舍利的法门寺；有秦岭主峰太白山，也有“关山六月寒凝霜”的高山草甸。</p>
+        <p>写这个页面，是想把家乡的风景和来处，一处一处讲清楚。</p>
+      </div>
+      <div class="stats reveal" aria-label="宝鸡速览">
+        <div class="stat"><b><span data-count="3771.2" data-dec="1">0</span></b><span>太白山海拔 · 米</span></div>
+        <div class="stat"><b><span data-count="2700" data-dec="0">0</span>+</b><span>建城史 · 年</span></div>
+        <div class="stat"><b><span data-count="2499" data-dec="0">0</span></b><span>法门寺地宫文物 · 件</span></div>
+        <div class="stat"><b><span data-count="20" data-dec="0">0</span></b><span>本页收录景点 · 处</span></div>
+      </div>
+    </div>
+  </section>
 
-          <div class="panel-actions">
-            <button class="btn btn-ghost" id="pauseBtn" type="button">暂停</button>
-            <button class="btn btn-ghost" id="restartBtn" type="button">重新开始</button>
-          </div>
-        </aside>
+  <!-- 景点 -->
+  <section class="section" id="spots">
+    <div class="wrap">
+      <p class="eyebrow reveal">景点 · 二十处</p>
+      <h2 class="reveal">从一座山，到一座城</h2>
+      <p class="section-lead reveal">每一处都能展开：点开「展开介绍」，读它的来处、看点和走法。图片是照着当地样子画的插画，不是照片。</p>
+
+      <div class="filters reveal" role="group" aria-label="按类型筛选景点">
+        <button class="chip is-on" type="button" data-filter="all">全部 20</button>
+        <button class="chip" type="button" data-filter="mountain">山岳</button>
+        <button class="chip" type="button" data-filter="heritage">古迹</button>
+        <button class="chip" type="button" data-filter="relic">遗址</button>
+        <button class="chip" type="button" data-filter="nature">自然</button>
+        <button class="chip" type="button" data-filter="folk">民俗</button>
+      </div>
+
+      <div class="spot-grid" id="spotGrid"></div>
+
+      <div class="grid-foot reveal">
+        <button class="link-btn" type="button" id="expandAll">全部展开</button>
+        <button class="link-btn" type="button" id="collapseAll">全部收起</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 时间轴 -->
+  <section class="section" id="timeline">
+    <div class="wrap">
+      <p class="eyebrow reveal">年轮</p>
+      <h2 class="reveal">三千年，都写在这条线上</h2>
+      <p class="section-lead reveal">从七千年前的村落，到今天的钛谷，宝鸡的名字换过几次，位置却一直守在这条渭水边。</p>
+
+      <div class="timeline">
+        <div class="tl reveal"><time>约 7000 年前</time><h3>北首岭人</h3><p>新石器时代的先民在渭河北岸定居，留下仰韶文化的村落遗址——北首岭遗址，比半坡还要早一些。</p></div>
+        <div class="tl reveal"><time>约 3100 年前</time><h3>古公亶父迁岐</h3><p>周人自豳迁至岐山南麓的周原，营建都邑、开垦田地，“凤鸣岐山”的传说即出于此，西周由此奠基。</p></div>
+        <div class="tl reveal"><time>公元前 677 年</time><h3>秦都雍城</h3><p>秦德公迁都雍城（今凤翔），此后 294 年、十九位国君在此经营，雍城成为秦国崛起的大本营。</p></div>
+        <div class="tl reveal"><time>公元前 206 年</time><h3>暗度陈仓</h3><p>刘邦拜韩信为将，明修栈道以惑敌，暗从陈仓道北上，一举定三秦。陈仓从此写进成语。</p></div>
+        <div class="tl reveal"><time>东汉末年</time><h3>法门寺始建</h3><p>因供奉释迦牟尼真身指骨舍利，法门寺在扶风建成；此后塔寺相依，香火不绝。</p></div>
+        <div class="tl reveal"><time>唐 贞观五年（631 年）</time><h3>九成宫</h3><p>唐太宗在麟游的离宫避暑，魏征撰文、欧阳询书丹的《九成宫醴泉铭》流传至今，被推为楷书极则。</p></div>
+        <div class="tl reveal"><time>唐至德二年（757 年）</time><h3>陈仓改名宝鸡</h3><p>相传因陈仓山有石鸡啼鸣之瑞，朝廷改陈仓县为宝鸡县，这个名字一直用到今天。</p></div>
+        <div class="tl reveal"><time>1987 年</time><h3>法门寺地宫开启</h3><p>尘封一千一百多年的唐代地宫被打开，佛指舍利与两千四百余件唐代珍宝重见天日。</p></div>
+        <div class="tl reveal"><time>今天</time><h3>青铜器之乡</h3><p>陇海铁路与宝成铁路在此交汇，钛材产量全国领先，一座老城正用新的方式继续生长。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 味道 -->
+  <section class="section" id="taste">
+    <div class="wrap">
+      <p class="eyebrow reveal">味道 · 手艺</p>
+      <h2 class="reveal">除了看，还有吃和做</h2>
+      <p class="section-lead reveal">西府的吃食和手艺，是宝鸡人日常里最实在的部分。</p>
+
+      <div class="taste-grid">
+        <article class="taste reveal"><div class="glyph">面</div><h3>岐山臊子面</h3><p>“薄、筋、光，煎、稀、汪”，一口酸辣，红油浮面。逢年过节、红白喜事，头一碗一定是它。</p></article>
+        <article class="taste reveal"><div class="glyph">皮</div><h3>擀面皮</h3><p>面浆擀蒸而成，筋道弹牙，浇上油泼辣子与醋，是宝鸡街头最常见的一碗。</p></article>
+        <article class="taste reveal"><div class="glyph">塑</div><h3>凤翔泥塑</h3><p>取黄土和泥、模印彩绘，造型夸张、颜色响亮。十二生肖与“泥老虎”是代表作，也是国家级非遗。</p></article>
+        <article class="taste reveal"><div class="glyph">画</div><h3>凤翔木版年画</h3><p>起稿、刻版、套色，一张门神要印七八遍。线条硬朗、设色浓烈，是西北年画的老源头之一。</p></article>
+        <article class="taste reveal"><div class="glyph">火</div><h3>西府社火</h3><p>正月里扮故事、踩高跷、耍芯子，锣鼓一响，整条街都活了过来。陇县、凤翔的社火最有名。</p></article>
+        <article class="taste reveal"><div class="glyph">酒</div><h3>西凤酒</h3><p>凤香型白酒的代表，产于凤翔柳林镇，历史可追溯到唐宋，入口醇厚、回味干净。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 行前 -->
+  <section class="section" id="travel">
+    <div class="wrap">
+      <p class="eyebrow reveal">行前</p>
+      <h2 class="reveal">怎么来，什么时候来</h2>
+      <p class="section-lead reveal">宝鸡在西安以西，高铁一小时；景点分东西两线，安排两天比较从容。</p>
+
+      <div class="travel-grid">
+        <article class="travel reveal">
+          <h3><span class="dot"></span>到达</h3>
+          <ul>
+            <li><b>高铁</b>：西安北 → 宝鸡南，约 1 小时，班次密集。</li>
+            <li><b>铁路</b>：陇海线与宝成线在宝鸡交汇，普速列车选择很多。</li>
+            <li><b>飞机</b>：西安咸阳机场转高铁或大巴，约 2 小时车程。</li>
+            <li><b>自驾</b>：连霍高速一路向西，市区到各县景点路况良好。</li>
+          </ul>
+        </article>
+        <article class="travel reveal">
+          <h3><span class="dot"></span>季节</h3>
+          <ul>
+            <li><b>春秋</b>（4—5 月、9—10 月）：气温舒适，适合古迹与城区。</li>
+            <li><b>夏季</b>（6—8 月）：上太白山、关山草原避暑，山上要多带一件外套。</li>
+            <li><b>冬季</b>：法门寺、青铜器博物院全年可看，人少清净。</li>
+          </ul>
+        </article>
+        <article class="travel reveal">
+          <h3><span class="dot"></span>线路</h3>
+          <ul>
+            <li><b>一日</b>：法门寺 → 宝鸡青铜器博物院 → 石鼓园 → 西府老街。</li>
+            <li><b>两日</b>：第一天东线（法门寺、周原、周公庙），第二天太白山或关山草原。</li>
+            <li><b>三日</b>：再加麟游九成宫、凤翔东湖与雍城遗址。</li>
+          </ul>
+        </article>
       </div>
     </div>
   </section>
@@ -849,1218 +864,1045 @@
 
 <footer>
   <div class="wrap">
-    © <span id="year">2026</span> 陈昊铭<span class="sep">·</span>单文件静态站<span class="sep">·</span>
-    <a class="foot-link" href="https://github.com/BLKSYS/BLKSYS.github.io#readme" target="_blank" rel="noopener noreferrer">说明书</a><span class="sep">·</span>
-    <a class="foot-link" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">哔哩哔哩</a><span class="sep">·</span>
-    <a class="foot-link" href="https://github.com/BLKSYS" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <div class="seal-line"><i>陈</i>陈仓，我家</div>
+    <p>陕西 · 宝鸡｜一座把三千年写进日常的城</p>
+    <p class="small">文中年代与数据参考公开资料整理，如有出入以官方公布为准。景点插画为手绘 SVG，背景音乐由浏览器实时合成，页面不含任何外部素材。</p>
   </div>
 </footer>
 
-<noscript>
-  <p style="text-align:center;padding:16px;color:#f8b4b4">页面里的动画和小游戏需要启用 JavaScript。</p>
-</noscript>
+<button class="to-top" id="toTop" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <script>
 (function () {
   'use strict';
 
   /* =========================================================
-   *  0. 小工具
+   *  0. 通用
    * ========================================================= */
-  function $(sel, root) { return (root || document).querySelector(sel); }
-  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  function loadNum(key, fallback) {
-    try {
-      var v = parseInt(window.localStorage.getItem(key) || '', 10);
-      return isFinite(v) && v > 0 ? v : fallback;
-    } catch (e) { return fallback; }
+  /* ---------------------------------------------------------
+   *  颜色工具：由少量基色推导出整套明暗
+   * --------------------------------------------------------- */
+  function h2r(h) {
+    return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
   }
-  function saveNum(key, v) {
-    try { window.localStorage.setItem(key, String(v)); } catch (e) { /* 隐私模式忽略 */ }
+  function r2h(a) {
+    return '#' + a.map(function (v) {
+      return ('0' + Math.max(0, Math.min(255, Math.round(v))).toString(16)).slice(-2);
+    }).join('');
+  }
+  function mix(a, b, t) {
+    var A = h2r(a), B = h2r(b);
+    return r2h([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, A[2] + (B[2] - A[2]) * t]);
+  }
+  function L(c, t) { return mix(c, '#ffffff', t); }
+  function D(c, t) { return mix(c, '#241a10', t); }
+
+  /* ---------------------------------------------------------
+   *  1. 配色：每个类型一组基色
+   * --------------------------------------------------------- */
+  var BASE = {
+    mountain: { sky: ['#d9ecf1', '#ecf6f4', '#fbfdfb'], sun: '#ffe6b0', rock: '#6d9891', ground: '#c3d8c4', tree: '#3b6557', water: '#9dc8cf', warm: '#b9553c' },
+    heritage: { sky: ['#fbe3c6', '#fdf0e0', '#fffaf1'], sun: '#ffcb7d', rock: '#b18a6a', ground: '#e6d4b9', tree: '#466647', water: '#b4cdc7', warm: '#b7472c' },
+    relic:    { sky: ['#f6e9cd', '#fbf2de', '#fffbf1'], sun: '#f3d79b', rock: '#a98c60', ground: '#e7d7b6', tree: '#59663f', water: '#bfcbba', warm: '#a1702c' },
+    nature:   { sky: ['#d7eaf5', '#e9f4fa', '#f9fdff'], sun: '#ffe2a2', rock: '#6a93a7', ground: '#c9dfd3', tree: '#3a6757', water: '#8cc2d6', warm: '#b96a45' },
+    folk:     { sky: ['#efe2f5', '#f7eefb', '#fdfaff'], sun: '#ffd9a0', rock: '#977cb3', ground: '#e3d5ec', tree: '#57647c', water: '#b3ccd8', warm: '#8a5a8f' }
+  };
+
+  var CAT_NAME = { mountain: '山岳', heritage: '古迹', relic: '遗址', nature: '自然', folk: '民俗' };
+
+  /* ---------------------------------------------------------
+   *  2. 绘图零件
+   * --------------------------------------------------------- */
+  function lg(id, c1, c2, dir) {
+    return '<linearGradient id="' + id + '" x1="0" y1="0" x2="' + (dir === 'h' ? 1 : 0) + '" y2="1">' +
+      '<stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient>';
   }
 
-  function roundRect(ctx, x, y, w, h, r) {
-    r = Math.min(r, w / 2, h / 2);
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') { ctx.roundRect(x, y, w, h, r); return; }
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
+  function defsFor(i, p) {
+    return '<defs>' +
+      lg('sky' + i, p.sky[0], p.sky[2]) +
+      lg('far' + i, L(p.rock, .52), L(p.rock, .33)) +
+      lg('mid' + i, L(p.rock, .30), D(p.rock, .14)) +
+      lg('near' + i, L(p.rock, .10), D(p.rock, .40)) +
+      lg('grd' + i, L(p.ground, .22), D(p.ground, .20)) +
+      lg('wat' + i, L(p.water, .42), D(p.water, .18)) +
+      lg('bdy' + i, L(p.warm, .62), L(p.warm, .30)) +
+      lg('rf' + i, D(p.warm, .04), D(p.warm, .42)) +
+      '<radialGradient id="sun' + i + '">' +
+        '<stop offset="0" stop-color="' + p.sun + '" stop-opacity=".95"/>' +
+        '<stop offset=".45" stop-color="' + p.sun + '" stop-opacity=".34"/>' +
+        '<stop offset="1" stop-color="' + p.sun + '" stop-opacity="0"/>' +
+      '</radialGradient>' +
+      '<linearGradient id="haze' + i + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#ffffff" stop-opacity=".62"/>' +
+        '<stop offset="1" stop-color="#ffffff" stop-opacity="0"/>' +
+      '</linearGradient>' +
+      '<linearGradient id="vg' + i + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#3a2a18" stop-opacity="0"/>' +
+        '<stop offset="1" stop-color="#3a2a18" stop-opacity=".14"/>' +
+      '</linearGradient>' +
+    '</defs>';
   }
 
-  // 把画布变成 逻辑坐标 → CSS 像素 的等比视图
-  function makeView(canvas, logical) {
-    var ctx = canvas.getContext('2d');
-    var view = { ctx: ctx, ready: false, size: 0, logical: logical };
-    view.fit = function () {
-      var rect = canvas.getBoundingClientRect();
-      var size = Math.round(rect.width || 0);
-      if (size < 100) { view.ready = false; return false; }
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(size * dpr);
-      canvas.height = Math.round(size * dpr);
-      var k = (size / logical) * dpr;
-      ctx.setTransform(k, 0, 0, k, 0, 0);
-      view.size = size;
-      view.ready = true;
-      return true;
-    };
-    return view;
+  function sky(i) { return '<rect width="480" height="300" fill="url(#sky' + i + ')"/>'; }
+
+  function sunGlow(i, cx, cy, r) {
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r * 3) + '" fill="url(#sun' + i + ')"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#fffdf3" opacity=".62"/>';
+  }
+
+  function clouds(list) {
+    var s = '<g fill="#ffffff">';
+    list.forEach(function (c) {
+      s += '<g opacity="' + c[3] + '">' +
+        '<ellipse cx="' + c[0] + '" cy="' + c[1] + '" rx="' + c[2] + '" ry="' + (c[2] * .34) + '"/>' +
+        '<ellipse cx="' + (c[0] + c[2] * .7) + '" cy="' + (c[1] + 3) + '" rx="' + (c[2] * .55) + '" ry="' + (c[2] * .24) + '"/>' +
+        '<ellipse cx="' + (c[0] - c[2] * .7) + '" cy="' + (c[1] + 4) + '" rx="' + (c[2] * .45) + '" ry="' + (c[2] * .2) + '"/>' +
+        '</g>';
+    });
+    return s + '</g>';
+  }
+
+  function ridge(i, kind, d) { return '<path d="' + d + '" fill="url(#' + kind + i + ')"/>'; }
+  function haze(i, y, h) { return '<rect y="' + y + '" width="480" height="' + h + '" fill="url(#haze' + i + ')"/>'; }
+
+  function pineR(x, base, h, c) {
+    var w = h * .46;
+    return '<g>' +
+      '<rect x="' + (x - 1.4) + '" y="' + (base - h * .18) + '" width="2.8" height="' + (h * .2) + '" fill="' + D(c, .3) + '"/>' +
+      '<path d="M' + x + ' ' + (base - h) + 'L' + (x + w * .5) + ' ' + (base - h * .62) + 'L' + (x - w * .5) + ' ' + (base - h * .62) + 'Z" fill="' + L(c, .12) + '"/>' +
+      '<path d="M' + x + ' ' + (base - h * .82) + 'L' + (x + w * .68) + ' ' + (base - h * .34) + 'L' + (x - w * .68) + ' ' + (base - h * .34) + 'Z" fill="' + c + '"/>' +
+      '<path d="M' + x + ' ' + (base - h * .58) + 'L' + (x + w * .86) + ' ' + base + 'L' + (x - w * .86) + ' ' + base + 'Z" fill="' + D(c, .16) + '"/>' +
+      '</g>';
+  }
+
+  function treeR(x, base, h, c) {
+    var r = h * .34;
+    return '<g>' +
+      '<rect x="' + (x - 2) + '" y="' + (base - h * .45) + '" width="4" height="' + (h * .45) + '" fill="' + D(c, .35) + '"/>' +
+      '<circle cx="' + x + '" cy="' + (base - h * .62) + '" r="' + r + '" fill="' + c + '"/>' +
+      '<circle cx="' + (x - r * .7) + '" cy="' + (base - h * .5) + '" r="' + (r * .72) + '" fill="' + D(c, .12) + '"/>' +
+      '<circle cx="' + (x + r * .66) + '" cy="' + (base - h * .52) + '" r="' + (r * .68) + '" fill="' + L(c, .14) + '"/>' +
+      '</g>';
+  }
+
+  function grass(x, y, c, n) {
+    var s = '<g stroke="' + c + '" stroke-width="1.3" fill="none" opacity=".8">';
+    for (var k = 0; k < (n || 5); k++) {
+      s += '<path d="M' + (x + k * 3.4) + ' ' + y + 'q' + (k % 2 ? 2 : -2) + ' -7 ' + (k % 2 ? 4 : -3) + ' -12"/>';
+    }
+    return s + '</g>';
+  }
+
+  function birdR(x, y, s, c) {
+    return '<path d="M' + x + ' ' + y + 'q' + (5 * s) + ' ' + (-5 * s) + ' ' + (10 * s) + ' 0" stroke="' + c + '" stroke-width="' + (1.4 * s) + '" fill="none" opacity=".6"/>';
+  }
+
+  function water(i, y, h) {
+    return '<rect y="' + y + '" width="480" height="' + h + '" fill="url(#wat' + i + ')"/>' +
+      '<g stroke="#ffffff" stroke-width="2" opacity=".34" fill="none">' +
+      '<path d="M28 ' + (y + h * .3) + 'h52"/><path d="M120 ' + (y + h * .52) + 'h68"/>' +
+      '<path d="M250 ' + (y + h * .36) + 'h56"/><path d="M330 ' + (y + h * .66) + 'h74"/>' +
+      '<path d="M60 ' + (y + h * .72) + 'h40"/><path d="M400 ' + (y + h * .22) + 'h48"/>' +
+      '</g>';
+  }
+
+  /* ---------------------------------------------------------
+   *  3. 每处景点一幅画（480 × 300）
+   * --------------------------------------------------------- */
+  var ART = {
+
+    /* 雪山 */
+    snowPeaks: function (p, i) {
+      return sky(i) + sunGlow(i, 372, 66, 24) +
+        clouds([[86, 62, 30, .55], [246, 44, 20, .38]]) +
+        ridge(i, 'far', 'M0 196L54 138L88 168L140 92L188 156L236 118L288 172L344 112L396 166L440 132L480 168V300H0Z') +
+        haze(i, 150, 74) +
+        '<path d="M140 92L156 118L147 114L140 124L133 114L124 118Z" fill="#ffffff" opacity=".95"/>' +
+        '<path d="M344 112L357 132L350 129L344 137L338 129L331 132Z" fill="#ffffff" opacity=".9"/>' +
+        '<path d="M236 118L247 136L241 133L236 140L231 133L225 136Z" fill="#ffffff" opacity=".85"/>' +
+        '<path d="M140 92L156 118L147 114L140 124Z" fill="#dbe6e6" opacity=".8"/>' +
+        ridge(i, 'mid', 'M0 228L64 180L112 210L168 160L224 208L284 166L340 212L400 168L444 202L480 188V300H0Z') +
+        ridge(i, 'near', 'M0 270L76 242L148 266L216 234L286 264L356 236L426 264L480 246V300H0Z') +
+        pineR(48, 300, 74, p.tree) + pineR(88, 300, 54, p.tree) + pineR(410, 300, 66, p.tree) + pineR(446, 300, 48, p.tree) +
+        birdR(300, 96, 1.1, D(p.rock, .4)) + birdR(324, 84, .9, D(p.rock, .4));
+    },
+
+    /* 石鸡峰 */
+    roosterPeak: function (p, i) {
+      return sky(i) + sunGlow(i, 92, 58, 20) +
+        clouds([[330, 54, 26, .45], [180, 40, 18, .3]]) +
+        ridge(i, 'far', 'M0 210L58 150L96 182L146 108L196 176L240 138L286 190L336 126L382 180L430 150L480 186V300H0Z') +
+        haze(i, 168, 62) +
+        '<path d="M146 108L161 132L153 128L146 138L139 128L131 132Z" fill="#ffffff" opacity=".9"/>' +
+        '<g fill="' + D(p.rock, .45) + '">' +
+          '<ellipse cx="146" cy="98" rx="5.5" ry="7"/>' +
+          '<path d="M140.5 91l-2.6-6 4.4 2.4 1-5 2.6 5 4.4-2.4-2.6 6z"/>' +
+          '<path d="M151 96l6-1.6-4.2 4.4z"/>' +
+          '<path d="M141 104l-2 4M148 105l2 4"/>' +
+        '</g>' +
+        ridge(i, 'mid', 'M0 238L70 198L124 226L180 186L238 228L300 194L360 230L420 200L480 224V300H0Z') +
+        ridge(i, 'near', 'M0 274L84 250L166 272L248 246L330 270L404 250L480 268V300H0Z') +
+        pineR(36, 300, 64, p.tree) + pineR(430, 300, 58, p.tree) + grass(220, 296, D(p.tree, .1), 6);
+    },
+
+    /* 塔 */
+    pagoda: function (p, i) {
+      var g = '<g>' +
+        '<rect x="126" y="252" width="228" height="10" fill="' + D(p.ground, .18) + '"/>' +
+        '<rect x="132" y="244" width="216" height="9" fill="' + D(p.ground, .06) + '"/>' +
+        '<rect x="140" y="236" width="200" height="9" fill="' + L(p.ground, .1) + '"/>';
+      var base = 236, w = 128, hgt = 20;
+      for (var k = 0; k < 4; k++) {
+        var x = 240 - w / 2;
+        g += '<rect x="' + x + '" y="' + (base - hgt) + '" width="' + w + '" height="' + hgt + '" fill="url(#bdy' + i + ')"/>';
+        g += '<rect x="' + (x + 8) + '" y="' + (base - hgt + 4) + '" width="' + (w - 16) + '" height="' + (hgt - 8) + '" fill="#ffffff" opacity=".16"/>';
+        g += '<path d="M' + (x - 14) + ' ' + (base - hgt) + 'L240 ' + (base - hgt - 16) + 'L' + (x + w + 14) + ' ' + (base - hgt) + 'Z" fill="url(#rf' + i + ')"/>';
+        g += '<rect x="' + (x - 14) + '" y="' + (base - hgt) + '" width="' + (w + 28) + '" height="3" fill="' + D(p.warm, .3) + '"/>';
+        base -= hgt + 16;
+        w -= 26;
+      }
+      g += '<rect x="237" y="' + (base - 26) + '" width="6" height="26" fill="url(#rf' + i + ')"/>' +
+        '<circle cx="240" cy="' + (base - 30) + '" r="5" fill="' + D(p.warm, .25) + '"/>' +
+        '<path d="M236 240v-10M244 240v-10" stroke="' + D(p.warm, .45) + '" stroke-width="2"/>' +
+        '</g>';
+      return sky(i) + sunGlow(i, 96, 62, 22) + clouds([[350, 50, 26, .4]]) +
+        ridge(i, 'far', 'M0 208L74 166L132 196L196 156L262 198L326 164L392 200L446 174L480 192V300H0Z') +
+        haze(i, 176, 54) +
+        ridge(i, 'mid', 'M0 236L96 204L186 232L276 202L366 234L440 212L480 228V300H0Z') +
+        '<rect y="252" width="480" height="48" fill="url(#grd' + i + ')"/>' +
+        g +
+        '<g stroke="' + D(p.warm, .55) + '" stroke-width="1.6" fill="none" opacity=".45">' +
+        '<path d="M146 214q6 -12 0 -20"/><path d="M154 214q-6 -12 0 -20"/><path d="M330 212q6 -12 0 -20"/><path d="M338 212q-6 -12 0 -20"/>' +
+        '</g>' +
+        pineR(66, 300, 62, p.tree) + pineR(404, 300, 56, p.tree);
+    },
+
+    /* 博物馆 */
+    museum: function (p, i) {
+      return sky(i) + sunGlow(i, 384, 60, 20) + clouds([[110, 52, 26, .42]]) +
+        ridge(i, 'far', 'M0 200L96 166L176 194L260 162L344 196L428 168L480 186V300H0Z') +
+        haze(i, 176, 46) +
+        '<rect y="212" width="480" height="88" fill="url(#grd' + i + ')"/>' +
+        '<g>' +
+          '<rect x="72" y="188" width="336" height="64" fill="url(#bdy' + i + ')"/>' +
+          '<rect x="72" y="188" width="336" height="6" fill="' + L(p.warm, .7) + '" opacity=".7"/>' +
+          '<path d="M52 190L240 138L428 190Z" fill="url(#rf' + i + ')"/>' +
+          '<path d="M52 190L240 138L428 190Z" fill="#ffffff" opacity=".08"/>' +
+          '<rect x="56" y="190" width="368" height="5" fill="' + D(p.warm, .35) + '"/>' +
+          '<rect x="86" y="252" width="308" height="8" fill="' + D(p.ground, .12) + '"/>' +
+          '<rect x="70" y="260" width="340" height="8" fill="' + D(p.ground, .24) + '"/>' +
+          '<g fill="#f8f6ef" opacity=".9">' +
+            '<rect x="92" y="202" width="24" height="34"/><rect x="124" y="202" width="24" height="34"/>' +
+            '<rect x="332" y="202" width="24" height="34"/><rect x="364" y="202" width="24" height="34"/>' +
+          '</g>' +
+          '<g fill="' + D(p.rock, .3) + '" opacity=".35">' +
+            '<rect x="92" y="218" width="24" height="1.6"/><rect x="124" y="218" width="24" height="1.6"/>' +
+            '<rect x="332" y="218" width="24" height="1.6"/><rect x="364" y="218" width="24" height="1.6"/>' +
+          '</g>' +
+          '<g fill="' + D(p.warm, .55) + '">' +
+            '<path d="M214 224h52a6 6 0 0 1 6 6v12a32 32 0 0 1-64 0v-12a6 6 0 0 1 6-6z"/>' +
+            '<rect x="210" y="252" width="6" height="16"/><rect x="237" y="252" width="6" height="18"/><rect x="264" y="252" width="6" height="16"/>' +
+            '<path d="M222 220v-8h8v8M250 220v-8h8v8"/>' +
+          '</g>' +
+          '<path d="M218 230h44" stroke="' + L(p.warm, .6) + '" stroke-width="1.6" opacity=".5"/>' +
+        '</g>';
+    },
+
+    /* 青铜鼎 / 周原 */
+    ding: function (p, i) {
+      return sky(i) + sunGlow(i, 386, 56, 18) + clouds([[120, 48, 22, .35]]) +
+        ridge(i, 'far', 'M0 206L104 172L196 200L286 168L376 200L452 178L480 190V300H0Z') +
+        haze(i, 180, 44) +
+        '<rect y="216" width="480" height="84" fill="url(#grd' + i + ')"/>' +
+        '<g>' +
+          '<path d="M64 232h352v10H64z" fill="' + D(p.ground, .2) + '"/>' +
+          '<path d="M88 216h304v10H88z" fill="' + D(p.ground, .1) + '"/>' +
+          '<g fill="' + D(p.rock, .28) + '" opacity=".5">' +
+            '<rect x="72" y="222" width="336" height="1.4"/><rect x="72" y="228" width="336" height="1.4"/>' +
+          '</g>' +
+          '<g>' +
+            '<path d="M186 168h108a10 10 0 0 1 10 10v24a64 64 0 0 1-128 0v-24a10 10 0 0 1 10-10z" fill="' + D(p.warm, .28) + '"/>' +
+            '<path d="M196 176h88a4 4 0 0 1 4 4v20a48 48 0 0 1-96 0v-20a4 4 0 0 1 4-4z" fill="' + D(p.warm, .14) + '"/>' +
+            '<path d="M240 172v52" stroke="' + D(p.warm, .45) + '" stroke-width="2" opacity=".6"/>' +
+            '<g stroke="' + L(p.warm, .35) + '" stroke-width="1.4" fill="none" opacity=".55">' +
+              '<path d="M204 186q10 8 20 0t20 0t20 0t20 0"/>' +
+              '<path d="M204 196q10 8 20 0t20 0t20 0t20 0"/>' +
+            '</g>' +
+            '<rect x="174" y="212" width="10" height="30" rx="2" fill="' + D(p.warm, .34) + '"/>' +
+            '<rect x="222" y="212" width="10" height="34" rx="2" fill="' + D(p.warm, .3) + '"/>' +
+            '<rect x="290" y="212" width="10" height="30" rx="2" fill="' + D(p.warm, .34) + '"/>' +
+            '<path d="M198 164v-12h12v12M264 164v-12h12v12" stroke="' + D(p.warm, .32) + '" stroke-width="5" fill="none"/>' +
+          '</g>' +
+          '<g fill="' + D(p.ground, .06) + '" stroke="' + D(p.rock, .2) + '" stroke-width="1">' +
+            '<rect x="96" y="228" width="40" height="52" rx="6" transform="rotate(-6 116 254)"/>' +
+            '<rect x="342" y="236" width="34" height="44" rx="6" transform="rotate(7 359 258)"/>' +
+          '</g>' +
+          '<g stroke="' + D(p.rock, .45) + '" stroke-width="1.2" opacity=".55">' +
+            '<path d="M104 240h22M104 246h16M104 252h20M350 248h18M350 254h12"/>' +
+          '</g>' +
+        '</g>' +
+        grass(60, 296, D(p.tree, .15), 6) + grass(404, 298, D(p.tree, .15), 5);
+    },
+
+    /* 宫殿 / 九成宫 */
+    palace: function (p, i) {
+      return sky(i) + sunGlow(i, 92, 58, 20) + clouds([[348, 46, 28, .4]]) +
+        ridge(i, 'far', 'M0 196L86 152L166 188L250 150L334 190L414 158L480 182V300H0Z') +
+        haze(i, 168, 50) +
+        '<rect y="214" width="480" height="86" fill="url(#grd' + i + ')"/>' +
+        '<g>' +
+          '<rect x="108" y="196" width="264" height="52" fill="url(#bdy' + i + ')"/>' +
+          '<g fill="' + D(p.warm, .22) + '">' +
+            '<rect x="118" y="200" width="8" height="48"/><rect x="152" y="200" width="8" height="48"/>' +
+            '<rect x="186" y="200" width="8" height="48"/><rect x="286" y="200" width="8" height="48"/>' +
+            '<rect x="320" y="200" width="8" height="48"/><rect x="354" y="200" width="8" height="48"/>' +
+          '</g>' +
+          '<rect x="232" y="204" width="16" height="44" fill="' + D(p.warm, .4) + '"/>' +
+          '<path d="M84 200L240 152L396 200Z" fill="url(#rf' + i + ')"/>' +
+          '<path d="M84 200L240 152L396 200Z" fill="#ffffff" opacity=".07"/>' +
+          '<path d="M104 200L240 162L376 200" fill="none" stroke="' + D(p.warm, .42) + '" stroke-width="2" opacity=".6"/>' +
+          '<rect x="80" y="198" width="320" height="6" fill="' + D(p.warm, .3) + '"/>' +
+          '<rect x="124" y="248" width="232" height="8" fill="' + D(p.ground, .12) + '"/>' +
+          '<rect x="108" y="256" width="264" height="8" fill="' + D(p.ground, .24) + '"/>' +
+          '<g>' +
+            '<rect x="410" y="176" width="26" height="82" fill="' + L(p.ground, .05) + '"/>' +
+            '<rect x="405" y="170" width="36" height="8" fill="' + D(p.ground, .18) + '"/>' +
+            '<g stroke="' + D(p.rock, .35) + '" stroke-width="1.2" opacity=".5"><path d="M416 186h12M416 194h9M416 202h11"/></g>' +
+          '</g>' +
+        '</g>' +
+        treeR(58, 300, 74, p.tree) + treeR(430, 300, 62, p.tree) + grass(196, 298, D(p.tree, .1), 5);
+    },
+
+    /* 草原 */
+    meadow: function (p, i) {
+      return sky(i) + sunGlow(i, 366, 62, 26) +
+        clouds([[96, 60, 34, .58], [252, 42, 22, .36], [404, 84, 26, .3]]) +
+        ridge(i, 'far', 'M0 168Q120 128 240 162T480 152V300H0Z') +
+        haze(i, 150, 46) +
+        ridge(i, 'mid', 'M0 202Q130 166 250 198T480 192V300H0Z') +
+        '<path d="M0 236Q140 210 262 234T480 228V300H0Z" fill="url(#grd' + i + ')"/>' +
+        '<path d="M0 236Q140 210 262 234T480 228" fill="none" stroke="#ffffff" stroke-width="2" opacity=".25"/>' +
+        '<g>' +
+          horse(168, 232, 1.15, D(p.rock, .55)) +
+          horse(286, 224, .85, D(p.rock, .5)) +
+          horse(354, 244, .62, D(p.rock, .48)) +
+        '</g>' +
+        '<g stroke="' + D(p.tree, .12) + '" stroke-width="1.3" fill="none" opacity=".55">' +
+          '<path d="M60 258q3-10 6-14M70 260q-2-9-5-13M92 254q3-9 5-12M104 256q-2-8-4-11"/>' +
+          '<path d="M396 270q3-10 6-14M406 272q-2-9-5-13"/>' +
+        '</g>';
+    },
+
+    /* 五丈原 */
+    plateau: function (p, i) {
+      return sky(i) + sunGlow(i, 98, 54, 16) +
+        birdR(320, 70, 1, D(p.rock, .4)) + birdR(346, 58, .8, D(p.rock, .4)) +
+        ridge(i, 'far', 'M0 188L92 154L196 182L302 148L400 180V300H0Z') +
+        haze(i, 164, 40) +
+        '<path d="M96 202L142 178L338 178L384 202V300H96Z" fill="url(#near' + i + ')"/>' +
+        '<path d="M96 202L142 178L338 178L384 202L384 208L96 208Z" fill="' + L(p.rock, .28) + '"/>' +
+        '<path d="M96 208h288v92H96Z" fill="url(#near' + i + ')" opacity=".85"/>' +
+        '<g stroke="' + D(p.rock, .3) + '" stroke-width="1.4" opacity=".35" fill="none">' +
+          '<path d="M120 224h240M112 240h256M120 258h240M128 276h224"/>' +
+        '</g>' +
+        '<g>' +
+          '<rect x="298" y="124" width="3.4" height="54" fill="' + D(p.rock, .45) + '"/>' +
+          '<path d="M302 128l30 9-30 9z" fill="' + p.warm + '"/>' +
+          '<path d="M302 128l30 9-30 9z" fill="#ffffff" opacity=".12"/>' +
+          '<path d="M210 178l16-14 16 14z" fill="' + p.warm + '"/>' +
+          '<rect x="219" y="178" width="14" height="16" fill="url(#bdy' + i + ')"/>' +
+        '</g>' +
+        grass(150, 292, D(p.tree, .05), 7) + grass(340, 288, D(p.tree, .05), 6);
+    },
+
+    /* 钓鱼台 */
+    riverRod: function (p, i) {
+      return sky(i) + sunGlow(i, 120, 56, 18) + clouds([[330, 46, 22, .35]]) +
+        ridge(i, 'far', 'M0 176L110 148L214 174L318 146L410 172V300H0Z') +
+        haze(i, 158, 34) +
+        water(i, 192, 108) +
+        '<path d="M0 214Q120 202 220 214T480 204V300H0Z" fill="' + D(p.water, .1) + '" opacity=".28"/>' +
+        '<ellipse cx="330" cy="238" rx="46" ry="12" fill="' + D(p.rock, .18) + '"/>' +
+        '<ellipse cx="330" cy="234" rx="40" ry="9" fill="' + D(p.rock, .04) + '"/>' +
+        '<g>' +
+          '<path d="M318 232L372 132" stroke="' + D(p.rock, .5) + '" stroke-width="2.2" stroke-linecap="round"/>' +
+          '<path d="M372 132q8 50 0 92" stroke="' + D(p.rock, .45) + '" stroke-width="1.1" fill="none"/>' +
+          '<circle cx="372" cy="226" r="3.6" fill="' + p.warm + '"/>' +
+          '<ellipse cx="372" cy="234" rx="13" ry="3.4" fill="none" stroke="#ffffff" stroke-width="1.2" opacity=".5"/>' +
+        '</g>' +
+        '<g stroke="' + D(p.tree, .1) + '" stroke-width="2" fill="none" opacity=".8">' +
+          '<path d="M52 250q2-46 5-62"/><path d="M72 252q-2-40-7-54"/><path d="M92 250q3-34 6-46"/>' +
+        '</g>' +
+        '<g stroke="' + p.tree + '" stroke-width="1.2" fill="none" opacity=".55">' +
+          '<path d="M150 246q3-9 6-12M160 248q-2-8-5-11M410 252q3-9 6-12"/>' +
+        '</g>';
+    },
+
+    /* 瀑布 / 峡谷 */
+    fall: function (p, i, v) {
+      if (v === 'spring') {
+        return sky(i) + sunGlow(i, 92, 44, 13) +
+          ridge(i, 'far', 'M0 150L90 118L180 148L268 116L356 148L430 126V300H0Z') +
+          haze(i, 136, 44) +
+          '<path d="M0 206q80-12 160-4 70 8 140 0 90-10 180 4v94H0Z" fill="url(#grd' + i + ')"/>' +
+          '<path d="M296 300V128q34-20 68-6 36-16 68 2 24-8 48 6V300Z" fill="url(#near' + i + ')"/>' +
+          '<path d="M296 300V128q34-20 68-6 36-16 68 2 24-8 48 6" fill="none" stroke="' + L(p.rock, .32) + '" stroke-width="2.4" opacity=".45"/>' +
+          '<g stroke="' + D(p.rock, .35) + '" stroke-width="1.4" opacity=".25">' +
+            '<path d="M330 152v54M362 142v70M394 148v56M426 154v50"/>' +
+          '</g>' +
+          '<path d="M350 134q10 30 6 60l-10 46-14-2 6-46q2-30 4-58z" fill="#ffffff" opacity=".92"/>' +
+          '<ellipse cx="338" cy="242" rx="46" ry="11" fill="#ffffff" opacity=".5"/>' +
+          '<path d="M340 248q-72 16-142 10t-118-8" stroke="url(#wat' + i + ')" stroke-width="10" fill="none" opacity=".9"/>' +
+          '<g fill="' + D(p.rock, .08) + '"><circle cx="240" cy="258" r="6"/><circle cx="182" cy="264" r="5"/><circle cx="124" cy="256" r="4"/></g>' +
+          pineR(38, 300, 68, p.tree) + pineR(74, 300, 46, p.tree) + pineR(262, 300, 56, p.tree);
+      }
+      return sky(i) + sunGlow(i, 240, 26, 8) +
+        '<path d="M0 300V26l118 30 74 96 18 148Z" fill="url(#near' + i + ')"/>' +
+        '<path d="M480 300V18l-116 32-72 94-16 156Z" fill="url(#near' + i + ')"/>' +
+        '<path d="M192 152L288 146L270 300H210Z" fill="url(#mid' + i + ')"/>' +
+        '<path d="M0 26l118 30 74 96 18 148" fill="none" stroke="' + L(p.rock, .3) + '" stroke-width="2.2" opacity=".4"/>' +
+        '<path d="M480 18l-116 32-72 94-16 156" fill="none" stroke="' + L(p.rock, .3) + '" stroke-width="2.2" opacity=".4"/>' +
+        '<g stroke="' + D(p.rock, .32) + '" stroke-width="1.5" opacity=".22">' +
+          '<path d="M34 64v68M74 84v58M112 112v52M428 56v70M390 80v62M352 110v50"/>' +
+        '</g>' +
+        '<rect x="222" y="150" width="34" height="140" fill="#ffffff" opacity=".9"/>' +
+        '<rect x="230" y="150" width="9" height="140" fill="#ffffff" opacity=".5"/>' +
+        '<ellipse cx="240" cy="284" rx="64" ry="14" fill="#ffffff" opacity=".5"/>' +
+        '<ellipse cx="240" cy="292" rx="92" ry="11" fill="' + L(p.water, .32) + '" opacity=".55"/>' +
+        pineR(66, 300, 38, p.tree) + pineR(414, 300, 34, p.tree) +
+        birdR(120, 56, .9, D(p.rock, .3));
+    },
+
+    /* 森林河 */
+    forestRiver: function (p, i) {
+      return sky(i) + sunGlow(i, 400, 52, 18) + clouds([[120, 44, 22, .3]]) +
+        ridge(i, 'far', 'M0 168L96 132L188 164L280 128L372 162L440 140V300H0Z') +
+        haze(i, 150, 40) +
+        water(i, 196, 104) +
+        '<path d="M0 214Q96 232 192 216T480 222V300H0Z" fill="' + D(p.water, .12) + '" opacity=".3"/>' +
+        pineR(52, 210, 92, p.tree) + pineR(96, 214, 70, p.tree) + pineR(132, 212, 54, p.tree) +
+        pineR(340, 212, 78, p.tree) + pineR(392, 214, 96, p.tree) + pineR(438, 216, 62, p.tree) +
+        '<g>' +
+          '<path d="M176 236q56-12 112 0" stroke="' + D(p.warm, .3) + '" stroke-width="5" fill="none"/>' +
+          '<path d="M178 236v-16M286 236v-16" stroke="' + D(p.warm, .38) + '" stroke-width="4"/>' +
+          '<path d="M176 220q56-12 112 0" stroke="' + D(p.warm, .22) + '" stroke-width="2.4" fill="none"/>' +
+          '<g stroke="' + D(p.warm, .3) + '" stroke-width="1.6" opacity=".6"><path d="M206 220v16M232 216v20M258 216v20M284 220v16"/></g>' +
+        '</g>' +
+        '<g stroke="' + D(p.tree, .1) + '" stroke-width="1.3" fill="none" opacity=".5">' +
+          '<path d="M20 282q4-12 8-16M34 284q-2-10-6-14M452 278q4-12 8-16"/>' +
+        '</g>';
+    },
+
+    /* 湖 */
+    lake: function (p, i, v) {
+      var head = sky(i) + sunGlow(i, 384, 54, 20) +
+        ridge(i, 'far', 'M0 158L104 128L196 154L288 124L384 152L440 136V300H0Z') +
+        haze(i, 142, 36) +
+        water(i, 176, 124) +
+        '<rect y="176" width="480" height="4" fill="#ffffff" opacity=".22"/>' +
+        '<g stroke="' + L(p.water, .2) + '" stroke-width="2" opacity=".45">' +
+          '<path d="M60 198h58"/><path d="M180 210h48"/><path d="M280 194h62"/><path d="M360 220h56"/><path d="M120 232h44"/>' +
+        '</g>';
+
+      if (v === 'pavilion') {
+        return head +
+          '<path d="M0 208q74-16 148 0v92H0Z" fill="url(#grd' + i + ')"/>' +
+          '<g>' +
+            '<path d="M42 152l44-24 44 24z" fill="url(#rf' + i + ')"/>' +
+            '<path d="M42 152l44-24 44 24z" fill="#ffffff" opacity=".08"/>' +
+            '<rect x="46" y="152" width="80" height="4" fill="' + D(p.warm, .35) + '"/>' +
+            '<rect x="56" y="156" width="4" height="30" fill="' + D(p.warm, .45) + '"/>' +
+            '<rect x="112" y="156" width="4" height="30" fill="' + D(p.warm, .45) + '"/>' +
+            '<rect x="60" y="180" width="52" height="3" fill="' + D(p.warm, .3) + '"/>' +
+            '<rect x="86" y="150" width="16" height="8" fill="' + D(p.warm, .5) + '" opacity=".5"/>' +
+          '</g>' +
+          treeR(28, 210, 58, p.tree) +
+          '<g stroke="' + D(p.tree, .05) + '" stroke-width="1.6" fill="none" opacity=".7">' +
+            '<path d="M330 300q4-40 10-54M348 300q-3-34-8-46M366 300q5-30 9-40"/>' +
+          '</g>' +
+          birdR(220, 96, 1, D(p.rock, .35)) + birdR(246, 84, .8, D(p.rock, .35));
+      }
+
+      return head +
+        '<path d="M0 262q90-14 180 0t200-6 100 4v40H0Z" fill="' + D(p.water, .08) + '"/>' +
+        '<g stroke="' + D(p.tree, .05) + '" stroke-width="2" fill="none" opacity=".8">' +
+          '<path d="M56 300q3-44 7-58M76 300q-3-36-8-50M96 300q4-30 8-42M396 300q-3-40-7-52M416 300q3-30 7-40"/>' +
+        '</g>' +
+        '<g fill="#ffffff" opacity=".85">' +
+          '<ellipse cx="240" cy="146" rx="16" ry="4"/><ellipse cx="268" cy="150" rx="12" ry="3.4"/>' +
+        '</g>' +
+        birdR(300, 92, 1.1, D(p.rock, .35)) + birdR(326, 78, .9, D(p.rock, .35)) + birdR(272, 82, .8, D(p.rock, .35));
+    },
+
+    /* 老街 */
+    street: function (p, i) {
+      var shop = function (x, y, w, h) {
+        return '<g>' +
+          '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#bdy' + i + ')"/>' +
+          '<path d="M' + (x - 14) + ' ' + y + 'L' + (x + w / 2) + ' ' + (y - 30) + 'L' + (x + w + 14) + ' ' + y + 'Z" fill="url(#rf' + i + ')"/>' +
+          '<path d="M' + (x - 14) + ' ' + y + 'L' + (x + w / 2) + ' ' + (y - 30) + 'L' + (x + w + 14) + ' ' + y + 'Z" fill="#ffffff" opacity=".07"/>' +
+          '<rect x="' + (x - 10) + '" y="' + y + '" width="' + (w + 20) + '" height="4" fill="' + D(p.warm, .4) + '"/>' +
+          '<rect x="' + (x + 14) + '" y="' + (y + 12) + '" width="' + (w - 28) + '" height="' + (h - 26) + '" fill="' + D(p.warm, .45) + '" opacity=".55"/>' +
+          '<g stroke="' + D(p.warm, .3) + '" stroke-width="1.4" opacity=".5">' +
+            '<path d="M' + (x + 14) + ' ' + (y + 30) + 'h' + (w - 28) + 'M' + (x + 14) + ' ' + (y + 46) + 'h' + (w - 28) + '"/>' +
+          '</g>' +
+          win(x + w / 2, y + 20) +
+        '</g>';
+      };
+      var win = function (cx, cy) {
+        return '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="' + p.warm + '"/>' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="#ffffff" opacity=".25"/>' +
+          '<rect x="' + (cx - 1) + '" y="' + (cy - 12) + '" width="2" height="5" fill="' + D(p.warm, .4) + '"/>';
+      };
+      return sky(i) + sunGlow(i, 400, 46, 16) + clouds([[130, 42, 24, .32]]) +
+        ridge(i, 'far', 'M0 176L96 154L192 174L288 152L384 172L440 160V300H0Z') +
+        haze(i, 158, 34) +
+        '<rect y="212" width="480" height="88" fill="' + D(p.ground, .04) + '"/>' +
+        '<g stroke="' + D(p.ground, .28) + '" stroke-width="1.4" opacity=".55">' +
+          '<path d="M0 236h480M0 258h480M0 280h480"/>' +
+          '<path d="M60 226v74M150 226v74M240 226v74M330 226v74M420 226v74"/>' +
+        '</g>' +
+        shop(40, 196, 132, 88) + shop(300, 190, 140, 94) +
+        '<g>' +
+          '<path d="M226 196v78" stroke="' + D(p.warm, .45) + '" stroke-width="4"/>' +
+          '<path d="M206 196h44l-7 14h-30z" fill="' + p.warm + '"/>' +
+          '<path d="M206 196h44l-7 14h-30z" fill="#ffffff" opacity=".18"/>' +
+        '</g>' +
+        '<g stroke="' + D(p.tree, .1) + '" stroke-width="1.3" fill="none" opacity=".4">' +
+          '<path d="M480 232q-10 6-14 12"/>' +
+        '</g>';
+    },
+
+    /* 祠庙 / 陵 */
+    shrine: function (p, i, v) {
+      var hills = ridge(i, 'far', 'M0 190L110 154L214 186L318 150L400 178V300H0Z') + haze(i, 166, 40);
+      var ground = '<rect y="216" width="480" height="84" fill="url(#grd' + i + ')"/>';
+
+      if (v === 'tomb') {
+        return sky(i) + sunGlow(i, 380, 52, 18) +
+          hills + ground +
+          '<path d="M120 236q120-72 240 0z" fill="url(#near' + i + ')"/>' +
+          '<path d="M150 236q90-52 180 0z" fill="' + L(p.rock, .12) + '" opacity=".55"/>' +
+          '<path d="M0 252h480v6H0Z" fill="' + D(p.ground, .18) + '"/>' +
+          '<g fill="' + D(p.rock, .4) + '">' +
+            '<rect x="92" y="206" width="12" height="34" rx="3"/><rect x="376" y="206" width="12" height="34" rx="3"/>' +
+          '</g>' +
+          '<g fill="' + D(p.rock, .32) + '"><circle cx="98" cy="204" r="7"/><circle cx="382" cy="204" r="7"/></g>' +
+          '<path d="M196 244h88v6h-88zM210 250h60v6h-60z" fill="' + L(p.ground, .25) + '" opacity=".75"/>' +
+          pineR(48, 300, 74, p.tree) + pineR(436, 300, 68, p.tree) +
+          birdR(300, 84, .9, D(p.rock, .35));
+      }
+
+      var gate = '<g>' +
+        '<rect x="142" y="176" width="10" height="76" fill="' + D(p.warm, .42) + '"/>' +
+        '<rect x="328" y="176" width="10" height="76" fill="' + D(p.warm, .42) + '"/>' +
+        '<rect x="176" y="188" width="128" height="64" fill="url(#bdy' + i + ')"/>' +
+        '<rect x="222" y="200" width="36" height="52" fill="' + D(p.warm, .48) + '"/>' +
+        '<path d="M120 180L240 140L360 180Z" fill="url(#rf' + i + ')"/>' +
+        '<path d="M120 180L240 140L360 180Z" fill="#ffffff" opacity=".08"/>' +
+        '<rect x="116" y="178" width="248" height="7" fill="' + D(p.warm, .32) + '"/>' +
+        '<path d="M156 178L240 152L324 178" fill="none" stroke="' + D(p.warm, .45) + '" stroke-width="2" opacity=".5"/>' +
+        '</g>';
+
+      if (v === 'terrace') {
+        return sky(i) + sunGlow(i, 96, 50, 16) +
+          hills + ground +
+          '<path d="M96 300V224l144-36 144 36v76Z" fill="url(#near' + i + ')"/>' +
+          '<path d="M96 224l144-36 144 36v10L240 198 96 234Z" fill="' + L(p.rock, .3) + '"/>' +
+          gate +
+          '<g fill="' + D(p.ground, .16) + '">' +
+            '<rect x="200" y="252" width="80" height="7"/><rect x="188" y="259" width="104" height="7"/>' +
+            '<rect x="176" y="266" width="128" height="7"/><rect x="164" y="273" width="152" height="7"/>' +
+          '</g>' +
+          pineR(64, 300, 66, p.tree) + pineR(414, 300, 62, p.tree);
+      }
+
+      return sky(i) + sunGlow(i, 400, 50, 16) +
+        hills + ground + gate +
+        '<g fill="' + D(p.ground, .16) + '">' +
+          '<rect x="200" y="252" width="80" height="7"/><rect x="188" y="259" width="104" height="7"/>' +
+          '<rect x="174" y="266" width="132" height="7"/>' +
+        '</g>' +
+        pineR(56, 300, 78, p.tree) + pineR(30, 300, 58, p.tie || p.tree) +
+        pineR(424, 300, 74, p.tree) + pineR(452, 300, 56, p.tree);
+    },
+
+    /* 石鼓园 */
+    stones: function (p, i) {
+      return sky(i) + sunGlow(i, 96, 50, 16) + clouds([[330, 44, 22, .32]]) +
+        ridge(i, 'far', 'M0 186L104 156L200 182L294 152L386 180V300H0Z') +
+        haze(i, 164, 38) +
+        '<path d="M0 214q120-14 240 0t240-4v90H0Z" fill="url(#grd' + i + ')"/>' +
+        '<g>' +
+          '<path d="M60 226q54-40 108 0z" fill="' + L(p.ground, .1) + '"/>' +
+          '<g fill="url(#near' + i + ')">' +
+            '<ellipse cx="92" cy="212" rx="22" ry="26"/><ellipse cx="130" cy="206" rx="25" ry="30"/><ellipse cx="170" cy="214" rx="20" ry="24"/>' +
+          '</g>' +
+          '<g fill="' + L(p.rock, .22) + '" opacity=".55">' +
+            '<ellipse cx="92" cy="212" rx="15" ry="18"/><ellipse cx="130" cy="206" rx="17" ry="21"/><ellipse cx="170" cy="214" rx="13" ry="16"/>' +
+          '</g>' +
+          '<g stroke="' + D(p.rock, .4) + '" stroke-width="1.3" opacity=".5">' +
+            '<path d="M82 210h20M82 218h14M120 202h20M120 210h24M120 218h16M162 212h16M162 220h12"/>' +
+          '</g>' +
+        '</g>' +
+        '<g>' +
+          '<rect x="316" y="212" width="96" height="8" fill="' + D(p.ground, .16) + '"/>' +
+          '<rect x="330" y="220" width="68" height="6" fill="' + D(p.ground, .24) + '"/>' +
+          '<path d="M300 176L364 138L428 176Z" fill="url(#rf' + i + ')"/>' +
+          '<path d="M300 176L364 138L428 176Z" fill="#ffffff" opacity=".07"/>' +
+          '<rect x="306" y="176" width="116" height="6" fill="' + D(p.warm, .32) + '"/>' +
+          '<rect x="324" y="182" width="80" height="30" fill="url(#bdy' + i + ')"/>' +
+          '<g fill="' + D(p.warm, .42) + '"><rect x="336" y="186" width="8" height="26"/><rect x="384" y="186" width="8" height="26"/></g>' +
+        '</g>' +
+        pineR(452, 300, 54, p.tree) + grass(220, 288, D(p.tree, .1), 5);
+    },
+
+    /* 陵 */
+    tomb: function (p, i) {
+      return sky(i) + sunGlow(i, 400, 50, 18) +
+        birdR(120, 62, .9, D(p.rock, .35)) + birdR(146, 50, .75, D(p.rock, .35)) +
+        ridge(i, 'far', 'M0 178L120 150L230 176L340 146L430 172V300H0Z') +
+        haze(i, 158, 36) +
+        '<rect y="212" width="480" height="88" fill="url(#grd' + i + ')"/>' +
+        '<path d="M110 214q130-84 260 0z" fill="url(#near' + i + ')"/>' +
+        '<path d="M150 214q90-56 180 0z" fill="' + L(p.rock, .16) + '" opacity=".45"/>' +
+        '<g>' +
+          '<rect x="204" y="196" width="8" height="40" fill="' + D(p.warm, .42) + '"/>' +
+          '<rect x="268" y="196" width="8" height="40" fill="' + D(p.warm, .42) + '"/>' +
+          '<path d="M192 198L240 174L288 198Z" fill="url(#rf' + i + ')"/>' +
+          '<rect x="188" y="196" width="104" height="5" fill="' + D(p.warm, .3) + '"/>' +
+          '<rect x="228" y="206" width="24" height="30" fill="' + D(p.warm, .5) + '"/>' +
+        '</g>' +
+        '<path d="M0 254h480v5H0Z" fill="' + D(p.ground, .2) + '"/>' +
+        '<g fill="' + D(p.rock, .34) + '">' +
+          '<rect x="96" y="212" width="14" height="30" rx="3"/><rect x="370" y="212" width="14" height="30" rx="3"/>' +
+          '<rect x="64" y="222" width="12" height="20" rx="3"/><rect x="404" y="222" width="12" height="20" rx="3"/>' +
+        '</g>' +
+        '<g fill="' + D(p.rock, .26) + '"><circle cx="103" cy="208" r="8"/><circle cx="377" cy="208" r="8"/></g>' +
+        '<path d="M214 244h52v5h-52zM222 249h36v5h-36z" fill="' + L(p.ground, .3) + '" opacity=".7"/>' +
+        pineR(34, 300, 66, p.tree) + pineR(452, 300, 60, p.tree) + pineR(70, 300, 44, p.tree);
+    }
+  };
+
+  function horse(x, y, s, c) {
+    return '<g fill="' + c + '" transform="translate(' + x + ',' + y + ') scale(' + s + ')">' +
+      '<ellipse cx="0" cy="0" rx="17" ry="8"/>' +
+      '<path d="M12-4l8-10 3.4 2.4-6 10z"/>' +
+      '<path d="M21-15l4.4-2 1.2 3.4-3.4 2z"/>' +
+      '<path d="M-2 6l-1 12M6 6l-1 12M13 5l-1 11M-11 5l-1 10" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<path d="M-16 0q-7 5-4 12" stroke="' + c + '" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M-13-4q-4-3-8-2" stroke="' + c + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '</g>';
   }
 
   /* =========================================================
-   *  1. 页面通用：年份、滚动进度、进场动画、打字机、卡片光效
+   *  3. 景点数据
    * ========================================================= */
-  $('#year').textContent = String(new Date().getFullYear());
+  var SPOTS = [
+    { name:'太白山', cat:'mountain', tag:'秦岭主峰', place:'眉县', art:'snowPeaks',
+      meta:['5A 景区','海拔 3771.2 米'],
+      lead:'秦岭主峰，中国大陆东半壁的最高点，也是道教名山。',
+      hist:'太白山古称“惇物山”，《尚书·禹贡》里已有“终南惇物”的记载。因山顶终年积雪、四时皓白，唐代起称“太白”。李白登临写下“太白与我语，为我开天关”，杜甫、苏轼、于右任等也在此留下诗篇。',
+      see:'拔仙台看日出，大爷海、二爷海的高山湖泊，以及第四纪冰川留下的石海与角峰。从山脚到山顶有明显的垂直景观带，所谓“一日历四季”。',
+      tip:'山门到下板寺有景区车，登顶建议安排在 6—9 月。海拔高、天气变得快，厚外套、防晒和足够的水都要带。' },
 
-  var progressBar = $('#progress');
-  function onScroll() {
-    var h = document.documentElement;
-    var max = h.scrollHeight - h.clientHeight;
-    progressBar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0).toFixed(2) + '%';
+    { name:'鸡峰山', cat:'mountain', tag:'陈仓山', place:'渭滨区', art:'roosterPeak',
+      meta:['宝鸡得名处','石鸡啼鸣'],
+      lead:'宝鸡得名的那座山，相传石鸡一鸣，陈仓改名宝鸡。',
+      hist:'鸡峰山古称陈仓山，在市区南郊。唐至德二年（757 年），相传山上有石鸡啼鸣，被视为祥瑞，朝廷遂改陈仓县为宝鸡县。山中现存庙宇与栈道遗迹。',
+      see:'三峰并立的岩壁、山顶的石鸡与庙宇、云雾里的松林；登顶可以俯瞰渭河与整座城。',
+      tip:'距市区约 20 分钟车程。山路陡，穿防滑的鞋；雨后石阶湿滑，慢一点。' },
+
+    { name:'法门寺', cat:'heritage', tag:'佛指舍利', place:'扶风县', art:'pagoda',
+      meta:['5A 景区','始建于东汉末年'],
+      lead:'供奉释迦牟尼真身指骨舍利的千年古刹。',
+      hist:'法门寺始建于东汉末年桓、灵年间（约公元 2 世纪），因塔而寺、因舍利而兴。唐代先后有八位皇帝六次迎奉佛骨，法门寺成为皇家寺院。1987 年重修宝塔时，尘封一千一百多年的唐代地宫被发现。',
+      see:'合十舍利塔、唐代地宫遗址，以及地宫出土的秘色瓷、鎏金银器、琉璃器。农历四月初八佛诞日的庙会香火最盛。',
+      tip:'在扶风县法门镇，距市区约 1 小时车程。景区很大，从山门到合十舍利塔要走一段，建议留半天。' },
+
+    { name:'宝鸡青铜器博物院', cat:'relic', tag:'青铜器之乡', place:'渭滨区', art:'museum',
+      meta:['免费开放','中华石鼓园内'],
+      lead:'全国最大的青铜器专题博物馆，何尊就住在这里。',
+      hist:'宝鸡是周秦故地，汉代以来屡有青铜重器出土。博物院坐落于中华石鼓园内，馆藏青铜器数以万计，从礼器、乐器到兵器，几乎能拼出一部西周青铜谱系。',
+      see:'镇馆之宝何尊，内底铸有 122 字铭文，“宅兹中国”是“中国”一词最早的文字记载；此外还有逨盘等重器。',
+      tip:'免费参观，周一闭馆（法定节假日除外）。建议预留 2—3 小时，看完可以顺路上石鼓阁，俯瞰渭河与市区。' },
+
+    { name:'周原遗址', cat:'relic', tag:'西周都邑', place:'扶风 · 岐山', art:'ding',
+      meta:['全国重点文保','甲骨窖藏'],
+      lead:'周人灭商之前的都邑，三千年前的“国家档案库”。',
+      hist:'商代晚期，古公亶父率周人自豳迁岐，在岐山南麓的周原营建都邑，历经王季、文王两代，“凤鸣岐山”的传说即出于此。此后周原长期是西周王朝的重要都邑与宗庙所在。',
+      see:'凤雏、召陈一带的大型建筑基址，出土的甲骨与青铜窖藏；周原博物馆里的卜甲和青铜器，能看出西周人的日常。',
+      tip:'在扶风、岐山两县交界，适合与法门寺、周公庙串成一条东线。' },
+
+    { name:'九成宫遗址', cat:'heritage', tag:'醴泉铭', place:'麟游县', art:'palace',
+      meta:['隋唐离宫','避暑胜地'],
+      lead:'隋唐皇帝的避暑离宫，一方《醴泉铭》让这里名满书坛。',
+      hist:'始建于隋开皇十三年（593 年），初名仁寿宫；唐贞观五年（631 年）扩建后更名九成宫。唐太宗多次来此避暑，魏征撰文、欧阳询书丹的《九成宫醴泉铭》被誉为“天下第一楷书”。',
+      see:'遗址内的《万年宫铭》碑与《九成宫醴泉铭》碑刻，天台山与杜水风光。夏天山谷里比市区低好几度。',
+      tip:'在麟游县城，距市区约 2 小时车程。夏季避暑最合适，山路弯多，自驾注意车速。' },
+
+    { name:'关山草原', cat:'nature', tag:'高山草甸', place:'陇县', art:'meadow',
+      meta:['海拔约 2000 米','4A 景区'],
+      lead:'西北内陆少有的高山草甸，夏天像一块铺开的绿毯。',
+      hist:'关山古称陇山、陇坂，是关中通往陇西的咽喉。秦汉时在此设关，唐代设关山牧场，为朝廷养马之地。古丝绸之路的陇关道，就从这片草原上穿过。',
+      see:'六月到八月的草甸花海，骑马、滑草，夜里抬头是成片的星。当地有句老话：“关山六月寒凝霜”。',
+      tip:'在陇县，海拔约 2000 米，昼夜温差大，夏天也要带外套。自驾最方便，景区内可以住一晚看日出。' },
+
+    { name:'五丈原', cat:'heritage', tag:'诸葛亮', place:'岐山县', art:'plateau',
+      meta:['诸葛亮庙','渭水南岸'],
+      lead:'诸葛亮最后一次北伐的屯兵之地，也是他病逝的地方。',
+      hist:'蜀汉建兴十二年（234 年），诸葛亮率军出斜谷、屯兵五丈原，与司马懿隔渭水对峙百余日，同年八月病逝于军中。后人在此建庙祭祀，现存诸葛亮庙始建于元初。',
+      see:'诸葛亮庙、衣冠冢与落星亭。原上地势开阔，可以俯瞰渭水与对面的秦岭。',
+      tip:'在岐山县蔡家坡镇，与周公庙、周原遗址可以安排在同一天。' },
+
+    { name:'姜子牙钓鱼台', cat:'heritage', tag:'愿者上钩', place:'陈仓区', art:'riverRod',
+      meta:['磻溪','文王访贤'],
+      lead:'“姜太公钓鱼，愿者上钩”——故事就发生在这条磻溪边。',
+      hist:'相传商末姜子牙隐居磻溪垂钓，周文王访贤于此，拜为太师。北魏郦道元《水经注》已有磻溪的记载，唐代起在此建庙立祠，历代都有修葺。',
+      see:'钓鱼台巨石、文王庙与三清殿。溪水清冽，两岸树荫很密，夏天走起来凉快。',
+      tip:'在陈仓区磻溪镇，距市区约 40 分钟车程，适合半日游。' },
+
+    { name:'嘉陵江源头', cat:'nature', tag:'江河源头', place:'凤县', art:'fall', v:'spring',
+      pal:{ sky:['#e4f5ff','#f0faff','#f9feff'], rock:'#6f9fb5', water:'#a5d8ec', tree:'#3a6a5c' },
+      meta:['秦岭腹地','森林公园'],
+      lead:'一条大江从这里出发，穿过秦岭，一路流向重庆。',
+      hist:'嘉陵江发源于秦岭北麓的凤县一带，上游古称西汉水。源头景区位于凤县黄牛铺镇，正好处在秦岭南北气候与植被的交界地带。',
+      see:'原始森林、溪流与瀑布，秋天满山红叶。站在分水岭上，一脚踩着北方，一脚踩着南方。',
+      tip:'凤县距市区约 1.5 小时车程，景区步道较多，穿一双舒服的鞋。' },
+
+    { name:'炎帝陵', cat:'heritage', tag:'炎帝故里', place:'渭滨区', art:'shrine', v:'tomb',
+      pal:{ ground:'#e9dcc0', warm:'#b8472c', tree:'#4c6a4e' },
+      meta:['常羊山','寻根祭祖'],
+      lead:'常羊山上的炎帝陵，是海内外华人寻根祭祖的地方。',
+      hist:'宝鸡是炎帝神农氏的故里。常羊山炎帝陵始建于唐代，历代均有修葺。传说炎帝在此教民稼穑、尝百草，开创了农耕文明。',
+      see:'炎帝陵、神农祠，以及每年清明前后的公祭大典。',
+      tip:'在市区南郊常羊山，距市区约 20 分钟车程，可与青铜器博物院安排在同一天。' },
+
+    { name:'金台观', cat:'heritage', tag:'张三丰', place:'金台区', art:'shrine', v:'terrace',
+      pal:{ sky:['#eef2f0','#f7faf8','#fdfefd'], rock:'#8b8d80', ground:'#e6e7dc', tree:'#5a5c4f', warm:'#7d6a52' },
+      meta:['元末明初','依山而建'],
+      lead:'张三丰修道的地方，也是俯瞰宝鸡老城的好位置。',
+      hist:'金台观创建于元末明初，是明代道士张三丰修炼之所。观内建筑依山就势，明清两代多次重修，现存建筑保留了明代风格，曾长期作为宝鸡市博物馆使用。',
+      see:'玉皇阁、三清殿与张三丰遗迹。登到高处，渭河与老城的屋顶都在脚下。',
+      tip:'在金台区，与西府老街、陈仓老街相距不远，可以串成半日游。' },
+
+    { name:'凤翔', cat:'folk', tag:'秦都雍城', place:'凤翔区', art:'lake', v:'pavilion',
+      pal:{ water:'#bcd9e2', tree:'#5d6a80', rock:'#957cb2' },
+      meta:['建都 294 年','非遗之乡'],
+      lead:'秦人建都近三百年的雍城，也是泥塑、年画与西凤酒的故乡。',
+      hist:'秦德公迁都雍城（今凤翔），自公元前 677 年至公元前 383 年，秦国在此建都 294 年，历十九位国君。唐代设凤翔府，苏轼曾任凤翔府判官，疏浚了东湖。',
+      see:'雍城遗址、东湖、周家大院；凤翔泥塑、木版年画与西凤酒的老作坊。',
+      tip:'凤翔区距市区约 40 分钟车程，东湖与周家大院可以一并游览。' },
+
+    { name:'周公庙', cat:'heritage', tag:'周文化祖庭', place:'岐山县', art:'shrine', v:'cypress',
+      pal:{ sky:['#f2f6e6','#f8fbef','#fcfdf5'], rock:'#8f8159', ground:'#e8e4cd', tree:'#3f5b45', warm:'#8f4a2e' },
+      meta:['始建于唐','凤凰山南麓'],
+      lead:'纪念周公旦的祠庙，也是周文化的祖庭。',
+      hist:'周公庙位于岐山县城西北的凤凰山南麓，始建于唐武德年间（618—626 年），历代均有修葺。周公旦制礼作乐，被尊为儒家元圣，这里因此成为周文化的重要祭祀地。',
+      see:'三公殿、润德泉与古柏群；庙后的凤凰山遗址。',
+      tip:'与周原遗址、五丈原同在岐山一线，可以安排一天。' },
+
+    { name:'红河谷', cat:'nature', tag:'峡谷瀑布', place:'眉县', art:'fall', v:'canyon',
+      pal:{ sky:['#fdf1e8','#fff7f1','#fffbf7'], rock:'#c08a70', water:'#bcd6d8', tree:'#6d5a45', warm:'#b0503a' },
+      meta:['太白山北麓','夏季清凉'],
+      lead:'太白山北麓的峡谷，瀑布、深潭与红褐色岩壁。',
+      hist:'红河谷在太白山国家森林公园的北侧，因谷中岩石呈红褐色得名。溪水自太白山北坡流下，切出一道幽深的峡谷。',
+      see:'斗姆瀑布、四嘴山与沿溪栈道；夏天水声不断，很凉快。',
+      tip:'距太白山景区不远，可与太白山安排两天。' },
+
+    { name:'通天河', cat:'nature', tag:'原始森林', place:'凤县', art:'forestRiver',
+      meta:['国家森林公园','秦岭西段'],
+      lead:'秦岭深处的森林公园，一条河在原始林里穿行。',
+      hist:'通天河国家森林公园位于凤县西北，属秦岭西段，森林覆盖率高，是嘉陵江支流的源头区之一。',
+      see:'原始森林、石桥与溪流，秋季层林尽染；“通天河”之名取自河谷深切、直上云端的地势。',
+      tip:'距凤县县城约 1 小时，山路弯多，建议白天行车。' },
+
+    { name:'千湖湿地', cat:'nature', tag:'渭北水乡', place:'千阳县', art:'lake',
+      meta:['国家湿地公园','候鸟迁徙'],
+      lead:'渭北旱塬上的一片水面，芦苇、水鸟与落日。',
+      hist:'千湖国家湿地公园位于千阳县城附近的千河沿岸，由河道、库塘与滩涂组成，是渭北地区少见的大面积湿地。',
+      see:'芦苇荡、观鸟栈道与傍晚的湖面；候鸟迁徙季最热闹。',
+      tip:'千阳县距市区约 1 小时，傍晚光线最好。' },
+
+    { name:'中华石鼓园', cat:'relic', tag:'石鼓出土', place:'渭滨区', art:'stones',
+      meta:['石鼓阁','与博物院相邻'],
+      lead:'石鼓出土的地方，如今是宝鸡的城市文化客厅。',
+      hist:'唐代在宝鸡石鼓山出土十面石鼓，上刻籀文四言诗，是我国现存最早的石刻诗文，现藏故宫博物院。中华石鼓园依石鼓山而建，与青铜器博物院相邻。',
+      see:'石鼓阁、石鼓文化广场与青铜器博物院；登阁可望渭河。',
+      tip:'与青铜器博物院同在一处，免费，适合安排半日。' },
+
+    { name:'西府老街', cat:'folk', tag:'西府味道', place:'金台区', art:'street',
+      meta:['民俗街区','非遗小吃'],
+      lead:'一条把西府吃食和手艺聚在一起的老街。',
+      hist:'西府老街在宝鸡市区北塬，以关中西部传统民居为原型复建，青砖灰瓦、木格窗，集中展示西府的饮食与非遗手艺。',
+      see:'臊子面、擀面皮、油糕；泥塑、剪纸与皮影的小铺子。',
+      tip:'与金台观相距不远，晚上灯亮起来更好看。' },
+
+    { name:'大唐秦王陵', cat:'heritage', tag:'五代王陵', place:'金台区', art:'tomb',
+      meta:['李茂贞墓','地宫开放'],
+      lead:'五代秦王李茂贞与夫人的合葬陵，地宫可以下去看。',
+      hist:'大唐秦王陵是唐末五代岐王李茂贞及其夫人的合葬墓，位于宝鸡市区北的原上。陵园地面存封土与石刻，地宫对外开放，可见砖雕与壁画。',
+      see:'神道石刻、封土与地宫砖雕。',
+      tip:'距市区约 15 分钟车程，建议请讲解，地宫里凉，带件外套。' }
+  ];
+
+  /* =========================================================
+   *  4. 渲染
+   * ========================================================= */
+  var grid = $('#spotGrid');
+
+  function paletteFor(s) {
+    var base = BASE[s.cat];
+    var out = {};
+    for (var k in base) out[k] = base[k];
+    if (s.pal) for (var j in s.pal) out[j] = s.pal[j];
+    return out;
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+
+  function artFor(s, i) {
+    var p = paletteFor(s);
+    var body = (ART[s.art] || ART.pagoda)(p, i, s.v);
+    return '<svg viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + s.name + ' 插画">' +
+      defsFor(i, p) + body +
+      '<rect width="480" height="300" fill="url(#vg' + i + ')" opacity=".5"/>' +
+      '</svg>';
+  }
+
+  function card(s, i) {
+    return '<article class="spot" data-cat="' + s.cat + '">' +
+      '<figure class="spot-photo">' + artFor(s, i) +
+        '<figcaption><span>' + s.place + '</span><span>' + CAT_NAME[s.cat] + '</span></figcaption>' +
+      '</figure>' +
+      '<div class="spot-main">' +
+        '<div class="spot-head"><h3>' + s.name + '</h3><span class="tag">' + s.tag + '</span></div>' +
+        '<p class="spot-lead">' + s.lead + '</p>' +
+        '<ul class="spot-meta">' + s.meta.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>' +
+        '<div class="spot-body"><div class="spot-inner">' +
+          '<h4>历史沿革</h4><p>' + s.hist + '</p>' +
+          '<h4>看点</h4><p>' + s.see + '</p>' +
+          '<h4>走法</h4><p>' + s.tip + '</p>' +
+        '</div></div>' +
+        '<button class="spot-toggle" type="button" aria-expanded="false">' +
+          '<span>展开介绍</span>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
+        '</button>' +
+      '</div>' +
+    '</article>';
+  }
+
+  grid.innerHTML = SPOTS.map(card).join('');
+
+  /* ---------- 展开 / 收起 ---------- */
+  function setOpen(cardEl, open) {
+    cardEl.classList.toggle('is-open', open);
+    var btn = cardEl.querySelector('.spot-toggle');
+    if (btn) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.querySelector('span').textContent = open ? '收起' : '展开介绍';
+    }
+  }
+
+  grid.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.spot-toggle') : null;
+    if (!btn) return;
+    var cardEl = btn.closest('.spot');
+    setOpen(cardEl, !cardEl.classList.contains('is-open'));
+  });
+
+  $('#expandAll').addEventListener('click', function () {
+    $$('.spot:not(.is-hidden)', grid).forEach(function (c) { setOpen(c, true); });
+  });
+  $('#collapseAll').addEventListener('click', function () {
+    $$('.spot', grid).forEach(function (c) { setOpen(c, false); });
+  });
+
+  /* ---------- 筛选 ---------- */
+  var chips = $$('.chip');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.toggle('is-on', c === chip); });
+      var want = chip.getAttribute('data-filter');
+      $$('.spot', grid).forEach(function (c) {
+        var ok = want === 'all' || c.getAttribute('data-cat') === want;
+        c.classList.toggle('is-hidden', !ok);
+        if (!ok) setOpen(c, false);
+      });
+    });
+  });
+
+  /* =========================================================
+   *  5. 数字滚动 + 进场
+   * ========================================================= */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+    if (!isFinite(target)) return;
+    var start = null;
+    var dur = 1100;
+    function tick(ts) {
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target * eased).toFixed(dec);
+      if (p < 1) window.requestAnimationFrame(tick);
+      else el.textContent = dec ? target.toFixed(dec) : String(target);
+    }
+    window.requestAnimationFrame(tick);
+  }
 
   var reveals = $$('.reveal');
+  var counters = $$('[data-count]');
+
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        io.unobserve(en.target);
       });
-    }, { threshold: 0.14, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
     reveals.forEach(function (el) { io.observe(el); });
+
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        countUp(en.target);
+        cio.unobserve(en.target);
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { cio.observe(el); });
   } else {
     reveals.forEach(function (el) { el.classList.add('in'); });
-  }
-
-  (function typewriter() {
-    var out = $('#typed');
-    var phrases = ['写网页', '做小游戏', '把想法变成能点开的东西'];
-    var pi = 0, ci = 0, deleting = false;
-    function step() {
-      var word = phrases[pi];
-      if (!deleting) {
-        ci++;
-        out.textContent = word.slice(0, ci);
-        if (ci === word.length) { deleting = true; return setTimeout(step, 1500); }
-        setTimeout(step, 95);
-      } else {
-        ci--;
-        out.textContent = word.slice(0, ci);
-        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; return setTimeout(step, 320); }
-        setTimeout(step, 45);
-      }
-    }
-    setTimeout(step, 400);
-  })();
-
-  $$('.card').forEach(function (card) {
-    card.addEventListener('pointermove', function (e) {
-      var r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    counters.forEach(function (el) {
+      el.textContent = el.getAttribute('data-dec') === '0'
+        ? el.getAttribute('data-count')
+        : parseFloat(el.getAttribute('data-count')).toFixed(1);
     });
-  });
-
-  /* =========================================================
-   *  2. 游戏框架
-   * ========================================================= */
-  var HUD = {
-    scoreK: $('#statScoreK'),
-    bestK: $('#statBestK'),
-    score: $('#statScore'),
-    best: $('#statBest'),
-    keys: $('#panelKeys'),
-    dpad: $('#dpadWrap'),
-    pause: $('#pauseBtn'),
-    restart: $('#restartBtn')
-  };
-
-  var PANELS = {
-    snake: {
-      scoreK: '分数', bestK: '最高分', dpad: true, pause: true,
-      keys: ['← ↑ → ↓', 'W A S D', '空格 暂停', '滑动 转向']
-    },
-    breakout: {
-      scoreK: '分数', bestK: '最高分', dpad: false, pause: true,
-      keys: ['← → 或 A D', '鼠标移动', '触屏拖动', '空格 暂停']
-    },
-    memory: {
-      scoreK: '步数', bestK: '最佳步数', dpad: false, pause: false,
-      keys: ['点击卡片', '每次两张', '全部配对即胜利']
-    },
-    g2048: {
-      scoreK: '分数', bestK: '最高分', dpad: false, pause: false,
-      keys: ['← ↑ → ↓', 'W A S D', '滑动 移动']
-    }
-  };
-
-  var games = {};
-  var activeId = 'snake';
-
-  function parts(id) {
-    var el = document.querySelector('.board[data-game="' + id + '"]');
-    var ov = el.querySelector('.overlay');
-    return {
-      el: el,
-      ov: ov,
-      title: ov.querySelector('h3'),
-      text: ov.querySelector('p'),
-      btn: ov.querySelector('button')
-    };
-  }
-
-  function showOverlay(p, title, text, btnText, action) {
-    p.title.innerHTML = title;
-    p.text.innerHTML = text;
-    p.btn.textContent = btnText;
-    p.btn.onclick = action;
-    p.ov.classList.remove('hide');
-  }
-  function hideOverlay(p) { p.ov.classList.add('hide'); }
-
-  // 暂停/继续按钮的文字跟着当前游戏状态走
-  function syncPauseLabel(g) {
-    if (g.id !== activeId) return;
-    if (!PANELS[g.id] || !PANELS[g.id].pause) return;
-    HUD.pause.textContent = g.running ? '暂停' : (g.started && !g.over ? '继续' : '开始');
-  }
-
-  function syncHUD(g) {
-    HUD.score.textContent = String(g.score);
-    if (g.id === 'memory') HUD.best.textContent = g.best ? String(g.best) : '—';
-    else HUD.best.textContent = String(g.best || 0);
-  }
-
-  function applyPanel(id) {
-    var p = PANELS[id];
-    HUD.scoreK.textContent = p.scoreK;
-    HUD.bestK.textContent = p.bestK;
-    HUD.keys.innerHTML = p.keys.map(function (k) { return '<li>' + k + '</li>'; }).join('');
-    HUD.dpad.hidden = !p.dpad;
-    HUD.pause.hidden = !p.pause;
-    if (PANELS[id].pause) syncPauseLabel(games[id]);
-    syncHUD(games[id]);
-  }
-
-  function focusBoard(el) {
-    try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
-  }
-
-  function setActive(id) {
-    if (id === activeId || !games[id]) return;
-    var prev = games[activeId];
-    if (prev.running && prev.canPause) prev.pause();
-    if (prev.stop) prev.stop();
-    prev.ui.el.hidden = true;
-
-    activeId = id;
-    var g = games[id];
-    g.ui.el.hidden = false;
-
-    $$('.tab').forEach(function (t) {
-      var on = t.getAttribute('data-game') === id;
-      t.classList.toggle('is-active', on);
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-
-    applyPanel(id);
-    if (g.view) g.view.fit();
-    g.showState();
-    focusBoard(g.ui.el);
-  }
-
-  /* ---------- 主循环：同一时间只跑一个游戏 ---------- */
-  var lastTs = 0;
-  function frame(ts) {
-    window.requestAnimationFrame(frame);
-    if (!lastTs) lastTs = ts;
-    var dt = ts - lastTs;
-    lastTs = ts;
-    if (dt > 220) dt = 220;
-
-    var g = games[activeId];
-    if (!g) return;
-    if (g.tick && g.running) g.tick(dt);
-    if (g.draw) g.draw(ts, dt);
   }
 
   /* =========================================================
-   *  3. 贪吃蛇
+   *  6. 回到顶部
    * ========================================================= */
-  (function initSnake() {
-    var N = 18;
-    var L = 360;                 // 逻辑画布尺寸
-    var C = L / N;               // 单元格
-    var ui = parts('snake');
-    var view = makeView(ui.el.querySelector('canvas'), L);
+  var toTop = $('#toTop');
+  function onScroll() { toTop.classList.toggle('show', window.scrollY > 640); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
-    var DIRS = {
-      ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 },
-      ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 },
-      w: { x: 0, y: -1 }, s: { x: 0, y: 1 },
-      a: { x: -1, y: 0 }, d: { x: 1, y: 0 }
-    };
+  /* =========================================================
+   *  7. 背景音乐（浏览器实时合成，无音频文件）
+   *     五声音阶 + 长音铺底 + 一点回声，音量压得很低
+   * ========================================================= */
+  (function music() {
+    var btn = $('#musicBtn');
+    var ctx = null, master = null, timer = null, on = false;
+    var ROOT = 196.00;                       // G3
+    var SCALE = [0, 2, 4, 7, 9, 12, 14];     // 五声音阶
+    var idx = 3;
 
-    var g = {
-      id: 'snake', ui: ui, view: view, canPause: true,
-      started: false, running: false, over: false,
-      score: 0, best: loadNum('chm-snake-best', 0),
-      snake: [], dir: { x: 1, y: 0 }, queue: [], food: null,
-      acc: 0, interval: 145, base: 145, min: 72,
-      particles: [], alive: true
-    };
+    function build() {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
 
-    function onSnake(x, y) {
-      for (var i = 0; i < g.snake.length; i++) {
-        if (g.snake[i].x === x && g.snake[i].y === y) return true;
-      }
-      return false;
-    }
+      master = ctx.createGain();
+      master.gain.value = 0.0001;
 
-    function placeFood() {
-      var free = [];
-      for (var y = 0; y < N; y++) {
-        for (var x = 0; x < N; x++) if (!onSnake(x, y)) free.push({ x: x, y: y });
-      }
-      g.food = free.length ? free[(Math.random() * free.length) | 0] : null;
-    }
+      var lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 1600;
+      lp.Q.value = 0.3;
 
-    g.reset = function () {
-      g.snake = [{ x: 6, y: 9 }, { x: 5, y: 9 }, { x: 4, y: 9 }];
-      g.dir = { x: 1, y: 0 };
-      g.queue = [];
-      g.score = 0;
-      g.interval = g.base;
-      g.acc = 0;
-      g.alive = true;
-      g.over = false;
-      g.started = false;
-      g.running = false;
-      g.particles = [];
-      placeFood();
-      syncHUD(g);
-    };
+      var delay = ctx.createDelay(1.2);
+      delay.delayTime.value = 0.46;
+      var fb = ctx.createGain(); fb.gain.value = 0.26;
+      var wet = ctx.createGain(); wet.gain.value = 0.32;
 
-    g.begin = function () {
-      if (!g.started || g.over) g.reset();
-      g.started = true;
-      g.running = true;
-      g.over = false;
-      g.acc = 0;
-      g.showState();
-    };
-
-    g.pause = function () {
-      if (!g.running) return;
-      g.running = false;
-      g.showState();
-    };
-
-    g.showState = function () {
-      syncPauseLabel(g);
-      if (g.running) { hideOverlay(ui); return; }
-      if (g.over) {
-        showOverlay(ui, '游戏结束', '本局得分 <span class="big">' + g.score + '</span>', '再来一局', g.begin);
-        return;
-      }
-      if (g.started) {
-        showOverlay(ui, '已暂停', '按空格或点下面的按钮继续。', '继续', g.begin);
-        return;
-      }
-      showOverlay(ui, '准备开始？', '方向键或 WASD 控制方向，空格暂停。手机上可以直接滑动，也可以用右边的方向键。', '开始游戏', g.begin);
-    };
-
-    g.key = function (k) {
-      var d = DIRS[k];
-      if (!d) return false;
-      if (!g.running) g.begin();
-      if (g.queue.length < 3) g.queue.push(d);
+      master.connect(lp);
+      lp.connect(ctx.destination);
+      lp.connect(delay);
+      delay.connect(fb);
+      fb.connect(delay);
+      delay.connect(wet);
+      wet.connect(ctx.destination);
       return true;
-    };
-
-    function burst(gx, gy) {
-      var cx = (gx + 0.5) * C;
-      var cy = (gy + 0.5) * C;
-      for (var i = 0; i < 12; i++) {
-        var a = (Math.PI * 2 * i) / 12 + Math.random() * 0.4;
-        var s = 0.5 + Math.random() * 1.1;
-        g.particles.push({
-          x: cx, y: cy, vx: Math.cos(a) * s * 2, vy: Math.sin(a) * s * 2,
-          life: 1, r: 1.2 + Math.random() * 2, hue: 320 + Math.random() * 40
-        });
-      }
     }
 
-    function gameOver() {
-      g.alive = false;
-      g.running = false;
-      g.over = true;
-      if (g.score > g.best) { g.best = g.score; saveNum('chm-snake-best', g.best); }
-      syncHUD(g);
-      g.showState();
+    function tone(freq, when, dur, vol, type) {
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = type || 'sine';
+      o.frequency.setValueAtTime(freq, when);
+      g.gain.setValueAtTime(0.0001, when);
+      g.gain.exponentialRampToValueAtTime(vol, when + 0.12);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+      o.connect(g);
+      g.connect(master);
+      o.start(when);
+      o.stop(when + dur + 0.05);
     }
 
     function step() {
-      while (g.queue.length) {
-        var d = g.queue.shift();
-        if (d.x === -g.dir.x && d.y === -g.dir.y) continue;
-        if (d.x === g.dir.x && d.y === g.dir.y) continue;
-        g.dir = d;
-        break;
-      }
-
-      var head = { x: g.snake[0].x + g.dir.x, y: g.snake[0].y + g.dir.y };
-      if (head.x < 0 || head.y < 0 || head.x >= N || head.y >= N) { gameOver(); return; }
-
-      var eating = g.food && head.x === g.food.x && head.y === g.food.y;
-      var limit = eating ? g.snake.length : g.snake.length - 1;
-      for (var i = 0; i < limit; i++) {
-        if (g.snake[i].x === head.x && g.snake[i].y === head.y) { gameOver(); return; }
-      }
-
-      g.snake.unshift(head);
-
-      if (eating) {
-        g.score += 10;
-        burst(head.x, head.y);
-        placeFood();
-        g.interval = Math.max(g.min, g.base - Math.floor(g.score / 30) * 4);
-        if (g.score > g.best) { g.best = g.score; saveNum('chm-snake-best', g.best); }
-        syncHUD(g);
-      } else {
-        g.snake.pop();
+      if (!ctx || !on) return;
+      var t = ctx.currentTime + 0.06;
+      var moves = [-1, 1, 1, 0, 2, -1, 1];
+      idx = Math.max(0, Math.min(SCALE.length - 1, idx + moves[(Math.random() * moves.length) | 0]));
+      tone(ROOT * Math.pow(2, SCALE[idx] / 12), t, 2.8, 0.14, 'sine');
+      if (Math.random() < 0.45) {
+        tone(ROOT / 2 * Math.pow(2, (idx % 2 ? 7 : 0) / 12), t, 3.6, 0.09, 'sine');
       }
     }
 
-    g.tick = function (dt) {
-      if (!g.alive) return;
-      g.acc += dt;
-      var guard = 0;
-      while (g.acc >= g.interval && g.alive && g.running && guard++ < 5) {
-        g.acc -= g.interval;
-        step();
+    function start() {
+      if (!ctx && !build()) return;
+      if (ctx.state === 'suspended') ctx.resume();
+      on = true;
+      var t = ctx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t);
+      master.gain.linearRampToValueAtTime(0.42, t + 2.4);
+      step();
+      clearInterval(timer);
+      timer = window.setInterval(step, 1500);
+      btn.classList.add('on');
+      btn.setAttribute('aria-pressed', 'true');
+      btn.title = '点击暂停背景音乐';
+    }
+
+    function stop() {
+      on = false;
+      clearInterval(timer);
+      timer = null;
+      if (ctx && master) {
+        var t = ctx.currentTime;
+        master.gain.cancelScheduledValues(t);
+        master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t);
+        master.gain.linearRampToValueAtTime(0.0001, t + 1.1);
       }
-      if (g.acc > g.interval * 5) g.acc = 0;
-    };
+      btn.classList.remove('on');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.title = '点击播放背景音乐';
+    }
 
-    g.draw = function (ts, dt) {
-      if (!view.ready) return;
-      var ctx = view.ctx;
-
-      // 粒子
-      var k = (dt || 16) / 16.67;
-      for (var i = g.particles.length - 1; i >= 0; i--) {
-        var p = g.particles[i];
-        p.x += p.vx * k; p.y += p.vy * k;
-        p.vx *= 0.94; p.vy *= 0.94;
-        p.life -= 0.035 * k;
-        if (p.life <= 0) g.particles.splice(i, 1);
-      }
-
-      ctx.clearRect(0, 0, L, L);
-
-      // 网格
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255,255,255,.045)';
-      for (var n = 1; n < N; n++) {
-        var q = n * C + 0.5;
-        ctx.beginPath(); ctx.moveTo(q, 0); ctx.lineTo(q, L); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, q); ctx.lineTo(L, q); ctx.stroke();
-      }
-
-      // 食物
-      if (g.food) {
-        var t = (ts || 0) / 1000;
-        var pulse = 1 + 0.09 * Math.sin(t * 4);
-        var fx = (g.food.x + 0.5) * C;
-        var fy = (g.food.y + 0.5) * C;
-        var fr = C * 0.3 * pulse;
-        ctx.save();
-        ctx.shadowColor = 'rgba(244,114,182,.9)';
-        ctx.shadowBlur = C * 1.1;
-        ctx.fillStyle = '#f472b6';
-        ctx.beginPath(); ctx.arc(fx, fy, fr, 0, Math.PI * 2); ctx.fill();
-        ctx.restore();
-        ctx.fillStyle = 'rgba(255,255,255,.72)';
-        ctx.beginPath(); ctx.arc(fx - fr * 0.3, fy - fr * 0.34, fr * 0.28, 0, Math.PI * 2); ctx.fill();
-      }
-
-      // 蛇身
-      var len = Math.max(1, g.snake.length - 1);
-      for (var s = g.snake.length - 1; s >= 0; s--) {
-        var seg = g.snake[s];
-        var tt = s / len;
-        var hue = 168 + tt * 94;
-        var light = 66 - tt * 17;
-        var pad = C * (s === 0 ? 0.05 : 0.1);
-        ctx.save();
-        if (s === 0) { ctx.shadowColor = 'rgba(94,234,212,.75)'; ctx.shadowBlur = C * 0.9; }
-        var grad = ctx.createLinearGradient(seg.x * C, seg.y * C, seg.x * C + C, seg.y * C + C);
-        grad.addColorStop(0, 'hsl(' + hue + ',88%,' + (light + 6) + '%)');
-        grad.addColorStop(1, 'hsl(' + (hue + 12) + ',82%,' + (light - 4) + '%)');
-        ctx.fillStyle = grad;
-        roundRect(ctx, seg.x * C + pad, seg.y * C + pad, C - pad * 2, C - pad * 2, C * 0.34);
-        ctx.fill();
-        ctx.restore();
-      }
-
-      // 眼睛
-      if (g.snake.length) {
-        var h0 = g.snake[0];
-        var hx = (h0.x + 0.5) * C;
-        var hy = (h0.y + 0.5) * C;
-        var perp = { x: -g.dir.y, y: g.dir.x };
-        var off = C * 0.19;
-        var fwd = C * 0.13;
-        ctx.fillStyle = '#04120f';
-        for (var e = -1; e <= 1; e += 2) {
-          ctx.beginPath();
-          ctx.arc(hx + perp.x * off * e + g.dir.x * fwd, hy + perp.y * off * e + g.dir.y * fwd, Math.max(1.1, C * 0.085), 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      // 粒子
-      for (var m = 0; m < g.particles.length; m++) {
-        var pa = g.particles[m];
-        ctx.globalAlpha = Math.max(0, pa.life);
-        ctx.fillStyle = 'hsl(' + pa.hue + ',90%,68%)';
-        ctx.beginPath(); ctx.arc(pa.x, pa.y, pa.r, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    };
-
-    // 方向键按钮
-    $$('#dpadWrap button[data-dir]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var map = { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' };
-        g.key(map[btn.getAttribute('data-dir')]);
-        if (g.running) focusBoard(ui.el);
-      });
+    btn.addEventListener('click', function () {
+      if (on) stop(); else start();
     });
 
-    // 触屏滑动
-    var touchStart = null;
-    ui.el.addEventListener('touchstart', function (e) {
-      if (e.touches && e.touches.length === 1) {
-        touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    document.addEventListener('visibilitychange', function () {
+      if (!ctx) return;
+      if (document.hidden && on) {
+        ctx.suspend();
+      } else if (!document.hidden && on && ctx.state === 'suspended') {
+        ctx.resume();
       }
-    }, { passive: true });
-    ui.el.addEventListener('touchend', function (e) {
-      if (!touchStart || !e.changedTouches || !e.changedTouches.length) { touchStart = null; return; }
-      var t1 = e.changedTouches[0];
-      var dx = t1.clientX - touchStart.x;
-      var dy = t1.clientY - touchStart.y;
-      touchStart = null;
-      if (Math.max(Math.abs(dx), Math.abs(dy)) < 22) return;
-      if (Math.abs(dx) > Math.abs(dy)) g.key(dx > 0 ? 'ArrowRight' : 'ArrowLeft');
-      else g.key(dy > 0 ? 'ArrowDown' : 'ArrowUp');
-    }, { passive: true });
-
-    if ('ResizeObserver' in window) new ResizeObserver(function () { if (!ui.el.hidden) view.fit(); }).observe(ui.el);
-    window.addEventListener('resize', function () { if (!ui.el.hidden) view.fit(); });
-
-    g.reset();
-    games.snake = g;
-  })();
-
-  /* =========================================================
-   *  4. 打砖块
-   * ========================================================= */
-  (function initBreakout() {
-    var W = 480;
-    var H = 480;
-    var ui = parts('breakout');
-    var view = makeView(ui.el.querySelector('canvas'), W);
-
-    var COLS = 8, ROWS = 5, GAP = 6, MARGIN = 18, TOP = 54, BH = 18;
-    var BW = (W - MARGIN * 2 - GAP * (COLS - 1)) / COLS;
-
-    var g = {
-      id: 'breakout', ui: ui, view: view, canPause: true,
-      started: false, running: false, over: false,
-      score: 0, best: loadNum('chm-breakout-best', 0),
-      lives: 3, level: 1, speed: 4.8,
-      paddle: { x: W / 2, y: H - 34, w: 78, h: 12 },
-      ball: { x: W / 2, y: H - 60, r: 6, vx: 0, vy: 0 },
-      bricks: [],
-      holds: { left: false, right: false }
-    };
-
-    function buildBricks() {
-      g.bricks = [];
-      for (var r = 0; r < ROWS; r++) {
-        for (var c = 0; c < COLS; c++) {
-          g.bricks.push({
-            x: MARGIN + c * (BW + GAP),
-            y: TOP + r * (BH + GAP),
-            w: BW, h: BH, row: r, alive: true
-          });
-        }
-      }
-    }
-
-    function serve() {
-      g.ball.x = g.paddle.x;
-      g.ball.y = g.paddle.y - g.ball.r - 2;
-      var angle = 0.62;                        // 固定的发球角度，手感稳定
-      g.ball.vx = Math.sin(angle) * g.speed;
-      g.ball.vy = -Math.cos(angle) * g.speed;
-    }
-
-    g.reset = function () {
-      g.score = 0;
-      g.lives = 3;
-      g.level = 1;
-      g.speed = 4.8;
-      g.paddle.x = W / 2;
-      g.holds.left = false;
-      g.holds.right = false;
-      g.started = false;
-      g.running = false;
-      g.over = false;
-      buildBricks();
-      serve();
-      syncHUD(g);
-    };
-
-    g.begin = function () {
-      if (!g.started || g.over) g.reset();
-      g.started = true;
-      g.over = false;
-      g.running = true;
-      g.showState();
-    };
-
-    g.pause = function () {
-      if (!g.running) return;
-      g.running = false;
-      g.holds.left = false;
-      g.holds.right = false;
-      g.showState();
-    };
-
-    g.showState = function () {
-      syncPauseLabel(g);
-      if (g.running) { hideOverlay(ui); return; }
-      if (g.over) {
-        showOverlay(ui, '游戏结束', '本局得分 <span class="big">' + g.score + '</span>', '再来一局', g.begin);
-        return;
-      }
-      if (g.started) {
-        showOverlay(ui, '已暂停', '按空格或点下面的按钮继续。', '继续', g.begin);
-        return;
-      }
-      showOverlay(ui, '准备开始？', '移动鼠标或按左右键控制挡板，让球把砖块全部打掉。', '开始游戏', g.begin);
-    };
-
-    function gameOver() {
-      g.over = true;
-      g.running = false;
-      if (g.score > g.best) { g.best = g.score; saveNum('chm-breakout-best', g.best); }
-      syncHUD(g);
-      g.showState();
-    }
-
-    function loseLife() {
-      g.lives -= 1;
-      if (g.lives <= 0) { gameOver(); return; }
-      serve();
-    }
-
-    g.tick = function (dt) {
-      var k = dt / 16.67;
-      var b = g.ball;
-      var p = g.paddle;
-
-      if (g.holds.left) p.x -= 9 * k;
-      if (g.holds.right) p.x += 9 * k;
-      p.x = clamp(p.x, p.w / 2 + 4, W - p.w / 2 - 4);
-
-      b.x += b.vx * k;
-      b.y += b.vy * k;
-
-      if (b.x - b.r < 0) { b.x = b.r; b.vx = Math.abs(b.vx); }
-      if (b.x + b.r > W) { b.x = W - b.r; b.vx = -Math.abs(b.vx); }
-      if (b.y - b.r < 0) { b.y = b.r; b.vy = Math.abs(b.vy); }
-
-      // 掉出底部
-      if (b.y - b.r > H) { loseLife(); return; }
-
-      // 挡板
-      if (b.vy > 0 && b.y + b.r >= p.y && b.y - b.r <= p.y + p.h) {
-        if (b.x >= p.x - p.w / 2 - b.r && b.x <= p.x + p.w / 2 + b.r) {
-          b.y = p.y - b.r;
-          var off = clamp((b.x - p.x) / (p.w / 2), -1, 1);
-          var ang = off * 1.02;
-          b.vx = Math.sin(ang) * g.speed;
-          b.vy = -Math.cos(ang) * g.speed;
-        }
-      }
-
-      // 砖块
-      for (var i = 0; i < g.bricks.length; i++) {
-        var br = g.bricks[i];
-        if (!br.alive) continue;
-        if (b.x + b.r > br.x && b.x - b.r < br.x + br.w && b.y + b.r > br.y && b.y - b.r < br.y + br.h) {
-          br.alive = false;
-          g.score += 10;
-          if (g.score > g.best) { g.best = g.score; saveNum('chm-breakout-best', g.best); }
-          var ox = Math.min(b.x + b.r - br.x, br.x + br.w - (b.x - b.r));
-          var oy = Math.min(b.y + b.r - br.y, br.y + br.h - (b.y - b.r));
-          if (ox < oy) b.vx = -b.vx; else b.vy = -b.vy;
-          syncHUD(g);
-          break;
-        }
-      }
-
-      // 通关
-      var left = 0;
-      for (var j = 0; j < g.bricks.length; j++) if (g.bricks[j].alive) { left++; break; }
-      if (!left) {
-        g.level += 1;
-        g.speed = Math.min(8.4, g.speed * 1.06);
-        buildBricks();
-        serve();
-      }
-    };
-
-    g.draw = function () {
-      if (!view.ready) return;
-      var ctx = view.ctx;
-      ctx.clearRect(0, 0, W, H);
-
-      // 砖块
-      for (var i = 0; i < g.bricks.length; i++) {
-        var br = g.bricks[i];
-        if (!br.alive) continue;
-        var hue = 168 + br.row * 22;
-        var grad = ctx.createLinearGradient(br.x, br.y, br.x + br.w, br.y + br.h);
-        grad.addColorStop(0, 'hsl(' + hue + ',72%,62%)');
-        grad.addColorStop(1, 'hsl(' + (hue + 16) + ',70%,48%)');
-        ctx.fillStyle = grad;
-        roundRect(ctx, br.x, br.y, br.w, br.h, 5);
-        ctx.fill();
-      }
-
-      // 挡板
-      var p = g.paddle;
-      var pg = ctx.createLinearGradient(p.x - p.w / 2, p.y, p.x + p.w / 2, p.y + p.h);
-      pg.addColorStop(0, '#5eead4');
-      pg.addColorStop(1, '#a78bfa');
-      ctx.save();
-      ctx.shadowColor = 'rgba(94,234,212,.55)';
-      ctx.shadowBlur = 16;
-      ctx.fillStyle = pg;
-      roundRect(ctx, p.x - p.w / 2, p.y, p.w, p.h, 6);
-      ctx.fill();
-      ctx.restore();
-
-      // 球
-      var b = g.ball;
-      ctx.save();
-      ctx.shadowColor = 'rgba(255,255,255,.85)';
-      ctx.shadowBlur = 14;
-      ctx.fillStyle = '#f8fbff';
-      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-
-      // 生命 + 关卡
-      for (var l = 0; l < g.lives; l++) {
-        ctx.fillStyle = 'rgba(251,113,133,.9)';
-        roundRect(ctx, 14 + l * 16, 14, 10, 10, 3);
-        ctx.fill();
-      }
-      ctx.fillStyle = 'rgba(255,255,255,.45)';
-      ctx.font = '600 13px system-ui, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText('第 ' + g.level + ' 关', W - 14, 24);
-    };
-
-    g.key = function (k) {
-      if (k === 'ArrowLeft' || k === 'a') { if (!g.running) g.begin(); g.holds.left = true; return true; }
-      if (k === 'ArrowRight' || k === 'd') { if (!g.running) g.begin(); g.holds.right = true; return true; }
-      return false;
-    };
-    g.keyUp = function (k) {
-      if (k === 'ArrowLeft' || k === 'a') g.holds.left = false;
-      if (k === 'ArrowRight' || k === 'd') g.holds.right = false;
-    };
-    // 其他键（上下）在打砖块里没有含义，但仍吞掉，避免页面滚动
-    g.keyExtra = function (k) { return k === 'ArrowUp' || k === 'ArrowDown' || k === 'w' || k === 's'; };
-
-    function movePaddleTo(clientX) {
-      var rect = ui.el.getBoundingClientRect();
-      var x = ((clientX - rect.left) / (rect.width || 1)) * W;
-      g.paddle.x = clamp(x, g.paddle.w / 2 + 4, W - g.paddle.w / 2 - 4);
-    }
-
-    ui.el.addEventListener('pointermove', function (e) {
-      if (!g.running) return;
-      movePaddleTo(e.clientX);
     });
-    ui.el.addEventListener('pointerdown', function (e) {
-      if (g.running) movePaddleTo(e.clientX);
-    });
-
-    if ('ResizeObserver' in window) new ResizeObserver(function () { if (!ui.el.hidden) view.fit(); }).observe(ui.el);
-    window.addEventListener('resize', function () { if (!ui.el.hidden) view.fit(); });
-
-    g.reset();
-    games.breakout = g;
   })();
-
-  /* =========================================================
-   *  5. 记忆翻牌
-   * ========================================================= */
-  (function initMemory() {
-    var SYMBOLS = ['🍎', '🍋', '🍇', '🍉', '🍓', '🥝', '🍄', '🌵'];
-    var PAIRS = SYMBOLS.length;
-    var ui = parts('memory');
-    var grid = ui.el.querySelector('#memoGrid');
-
-    var g = {
-      id: 'memory', ui: ui, canPause: false,
-      started: false, running: false, over: false,
-      score: 0, best: loadNum('chm-memory-best', 0),
-      moves: 0, open: [], matched: 0, lock: false, deck: [],
-      cards: []
-    };
-
-    function buildDeck() {
-      var list = SYMBOLS.concat(SYMBOLS);
-      for (var i = list.length - 1; i > 0; i--) {
-        var j = (Math.random() * (i + 1)) | 0;
-        var t = list[i]; list[i] = list[j]; list[j] = t;
-      }
-      return list;
-    }
-
-    function buildCards() {
-      grid.innerHTML = '';
-      g.cards = [];
-      for (var i = 0; i < g.deck.length; i++) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'memo-card';
-        btn.setAttribute('data-i', String(i));
-        btn.setAttribute('aria-label', '未翻开的卡片');
-        btn.innerHTML =
-          '<span class="memo-inner">' +
-            '<span class="memo-face memo-front"></span>' +
-            '<span class="memo-face memo-back">' + g.deck[i] + '</span>' +
-          '</span>';
-        grid.appendChild(btn);
-        g.cards.push(btn);
-      }
-    }
-
-    g.reset = function () {
-      g.deck = buildDeck();
-      g.moves = 0;
-      g.score = 0;
-      g.open = [];
-      g.matched = 0;
-      g.lock = false;
-      g.started = false;
-      g.running = false;
-      g.over = false;
-      buildCards();
-      syncHUD(g);
-    };
-
-    function flipBack(pair) {
-      pair.forEach(function (c) { c.classList.remove('flipped'); });
-    }
-
-    function onCard(card) {
-      var i = Number(card.getAttribute('data-i'));
-      if (g.lock || g.over) return;
-      if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-
-      card.classList.add('flipped');
-      card.setAttribute('aria-label', '已翻开：' + g.deck[i]);
-      g.open.push({ card: card, sym: g.deck[i] });
-
-      if (g.open.length < 2) return;
-
-      g.moves += 1;
-      g.score = g.moves;
-      syncHUD(g);
-
-      var a = g.open[0], b = g.open[1];
-      if (a.sym === b.sym) {
-        a.card.classList.add('matched');
-        b.card.classList.add('matched');
-        a.card.setAttribute('aria-disabled', 'true');
-        b.card.setAttribute('aria-disabled', 'true');
-        g.matched += 1;
-        g.open = [];
-        if (g.matched === PAIRS) win();
-      } else {
-        g.lock = true;
-        var pair = [a.card, b.card];
-        g.open = [];
-        setTimeout(function () {
-          flipBack(pair);
-          g.lock = false;
-        }, 720);
-      }
-    }
-
-    function win() {
-      g.over = true;
-      g.running = false;
-      if (!g.best || g.moves < g.best) {
-        g.best = g.moves;
-        saveNum('chm-memory-best', g.best);
-      }
-      syncHUD(g);
-      g.showState();
-    }
-
-    grid.addEventListener('click', function (e) {
-      var card = e.target.closest ? e.target.closest('.memo-card') : null;
-      if (card && !g.over) onCard(card);
-    });
-
-    g.begin = function () {
-      if (!g.started || g.over) g.reset();
-      g.started = true;
-      g.over = false;
-      g.running = true;
-      g.showState();
-    };
-    g.pause = function () { g.running = false; g.showState(); };
-
-    g.showState = function () {
-      if (g.running) { hideOverlay(ui); return; }
-      if (g.over) {
-        showOverlay(ui, '全部配对完成', '共用了 <span class="big">' + g.moves + '</span> 步', '再来一局', g.begin);
-        return;
-      }
-      if (g.started) {
-        showOverlay(ui, '已暂停', '点下面的按钮继续。', '继续', g.begin);
-        return;
-      }
-      showOverlay(ui, '准备开始？', '每次翻开两张卡片，图案相同就留下，把 8 对全部配对即获胜。步数越少越好。', '开始游戏', g.begin);
-    };
-
-    g.reset();
-    games.memory = g;
-  })();
-
-  /* =========================================================
-   *  6. 2048
-   * ========================================================= */
-  (function init2048() {
-    var ui = parts('g2048');
-    var grid = ui.el.querySelector('#grid2048');
-    var cells = [];
-
-    var LINES = {
-      left: [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]],
-      right: [[3, 2, 1, 0], [7, 6, 5, 4], [11, 10, 9, 8], [15, 14, 13, 12]],
-      up: [[0, 4, 8, 12], [1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15]],
-      down: [[12, 8, 4, 0], [13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3]]
-    };
-
-    var g = {
-      id: 'g2048', ui: ui, canPause: false,
-      started: false, running: false, over: false,
-      score: 0, best: loadNum('chm-2048-best', 0),
-      board: [], won: false
-    };
-
-    for (var i = 0; i < 16; i++) {
-      var c = document.createElement('div');
-      c.className = 'g2048-cell empty';
-      grid.appendChild(c);
-      cells.push(c);
-    }
-
-    function render(popSet) {
-      for (var i = 0; i < 16; i++) {
-        var v = g.board[i];
-        var cell = cells[i];
-        cell.textContent = v ? String(v) : '';
-        cell.className = 'g2048-cell' + (v ? ' v' + Math.min(v, 2048) : ' empty');
-        if (popSet && popSet.indexOf(i) >= 0) {
-          cell.classList.remove('pop');
-          void cell.offsetWidth;
-          cell.classList.add('pop');
-        }
-      }
-    }
-
-    function emptyCells() {
-      var out = [];
-      for (var i = 0; i < 16; i++) if (!g.board[i]) out.push(i);
-      return out;
-    }
-
-    function addTile() {
-      var free = emptyCells();
-      if (!free.length) return -1;
-      var idx = free[(Math.random() * free.length) | 0];
-      g.board[idx] = Math.random() < 0.9 ? 2 : 4;
-      return idx;
-    }
-
-    function slide(line) {
-      var nums = line.filter(function (v) { return v; });
-      var out = [];
-      var gained = 0;
-      for (var i = 0; i < nums.length; i++) {
-        if (nums[i] === nums[i + 1]) {
-          var merged = nums[i] * 2;
-          out.push(merged);
-          gained += merged;
-          i++;
-        } else {
-          out.push(nums[i]);
-        }
-      }
-      while (out.length < 4) out.push(0);
-      return { out: out, gained: gained };
-    }
-
-    function maxTile() {
-      var m = 0;
-      for (var i = 0; i < 16; i++) if (g.board[i] > m) m = g.board[i];
-      return m;
-    }
-
-    function canMove() {
-      if (emptyCells().length) return true;
-      for (var i = 0; i < 16; i++) {
-        var x = i % 4, y = (i / 4) | 0;
-        var v = g.board[i];
-        if (x < 3 && g.board[i + 1] === v) return true;
-        if (y < 3 && g.board[i + 4] === v) return true;
-      }
-      return false;
-    }
-
-    function gameOver() {
-      g.over = true;
-      g.running = false;
-      if (g.score > g.best) { g.best = g.score; saveNum('chm-2048-best', g.best); }
-      syncHUD(g);
-      g.showState();
-    }
-
-    function move(dir) {
-      if (g.over) return;
-      var moved = false;
-      var gained = 0;
-      var prev = g.board.slice();
-
-      LINES[dir].forEach(function (lineIdx) {
-        var values = lineIdx.map(function (i) { return g.board[i]; });
-        var res = slide(values);
-        gained += res.gained;
-        for (var i = 0; i < 4; i++) {
-          if (g.board[lineIdx[i]] !== res.out[i]) moved = true;
-          g.board[lineIdx[i]] = res.out[i];
-        }
-      });
-
-      if (!moved) return;
-
-      addTile();
-
-      // 只给「新出现 / 变大」的格子加一次弹跳
-      var pop = [];
-      for (var i = 0; i < 16; i++) {
-        if (g.board[i] !== prev[i] && g.board[i] !== 0) pop.push(i);
-      }
-
-      g.score += gained;
-      render(pop);
-      if (g.score > g.best) { g.best = g.score; saveNum('chm-2048-best', g.best); }
-      syncHUD(g);
-
-      if (!g.won && maxTile() >= 2048) {
-        g.won = true;
-        g.running = false;
-        showWin();
-        return;
-      }
-
-      if (!canMove()) gameOver();
-    }
-
-    g.reset = function () {
-      g.board = [];
-      for (var i = 0; i < 16; i++) g.board.push(0);
-      g.score = 0;
-      g.won = false;
-      g.over = false;
-      g.started = false;
-      g.running = false;
-      addTile();
-      addTile();
-      render();
-      syncHUD(g);
-    };
-
-    g.begin = function () {
-      if (!g.started || g.over || g.won) g.reset();
-      g.started = true;
-      g.over = false;
-      g.running = true;
-      g.showState();
-      focusBoard(ui.el);
-    };
-
-    g.pause = function () { g.running = false; g.showState(); };
-
-    function showWin() {
-      showOverlay(ui, '达成 2048！', '继续挑战更大的数字，或者重新开一局。', '继续挑战', function () {
-        g.running = true;
-        hideOverlay(ui);
-        focusBoard(ui.el);
-      });
-    }
-
-    g.showState = function () {
-      if (g.running) { hideOverlay(ui); return; }
-      if (g.over) {
-        showOverlay(ui, '没有可移动的格子', '本局得分 <span class="big">' + g.score + '</span>', '再来一局', g.begin);
-        return;
-      }
-      if (g.won) { showWin(); return; }
-      if (g.started) {
-        showOverlay(ui, '已暂停', '点下面的按钮继续。', '继续', g.begin);
-        return;
-      }
-      showOverlay(ui, '准备开始？', '方向键或 WASD 移动方块，相同的数字会合并。目标：2048。', '开始游戏', g.begin);
-    };
-
-    g.key = function (k) {
-      var map = {
-        ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
-        a: 'left', d: 'right', w: 'up', s: 'down'
-      };
-      var dir = map[k];
-      if (!dir) return false;
-      if (g.over) return true;
-      if (!g.started) g.begin();
-      move(dir);
-      return true;
-    };
-
-    // 滑动
-    var touchStart = null;
-    ui.el.addEventListener('touchstart', function (e) {
-      if (e.touches && e.touches.length === 1) {
-        touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      }
-    }, { passive: true });
-    ui.el.addEventListener('touchend', function (e) {
-      if (!touchStart || !e.changedTouches || !e.changedTouches.length) { touchStart = null; return; }
-      var t1 = e.changedTouches[0];
-      var dx = t1.clientX - touchStart.x;
-      var dy = t1.clientY - touchStart.y;
-      touchStart = null;
-      if (Math.max(Math.abs(dx), Math.abs(dy)) < 22) return;
-      if (Math.abs(dx) > Math.abs(dy)) g.key(dx > 0 ? 'ArrowRight' : 'ArrowLeft');
-      else g.key(dy > 0 ? 'ArrowDown' : 'ArrowUp');
-    }, { passive: true });
-
-    g.reset();
-    games.g2048 = g;
-  })();
-
-  /* =========================================================
-   *  7. 全局交互
-   * ========================================================= */
-  $$('.tab').forEach(function (tab) {
-    tab.addEventListener('click', function () { setActive(tab.getAttribute('data-game')); });
-  });
-
-  HUD.pause.addEventListener('click', function () {
-    var g = games[activeId];
-    if (!g.canPause) return;
-    if (g.running) g.pause(); else g.begin();
-  });
-
-  HUD.restart.addEventListener('click', function () {
-    var g = games[activeId];
-    g.reset();
-    g.begin();
-  });
-
-  $$('.board').forEach(function (board) {
-    board.addEventListener('pointerdown', function () { focusBoard(board); });
-  });
-
-  window.addEventListener('keydown', function (e) {
-    var g = games[activeId];
-    if (!g) return;
-
-    var key = e.key;
-    if (key.length === 1) key = key.toLowerCase();
-    var isSpace = key === ' ' || e.code === 'Space';
-
-    var focused = g.ui.el === document.activeElement || g.ui.el.contains(document.activeElement);
-    if (!focused && !g.running) return;
-
-    if (isSpace) {
-      if (e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'A')) return;
-      if (!g.canPause) return;
-      e.preventDefault();
-      if (g.running) g.pause(); else g.begin();
-      return;
-    }
-
-    var handled = false;
-    if (g.key) handled = g.key(key);
-    if (!handled && g.keyExtra) handled = g.keyExtra(key);
-    if (handled) e.preventDefault();
-  }, { passive: false });
-
-  window.addEventListener('keyup', function (e) {
-    var g = games[activeId];
-    if (!g || !g.keyUp) return;
-    var key = e.key;
-    if (key.length === 1) key = key.toLowerCase();
-    g.keyUp(key);
-  });
-
-  document.addEventListener('visibilitychange', function () {
-    var g = games[activeId];
-    if (document.hidden && g && g.running && g.canPause) g.pause();
-  });
-
-  if ('IntersectionObserver' in window) {
-    var boardIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var g = games[activeId];
-        // 只处理「当前正在玩的那块棋盘」，切换标签时其它棋盘隐藏不算
-        if (g && entry.target === g.ui.el && !entry.isIntersecting && g.running && g.canPause) g.pause();
-      });
-    }, { threshold: 0.25 });
-    $$('.board').forEach(function (el) { boardIO.observe(el); });
-  }
-
-  /* 启动 */
-  applyPanel('snake');
-  games.snake.view.fit();
-  games.snake.showState();
-  window.addEventListener('resize', function () {
-    var g = games[activeId];
-    if (g && g.view) g.view.fit();
-  });
-  window.requestAnimationFrame(frame);
 })();
 </script>
 </body>
